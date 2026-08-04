@@ -1,6 +1,6 @@
 import 'package:bayitooutlet/pages/main_page.dart';
+import 'package:bayitooutlet/pages/sign_in_page.dart';
 import 'package:flutter/material.dart';
-
 import '../components/custom_gradient_button.dart';
 import '../components/custom_textfield.dart';
 import '../utils/custom_color.dart';
@@ -15,14 +15,13 @@ class LocationDetailsPage extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-          gradient: CustomColors.mainGradientColor,
+          color: CustomColors.white,
         ),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 20),
                   Row(
@@ -36,9 +35,9 @@ class LocationDetailsPage extends StatelessWidget {
                             color: Colors.white.withOpacity(.08),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
+                          child:  Icon(
                             Icons.arrow_back_ios_new,
-                            color: Colors.white,
+                            color: CustomColors.darkBlack,
                             size: 18,
                           ),
                         ),
@@ -47,8 +46,8 @@ class LocationDetailsPage extends StatelessWidget {
                       const Text(
                         "Location Details",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 26,
+                          color: CustomColors.darkBlack,
+                          fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -148,13 +147,53 @@ class LocationDetailsPage extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (_) => const MainPage(),
-                          ),
-                              (route) => false,
+                          ), (route) => false,
                         );
                       },
                     ),
                   ),
                   const SizedBox(height: 40),
+                  RichText(
+                    text: TextSpan(
+                      text: "Already have an account? ",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: CustomColors.darkBlack,
+                      ),
+                      children: [
+                        WidgetSpan(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SignInPage(),
+                                ),
+                                    (route) => false,
+                              );
+                            },
+                            child: Text(
+                              "SignIn",
+                              style: TextStyle(
+                                foreground: Paint()
+                                  ..shader = LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: CustomColors.secondaryGradient,
+                                  ).createShader(
+                                    const Rect.fromLTWH(60, 60, 140, 40),
+                                  ),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 80),
                 ],
               )
             ),

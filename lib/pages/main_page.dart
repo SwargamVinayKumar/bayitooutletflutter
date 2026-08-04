@@ -1,3 +1,6 @@
+import 'package:bayitooutlet/pages/booking_page.dart';
+import 'package:bayitooutlet/pages/home_page.dart';
+import 'package:bayitooutlet/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../utils/custom_color.dart';
@@ -21,7 +24,9 @@ class _MainPageState extends State<MainPage> {
 
     _selectedPageIndex = 0;
     _pages = [
-
+      HomePage(),
+      BookingPage(),
+      ProfilePage()
     ];
     _pageController = PageController(initialPage: _selectedPageIndex);
   }
@@ -84,7 +89,7 @@ class _MainPageState extends State<MainPage> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         body: PageView(
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),

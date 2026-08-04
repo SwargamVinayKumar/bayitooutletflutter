@@ -16,6 +16,7 @@ class CustomTextFieldComponent extends StatefulWidget {
   final bool readText;
   final Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatters;
+  final int? maxLines;
 
   const CustomTextFieldComponent({
     super.key,
@@ -31,6 +32,7 @@ class CustomTextFieldComponent extends StatefulWidget {
     this.textLength,
     this.readText = false,
     this.keyboardType = TextInputType.text,
+    this.maxLines = 1
   });
 
   @override
@@ -61,6 +63,7 @@ class _CustomTextFieldComponentState extends State<CustomTextFieldComponent> {
         keyboardType: widget.keyboardType,
         maxLength: widget.textLength,
         inputFormatters: widget.inputFormatters,
+        maxLines: widget.maxLines,
         decoration: InputDecoration(
           counterText: '',
           filled: true,

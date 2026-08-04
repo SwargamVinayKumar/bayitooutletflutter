@@ -55,7 +55,7 @@ class _BusinessPageState extends State<BusinessPage> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: CustomColors.mainGradientColor,
+          color: CustomColors.white,
         ),
         child: SafeArea(
           child: SingleChildScrollView(
@@ -75,7 +75,7 @@ class _BusinessPageState extends State<BusinessPage> {
                         ),
                         child: const Icon(
                           Icons.arrow_back_ios_new,
-                          color: Colors.white,
+                          color: CustomColors.darkBlack,
                           size: 18,
                         ),
                       ),
@@ -84,8 +84,8 @@ class _BusinessPageState extends State<BusinessPage> {
                     const Text(
                       "Business Details",
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
+                        color: CustomColors.darkBlack,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -96,7 +96,7 @@ class _BusinessPageState extends State<BusinessPage> {
                   onTap: pickLogo,
                   child: CircleAvatar(
                     radius: 65,
-                    backgroundColor: Colors.white12,
+                    backgroundColor: Colors.black26,
                     backgroundImage:
                     businessLogo != null ? FileImage(businessLogo!) : null,
                     child: businessLogo == null
@@ -115,9 +115,7 @@ class _BusinessPageState extends State<BusinessPage> {
                   "Upload Business Logo",
                   style: TextStyle(color: Colors.white70),
                 ),
-
                 const SizedBox(height: 25),
-
                 CustomTextFieldComponent(
                   hintText: "Business Name",
                 ),
@@ -133,9 +131,9 @@ class _BusinessPageState extends State<BusinessPage> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(.08),
+                    color: Colors.grey.withOpacity(.4),
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: Colors.white24),
+                    border: Border.all(color: Colors.black26),
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
@@ -144,21 +142,17 @@ class _BusinessPageState extends State<BusinessPage> {
                       value: outletType,
                       hint: const Text(
                         "Select Outlet Type",
-                        style: TextStyle(color: Colors.white70),
+                        style: TextStyle(color: Colors.black54),
                       ),
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.black54),
                       items: const [
                         DropdownMenuItem(
                           value: "Cafe",
-                          child: Text("Cafe"),
+                          child: Text("Cafe", style: TextStyle(color: Colors.white),),
                         ),
                         DropdownMenuItem(
                           value: "Restaurant",
                           child: Text("Restaurant"),
-                        ),
-                        DropdownMenuItem(
-                          value: "Pub",
-                          child: Text("Pub"),
                         ),
                         DropdownMenuItem(
                           value: "Lounge",
@@ -192,7 +186,7 @@ class _BusinessPageState extends State<BusinessPage> {
                   child: Text(
                     "Business Images",
                     style: TextStyle(
-                      color: Colors.white.withOpacity(.9),
+                      color: Colors.black45,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -215,11 +209,11 @@ class _BusinessPageState extends State<BusinessPage> {
                             margin: const EdgeInsets.only(right: 10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.white24),
+                              border: Border.all(color: Colors.black26),
                             ),
                             child: const Icon(
                               Icons.add,
-                              color: Colors.white,
+                              color: Colors.black26,
                               size: 35,
                             ),
                           ),

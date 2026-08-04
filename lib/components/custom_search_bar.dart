@@ -43,7 +43,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           color: CustomColors.white.withOpacity(0.8),
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
-            color: CustomColors.secondary.withOpacity(1.0),
+            color: CustomColors.midGray.withOpacity(0.6),
           ),
         ),
         child: Row(
@@ -63,7 +63,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                 ),
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: widget.hinTxt ?? "Search cafés...",
+                  hintText: widget.hinTxt ?? "Search tables...",
                   hintStyle: TextStyle(
                     color: CustomColors.secondary
                         .withOpacity(0.6),

@@ -17,7 +17,7 @@ class SignInPage extends StatelessWidget {
           width: double.infinity,
           height: double.infinity,
          decoration: BoxDecoration(
-            gradient: CustomColors.mainGradientColor,
+            color: CustomColors.white,
           ),
         child: SafeArea(
           child: Padding(
@@ -67,19 +67,19 @@ class SignInPage extends StatelessWidget {
                     text: TextSpan(
                       text: "Don't have an account? ",
                       style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: CustomColors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: CustomColors.darkBlack,
                       ),
                       children: [
                         WidgetSpan(
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.push(
+                              Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SignUpPage(),
-                                ),
+                                  builder: (_) => const SignUpPage(),
+                                ), (route) => false,
                               );
                             },
                             child: Text(

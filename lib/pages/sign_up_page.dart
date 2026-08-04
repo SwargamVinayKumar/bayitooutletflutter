@@ -16,7 +16,7 @@ class SignUpPage extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-          gradient: CustomColors.mainGradientColor,
+          color: CustomColors.white,
         ),
         child: SafeArea(
           child: Padding(
@@ -58,57 +58,15 @@ class SignUpPage extends StatelessWidget {
                     child: CustomGradientButton(title: "Next",
                         fontSize: 18,
                         onTap: (){
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const BusinessPage(),
-                        ),
-                            (route) => false,
-                      );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const BusinessPage(),
+                            ),
+                          );
                     }),
                   ),
                   SizedBox(height: 30),
-                  // RichText(
-                  //   text: TextSpan(
-                  //     text: "Already have an account? ",
-                  //     style: TextStyle(
-                  //       fontSize: 14,
-                  //       fontWeight: FontWeight.w400,
-                  //       color: CustomColors.white,
-                  //     ),
-                  //     children: [
-                  //       WidgetSpan(
-                  //         child: GestureDetector(
-                  //           onTap: () {
-                  //             Navigator.pushAndRemoveUntil(
-                  //               context,
-                  //               MaterialPageRoute(
-                  //                 builder: (context) => const SignInPage(),
-                  //               ),
-                  //                   (route) => false,
-                  //             );
-                  //           },
-                  //           child: Text(
-                  //             "SignIn",
-                  //             style: TextStyle(
-                  //               foreground: Paint()
-                  //                 ..shader = LinearGradient(
-                  //                   begin: Alignment.topLeft,
-                  //                   end: Alignment.bottomRight,
-                  //                   colors: CustomColors.secondaryGradient,
-                  //                 ).createShader(
-                  //                   const Rect.fromLTWH(60, 60, 140, 40),
-                  //                 ),
-                  //               fontSize: 16,
-                  //               fontWeight: FontWeight.w700,
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // SizedBox(height: 80),
                 ],
               ),
             ),

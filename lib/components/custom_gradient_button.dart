@@ -4,7 +4,7 @@ import '../utils/custom_color.dart';
 class CustomGradientButton extends StatelessWidget {
 
   final String title;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final double height;
   final double width;
   final double borderRadius;
