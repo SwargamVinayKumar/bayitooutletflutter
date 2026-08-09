@@ -1,52 +1,62 @@
 import 'package:flutter/material.dart';
 
 class TableItem extends StatelessWidget {
-
-  final String image;
   final String tableName;
   final String seats;
+  final String image;
   final String status;
   final Color statusColor;
   final VoidCallback? onTap;
-  const TableItem({super.key,
-    required this.image,
+
+  const TableItem({
+    super.key,
     required this.tableName,
     required this.seats,
+    required this.image,
     required this.status,
     required this.statusColor,
-    this.onTap});
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(18),
-      child: Ink(
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(.05),
-              blurRadius: 12,
-              offset: const Offset(0, 5),
-            ),
-          ],
+          borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
           children: [
+
             ClipRRect(
-              borderRadius: BorderRadius.circular(14),
-              child: Image.network(
-                image,
-                width: 72,
-                height: 72,
+              borderRadius: BorderRadius.circular(12),
+              child: image.isEmpty
+                  ? Image.asset(
+                "assets/images/cafe.jpg",
+                width: 80,
+                height: 80,
                 fit: BoxFit.cover,
+              )
+                  : Image.network(
+                image,
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) {
+                  return Image.asset(
+                    "assets/images/cafe.jpg",
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover,
+                  );
+                },
               ),
             ),
-
-            const SizedBox(width: 12),
+            const SizedBox(width: 15),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,65 +64,39 @@ class TableItem extends StatelessWidget {
                   Text(
                     tableName,
                     style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xff2C2C2C),
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.event_seat,
-                        size: 17,
-                        color: Colors.grey,
+                  const SizedBox(height: 8),
+                  Text(
+                    seats,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: statusColor.withOpacity(.15),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Text(
+                      status,
+                      style: TextStyle(
+                        color: statusColor,
+                        fontWeight: FontWeight.w600,
                       ),
-                      const SizedBox(width: 5),
-                      Text(
-                        seats,
-                        style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 5,
-              ),
-              decoration: BoxDecoration(
-                color: statusColor.withOpacity(.12),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Text(
-                status,
-                style: TextStyle(
-                  color: statusColor,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 12,
-                ),
-              ),
-            ),
-            const SizedBox(width: 4),
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Icon(
-                Icons.arrow_forward_ios,
-                size: 18,
-                color: Colors.black54,
-              ),
-            ),
+            const Icon(Icons.arrow_forward_ios, size: 18)
           ],
         ),
       ),

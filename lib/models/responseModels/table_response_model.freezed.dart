@@ -13,22 +13,22 @@ part of 'table_response_model.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$TableResponse {
+mixin _$FetchTablesResponse {
 
  int? get status; String? get message; TableData? get data;
-/// Create a copy of TableResponse
+/// Create a copy of FetchTablesResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$TableResponseCopyWith<TableResponse> get copyWith => _$TableResponseCopyWithImpl<TableResponse>(this as TableResponse, _$identity);
+$FetchTablesResponseCopyWith<FetchTablesResponse> get copyWith => _$FetchTablesResponseCopyWithImpl<FetchTablesResponse>(this as FetchTablesResponse, _$identity);
 
-  /// Serializes this TableResponse to a JSON map.
+  /// Serializes this FetchTablesResponse to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TableResponse&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message)&&(identical(other.data, data) || other.data == data));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FetchTablesResponse&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message)&&(identical(other.data, data) || other.data == data));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -37,15 +37,15 @@ int get hashCode => Object.hash(runtimeType,status,message,data);
 
 @override
 String toString() {
-  return 'TableResponse(status: $status, message: $message, data: $data)';
+  return 'FetchTablesResponse(status: $status, message: $message, data: $data)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $TableResponseCopyWith<$Res>  {
-  factory $TableResponseCopyWith(TableResponse value, $Res Function(TableResponse) _then) = _$TableResponseCopyWithImpl;
+abstract mixin class $FetchTablesResponseCopyWith<$Res>  {
+  factory $FetchTablesResponseCopyWith(FetchTablesResponse value, $Res Function(FetchTablesResponse) _then) = _$FetchTablesResponseCopyWithImpl;
 @useResult
 $Res call({
  int? status, String? message, TableData? data
@@ -56,14 +56,14 @@ $TableDataCopyWith<$Res>? get data;
 
 }
 /// @nodoc
-class _$TableResponseCopyWithImpl<$Res>
-    implements $TableResponseCopyWith<$Res> {
-  _$TableResponseCopyWithImpl(this._self, this._then);
+class _$FetchTablesResponseCopyWithImpl<$Res>
+    implements $FetchTablesResponseCopyWith<$Res> {
+  _$FetchTablesResponseCopyWithImpl(this._self, this._then);
 
-  final TableResponse _self;
-  final $Res Function(TableResponse) _then;
+  final FetchTablesResponse _self;
+  final $Res Function(FetchTablesResponse) _then;
 
-/// Create a copy of TableResponse
+/// Create a copy of FetchTablesResponse
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = freezed,Object? message = freezed,Object? data = freezed,}) {
   return _then(_self.copyWith(
@@ -73,7 +73,7 @@ as String?,data: freezed == data ? _self.data : data // ignore: cast_nullable_to
 as TableData?,
   ));
 }
-/// Create a copy of TableResponse
+/// Create a copy of FetchTablesResponse
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
@@ -89,8 +89,8 @@ $TableDataCopyWith<$Res>? get data {
 }
 
 
-/// Adds pattern-matching-related methods to [TableResponse].
-extension TableResponsePatterns on TableResponse {
+/// Adds pattern-matching-related methods to [FetchTablesResponse].
+extension FetchTablesResponsePatterns on FetchTablesResponse {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -103,10 +103,10 @@ extension TableResponsePatterns on TableResponse {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _TableResponse value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _FetchTablesResponse value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _TableResponse() when $default != null:
+case _FetchTablesResponse() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -125,10 +125,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _TableResponse value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _FetchTablesResponse value)  $default,){
 final _that = this;
 switch (_that) {
-case _TableResponse():
+case _FetchTablesResponse():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -146,10 +146,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _TableResponse value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _FetchTablesResponse value)?  $default,){
 final _that = this;
 switch (_that) {
-case _TableResponse() when $default != null:
+case _FetchTablesResponse() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -169,7 +169,7 @@ return $default(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? status,  String? message,  TableData? data)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _TableResponse() when $default != null:
+case _FetchTablesResponse() when $default != null:
 return $default(_that.status,_that.message,_that.data);case _:
   return orElse();
 
@@ -190,7 +190,7 @@ return $default(_that.status,_that.message,_that.data);case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? status,  String? message,  TableData? data)  $default,) {final _that = this;
 switch (_that) {
-case _TableResponse():
+case _FetchTablesResponse():
 return $default(_that.status,_that.message,_that.data);case _:
   throw StateError('Unexpected subclass');
 
@@ -210,7 +210,7 @@ return $default(_that.status,_that.message,_that.data);case _:
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? status,  String? message,  TableData? data)?  $default,) {final _that = this;
 switch (_that) {
-case _TableResponse() when $default != null:
+case _FetchTablesResponse() when $default != null:
 return $default(_that.status,_that.message,_that.data);case _:
   return null;
 
@@ -222,28 +222,28 @@ return $default(_that.status,_that.message,_that.data);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _TableResponse implements TableResponse {
-  const _TableResponse({this.status, this.message, this.data});
-  factory _TableResponse.fromJson(Map<String, dynamic> json) => _$TableResponseFromJson(json);
+class _FetchTablesResponse implements FetchTablesResponse {
+  const _FetchTablesResponse({this.status, this.message, this.data});
+  factory _FetchTablesResponse.fromJson(Map<String, dynamic> json) => _$FetchTablesResponseFromJson(json);
 
 @override final  int? status;
 @override final  String? message;
 @override final  TableData? data;
 
-/// Create a copy of TableResponse
+/// Create a copy of FetchTablesResponse
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$TableResponseCopyWith<_TableResponse> get copyWith => __$TableResponseCopyWithImpl<_TableResponse>(this, _$identity);
+_$FetchTablesResponseCopyWith<_FetchTablesResponse> get copyWith => __$FetchTablesResponseCopyWithImpl<_FetchTablesResponse>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$TableResponseToJson(this, );
+  return _$FetchTablesResponseToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TableResponse&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message)&&(identical(other.data, data) || other.data == data));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FetchTablesResponse&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message)&&(identical(other.data, data) || other.data == data));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -252,15 +252,15 @@ int get hashCode => Object.hash(runtimeType,status,message,data);
 
 @override
 String toString() {
-  return 'TableResponse(status: $status, message: $message, data: $data)';
+  return 'FetchTablesResponse(status: $status, message: $message, data: $data)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$TableResponseCopyWith<$Res> implements $TableResponseCopyWith<$Res> {
-  factory _$TableResponseCopyWith(_TableResponse value, $Res Function(_TableResponse) _then) = __$TableResponseCopyWithImpl;
+abstract mixin class _$FetchTablesResponseCopyWith<$Res> implements $FetchTablesResponseCopyWith<$Res> {
+  factory _$FetchTablesResponseCopyWith(_FetchTablesResponse value, $Res Function(_FetchTablesResponse) _then) = __$FetchTablesResponseCopyWithImpl;
 @override @useResult
 $Res call({
  int? status, String? message, TableData? data
@@ -271,17 +271,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$TableResponseCopyWithImpl<$Res>
-    implements _$TableResponseCopyWith<$Res> {
-  __$TableResponseCopyWithImpl(this._self, this._then);
+class __$FetchTablesResponseCopyWithImpl<$Res>
+    implements _$FetchTablesResponseCopyWith<$Res> {
+  __$FetchTablesResponseCopyWithImpl(this._self, this._then);
 
-  final _TableResponse _self;
-  final $Res Function(_TableResponse) _then;
+  final _FetchTablesResponse _self;
+  final $Res Function(_FetchTablesResponse) _then;
 
-/// Create a copy of TableResponse
+/// Create a copy of FetchTablesResponse
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? status = freezed,Object? message = freezed,Object? data = freezed,}) {
-  return _then(_TableResponse(
+  return _then(_FetchTablesResponse(
 status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as int?,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
@@ -289,7 +289,7 @@ as TableData?,
   ));
 }
 
-/// Create a copy of TableResponse
+/// Create a copy of FetchTablesResponse
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')

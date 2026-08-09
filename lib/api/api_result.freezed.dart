@@ -55,13 +55,13 @@ extension ApiResultPatterns<T> on ApiResult<T> {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Success<T> value)?  success,TResult Function( Error<T> value)?  error,TResult Function( Loading<T> value)?  loading,TResult Function( Init<T> value)?  init,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Success<T> value)?  success,TResult Function( _Error<T> value)?  error,TResult Function( _Loading<T> value)?  loading,TResult Function( _Init<T> value)?  init,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Success() when success != null:
-return success(_that);case Error() when error != null:
-return error(_that);case Loading() when loading != null:
-return loading(_that);case Init() when init != null:
+return success(_that);case _Error() when error != null:
+return error(_that);case _Loading() when loading != null:
+return loading(_that);case _Init() when init != null:
 return init(_that);case _:
   return orElse();
 
@@ -80,14 +80,17 @@ return init(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Success<T> value)  success,required TResult Function( Error<T> value)  error,required TResult Function( Loading<T> value)  loading,required TResult Function( Init<T> value)  init,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Success<T> value)  success,required TResult Function( _Error<T> value)  error,required TResult Function( _Loading<T> value)  loading,required TResult Function( _Init<T> value)  init,}){
 final _that = this;
 switch (_that) {
 case _Success():
-return success(_that);case Error():
-return error(_that);case Loading():
-return loading(_that);case Init():
-return init(_that);}
+return success(_that);case _Error():
+return error(_that);case _Loading():
+return loading(_that);case _Init():
+return init(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -101,13 +104,13 @@ return init(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Success<T> value)?  success,TResult? Function( Error<T> value)?  error,TResult? Function( Loading<T> value)?  loading,TResult? Function( Init<T> value)?  init,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Success<T> value)?  success,TResult? Function( _Error<T> value)?  error,TResult? Function( _Loading<T> value)?  loading,TResult? Function( _Init<T> value)?  init,}){
 final _that = this;
 switch (_that) {
 case _Success() when success != null:
-return success(_that);case Error() when error != null:
-return error(_that);case Loading() when loading != null:
-return loading(_that);case Init() when init != null:
+return success(_that);case _Error() when error != null:
+return error(_that);case _Loading() when loading != null:
+return loading(_that);case _Init() when init != null:
 return init(_that);case _:
   return null;
 
@@ -128,9 +131,9 @@ return init(_that);case _:
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( T? data)?  success,TResult Function( String error)?  error,TResult Function()?  loading,TResult Function()?  init,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Success() when success != null:
-return success(_that.data);case Error() when error != null:
-return error(_that.error);case Loading() when loading != null:
-return loading();case Init() when init != null:
+return success(_that.data);case _Error() when error != null:
+return error(_that.error);case _Loading() when loading != null:
+return loading();case _Init() when init != null:
 return init();case _:
   return orElse();
 
@@ -152,10 +155,13 @@ return init();case _:
 @optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( T? data)  success,required TResult Function( String error)  error,required TResult Function()  loading,required TResult Function()  init,}) {final _that = this;
 switch (_that) {
 case _Success():
-return success(_that.data);case Error():
-return error(_that.error);case Loading():
-return loading();case Init():
-return init();}
+return success(_that.data);case _Error():
+return error(_that.error);case _Loading():
+return loading();case _Init():
+return init();case _:
+  throw StateError('Unexpected subclass');
+
+}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -172,9 +178,9 @@ return init();}
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( T? data)?  success,TResult? Function( String error)?  error,TResult? Function()?  loading,TResult? Function()?  init,}) {final _that = this;
 switch (_that) {
 case _Success() when success != null:
-return success(_that.data);case Error() when error != null:
-return error(_that.error);case Loading() when loading != null:
-return loading();case Init() when init != null:
+return success(_that.data);case _Error() when error != null:
+return error(_that.error);case _Loading() when loading != null:
+return loading();case _Init() when init != null:
 return init();case _:
   return null;
 
@@ -187,7 +193,7 @@ return init();case _:
 
 
 class _Success<T> implements ApiResult<T> {
-   _Success(this.data);
+  const _Success(this.data);
   
 
  final  T? data;
@@ -252,8 +258,8 @@ as T?,
 /// @nodoc
 
 
-class Error<T> implements ApiResult<T> {
-   Error(this.error);
+class _Error<T> implements ApiResult<T> {
+  const _Error(this.error);
   
 
  final  String error;
@@ -262,13 +268,13 @@ class Error<T> implements ApiResult<T> {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$ErrorCopyWith<T, Error<T>> get copyWith => _$ErrorCopyWithImpl<T, Error<T>>(this, _$identity);
+_$ErrorCopyWith<T, _Error<T>> get copyWith => __$ErrorCopyWithImpl<T, _Error<T>>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Error<T>&&(identical(other.error, error) || other.error == error));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error<T>&&(identical(other.error, error) || other.error == error));
 }
 
 
@@ -284,8 +290,8 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class $ErrorCopyWith<T,$Res> implements $ApiResultCopyWith<T, $Res> {
-  factory $ErrorCopyWith(Error<T> value, $Res Function(Error<T>) _then) = _$ErrorCopyWithImpl;
+abstract mixin class _$ErrorCopyWith<T,$Res> implements $ApiResultCopyWith<T, $Res> {
+  factory _$ErrorCopyWith(_Error<T> value, $Res Function(_Error<T>) _then) = __$ErrorCopyWithImpl;
 @useResult
 $Res call({
  String error
@@ -296,17 +302,17 @@ $Res call({
 
 }
 /// @nodoc
-class _$ErrorCopyWithImpl<T,$Res>
-    implements $ErrorCopyWith<T, $Res> {
-  _$ErrorCopyWithImpl(this._self, this._then);
+class __$ErrorCopyWithImpl<T,$Res>
+    implements _$ErrorCopyWith<T, $Res> {
+  __$ErrorCopyWithImpl(this._self, this._then);
 
-  final Error<T> _self;
-  final $Res Function(Error<T>) _then;
+  final _Error<T> _self;
+  final $Res Function(_Error<T>) _then;
 
 /// Create a copy of ApiResult
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? error = null,}) {
-  return _then(Error<T>(
+  return _then(_Error<T>(
 null == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -318,8 +324,8 @@ as String,
 /// @nodoc
 
 
-class Loading<T> implements ApiResult<T> {
-   Loading();
+class _Loading<T> implements ApiResult<T> {
+  const _Loading();
   
 
 
@@ -329,7 +335,7 @@ class Loading<T> implements ApiResult<T> {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Loading<T>);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading<T>);
 }
 
 
@@ -350,8 +356,8 @@ String toString() {
 /// @nodoc
 
 
-class Init<T> implements ApiResult<T> {
-   Init();
+class _Init<T> implements ApiResult<T> {
+  const _Init();
   
 
 
@@ -361,7 +367,7 @@ class Init<T> implements ApiResult<T> {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Init<T>);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Init<T>);
 }
 
 

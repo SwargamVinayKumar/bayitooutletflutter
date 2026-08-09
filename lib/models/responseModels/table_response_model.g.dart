@@ -6,8 +6,8 @@ part of 'table_response_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_TableResponse _$TableResponseFromJson(Map<String, dynamic> json) =>
-    _TableResponse(
+_FetchTablesResponse _$FetchTablesResponseFromJson(Map<String, dynamic> json) =>
+    _FetchTablesResponse(
       status: (json['status'] as num?)?.toInt(),
       message: json['message'] as String?,
       data: json['data'] == null
@@ -15,12 +15,13 @@ _TableResponse _$TableResponseFromJson(Map<String, dynamic> json) =>
           : TableData.fromJson(json['data'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$TableResponseToJson(_TableResponse instance) =>
-    <String, dynamic>{
-      'status': instance.status,
-      'message': instance.message,
-      'data': instance.data,
-    };
+Map<String, dynamic> _$FetchTablesResponseToJson(
+  _FetchTablesResponse instance,
+) => <String, dynamic>{
+  'status': instance.status,
+  'message': instance.message,
+  'data': instance.data,
+};
 
 _TableData _$TableDataFromJson(Map<String, dynamic> json) => _TableData(
   tables: (json['tables'] as List<dynamic>?)

@@ -2,9 +2,22 @@ import 'package:bayitooutlet/components/over_view_item.dart';
 import 'package:flutter/material.dart';
 import '../pages/all_tables_page.dart';
 import '../utils/gradient_text.dart';
+import 'package:get/get.dart';
 
 class OverViewCard extends StatelessWidget {
-  const OverViewCard({super.key});
+
+  final int totalTables;
+  final int availableTables;
+  final int reservedTables;
+  final int occupiedTables;
+
+
+  const OverViewCard({super.key,
+    required this.totalTables,
+    required this.availableTables,
+    required this.reservedTables,
+    required this.occupiedTables,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +56,7 @@ class OverViewCard extends StatelessWidget {
               const Spacer(),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => AllTablesPage(),
-                    ),
-                  );
+                  Get.to(() => AllTablesPage());
                 },
                 child: GradientText(
                   text: "View all",
@@ -59,22 +67,22 @@ class OverViewCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Row(
-            children: const [
+            children: [
               Expanded(
                 child: OverViewItem(
                   icon: Icons.table_restaurant,
                   title: "Tables",
-                  value: "20",
+                  value: totalTables,
                   valueColor: Colors.white,
-                  iconColor: Color(0xff8FA8C6),
+                  iconColor: const Color(0xff8FA8C6),
                 ),
               ),
-              SizedBox(width: 12),
-              Expanded(
+              const SizedBox(width: 12),
+               Expanded(
                 child: OverViewItem(
                   icon: Icons.event_available,
                   title: "Available",
-                  value: "12",
+                  value: availableTables,
                   valueColor: Color(0xff67D36F),
                   iconColor: Color(0xff67D36F),
                 ),
@@ -83,12 +91,12 @@ class OverViewCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Row(
-            children: const [
+            children:  [
               Expanded(
                 child: OverViewItem(
                   icon: Icons.event_busy,
                   title: "Reserved",
-                  value: "5",
+                  value: reservedTables,
                   valueColor: Color(0xffF2B537),
                   iconColor: Color(0xffF2B537),
                 ),
@@ -98,7 +106,7 @@ class OverViewCard extends StatelessWidget {
                 child: OverViewItem(
                   icon: Icons.person_off,
                   title: "Occupied",
-                  value: "3",
+                  value: occupiedTables,
                   valueColor: Color(0xffFF5C5C),
                   iconColor: Color(0xffFF5C5C),
                 ),

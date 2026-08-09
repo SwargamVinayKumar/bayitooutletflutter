@@ -1,11 +1,17 @@
 import 'package:bayitooutlet/components/custom_gradient_button.dart';
 import 'package:bayitooutlet/components/custom_search_bar.dart';
+import 'package:bayitooutlet/components/custom_tab_component.dart';
+import 'package:bayitooutlet/components/table_item.dart';
+import 'package:bayitooutlet/models/requestModels/page_request_model.dart';
+import 'package:bayitooutlet/models/responseModels/table_response_model.dart';
 import 'package:bayitooutlet/pages/create_table_page.dart';
+import 'package:bayitooutlet/utils/state_ful_wrapper.dart';
+import 'package:bayitooutlet/viewModel/table_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../components/custom_tab_component.dart';
-import '../components/table_item.dart';
-
+import '../api/api_result.dart';
+import '../models/responseModels/page_model.dart';
 
 class AllTablesPage extends StatefulWidget {
   const AllTablesPage({super.key});
@@ -15,6 +21,9 @@ class AllTablesPage extends StatefulWidget {
 }
 
 class _AllTablesPageState extends State<AllTablesPage> {
+  final tableViewModel = Get.put(TableViewModel());
+
+  final TextEditingController searchController = TextEditingController();
 
   int selectedTab = 0;
 
@@ -27,90 +36,243 @@ class _AllTablesPageState extends State<AllTablesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffF8F8F8),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black,
-            size: 20,
+    return StatefulWrapper(
+      onInit: (){
+        _refreshData();
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xffF8F8F8),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: () => Get.back(),
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.black,
+            ),
           ),
-        ),
-        title: const Text(
-          "All Tables",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w700,
-            fontSize: 20,
+          title: const Text(
+            "All Tables",
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w700,
+              fontSize: 20,
+            ),
           ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: CustomGradientButton(title: "+",
-                borderRadius: 12,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: CustomGradientButton(
+                title: "+",
                 width: 30,
-                height: 30, onTap: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => CreateTablePage(),
-                ),
-              );
-            }),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: CustomSearchBar(),
-            ),
-            SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: CustomTabComponent(
-                tabs: tabs,
-                selectedIndex: selectedTab,
-                onChanged: (index) {
-                  setState(() {
-                    selectedTab = index;
-                  });
+                height: 30,
+                borderRadius: 12,
+                onTap: () {
+                  Get.to(() => CreateTablePage());
                 },
               ),
-            ),
-            const SizedBox(height: 18),
-            Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: TableItem(
-                      tableName: "Table A1",
-                      seats: "4 Seats",
-                      image:
-                      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4",
-                      status: "Available",
-                      statusColor: Colors.green,
-                    ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 30),
+            )
           ],
+        ),
+        body: SafeArea(
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: CustomSearchBar(
+                  controller: searchController,
+                  onChanged: (value) {
+                    _searchTables(value);
+                  },
+                ),
+              ),
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: CustomTabComponent(
+                  tabs: tabs,
+                  selectedIndex: selectedTab,
+                  onChanged: (index) {
+                    setState(() {
+                      selectedTab = index;
+                    });
+                    _refreshData();
+                  },
+                ),
+              ),
+              const SizedBox(height: 18),
+              Expanded(
+                child: Obx(() {
+                  return tableViewModel.fetchAllTablesObserver.value.data.value.maybeWhen(
+                    init: () => const Expanded(
+                      child: SizedBox(),
+                    ),
+                    loading: () => const Expanded(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                    error: (message) => Expanded(
+                      child: Center(
+                        child: Text(message),
+                      ),
+                    ),
+                    success: (response) {
+                      final tableList = response?.data?.tables ?? [];
+                      if (tableList.isEmpty) {
+                        return const Expanded(
+                          child: Center(
+                            child: Text("No Tables Found"),
+                          ),
+                        );
+                      }
+                      return Expanded(
+                        child: NotificationListener<ScrollNotification>(
+                          onNotification: (notification) {
+                            if (notification.metrics.pixels >=
+                                notification.metrics.maxScrollExtent - 20) {
+                              _addData();
+                            }
+                            return false;
+                          },
+                          child: RefreshIndicator(
+                            onRefresh: _refreshData,
+                            child: ListView.builder(
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              itemCount: tableList.length +
+                                  (tableViewModel.fetchAllTablesObserver.value.isLoading ? 1 : 0),
+                              itemBuilder: (context, index) {
+                                if (index == tableList.length) {
+                                  return const Padding(
+                                    padding: EdgeInsets.all(16),
+                                    child: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
+                                }
+                                final table = tableList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  child: TableItem(
+                                    tableName: table.tableNumber ?? "",
+                                    seats: "${table.seatCapacity ?? 0} Seats",
+                                    image: table.images?.isNotEmpty == true
+                                        ? table.images!.first
+                                        : "assets/images/cafe.jpg",
+                                    status: table.available == true
+                                        ? "Available"
+                                        : "Occupied",
+                                    statusColor: table.available == true
+                                        ? Colors.green
+                                        : Colors.red,
+                                    onTap: () {},
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      );
+                    }, orElse:() => const SizedBox(),
+                  );
+                }),
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Future<void> _searchTables(String value) async {
+    tableViewModel.searchText.value = value;
+    await tableViewModel.fetchTables(
+      PaginationRequestModel(
+        page: 1,
+        query: value,
+        bookingType: tabs[selectedTab],
+      ),
+      true,
+    );
+  }
+
+  Future<void> _refreshData() async {
+    await tableViewModel.fetchTables(
+      PaginationRequestModel(
+        page: 1,
+        query: searchController.text,
+        bookingType: tabs[selectedTab],
+      ),
+      true,
+    );
+  }
+
+  Future<void> _addData() async {
+    final observer = getCurrentObserver();
+
+    if (observer.value.isLoading ||
+        observer.value.isPaginationCompleted) {
+      return;
+    }
+
+    await tableViewModel.fetchTables(
+      PaginationRequestModel(
+        page: observer.value.page,
+        query: searchController.text,
+        bookingType: tabs[selectedTab],
+      ),
+      false,
+    );
+  }
+
+  Rx<PaginationModel> getCurrentObserver() {
+
+    if (searchController.text.trim().isNotEmpty) {
+      return tableViewModel.fetchSearchTablesObserver;
+    }
+
+    switch (tabs[selectedTab]) {
+
+      case "Available":
+        return tableViewModel.fetchOngoingTablesObserver;
+
+      case "Reserved":
+        return tableViewModel.fetchUpComingTablesObserver;
+
+      case "Occupied":
+        return tableViewModel.fetchCompletedTablesObserver;
+
+      default:
+        return tableViewModel.fetchAllTablesObserver;
+    }
+  }
+
+  String getStatus(TableModel table) {
+
+    if (table.available == true) {
+      return "Available";
+    }
+
+    if (tabs[selectedTab] == "Reserved") {
+      return "Reserved";
+    }
+
+    return "Occupied";
+  }
+
+  Color getStatusColor(TableModel table) {
+
+    if (table.available == true) {
+      return Colors.green;
+    }
+
+    if (tabs[selectedTab] == "Reserved") {
+      return Colors.orange;
+    }
+
+    return Colors.red;
   }
 }

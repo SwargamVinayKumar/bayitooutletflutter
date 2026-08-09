@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class OverViewItem extends StatelessWidget {
   final IconData icon;
   final String title;
-  final String value;
+  final int value;
   final Color valueColor;
   final Color iconColor;
 
@@ -63,7 +63,7 @@ class OverViewItem extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  value,
+                  value.toString(),
                   style: TextStyle(
                     color: valueColor,
                     fontSize: 18,

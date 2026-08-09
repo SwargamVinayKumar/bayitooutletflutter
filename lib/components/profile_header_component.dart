@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
-
+import '../models/responseModels/auth_response_model.dart';
 import '../pages/profile_edit_page.dart';
+import 'package:get/get.dart';
+
 
 class ProfileHeaderComponent extends StatelessWidget {
-  const ProfileHeaderComponent({super.key});
+  final ProfileData? profile;
+
+  const ProfileHeaderComponent({super.key,this.profile});
   @override
   Widget build(BuildContext context) {
+
+    final location = profile?.location;
+
+    final address = [
+      location?.address1,
+      location?.address2,
+      location?.city,
+      location?.state,
+      location?.pinCode?.toString(),
+    ].where((e) => e != null && e.toString().isNotEmpty).join(", ");
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(12, 20, 12, 12,),
@@ -31,12 +46,7 @@ class ProfileHeaderComponent extends StatelessWidget {
               ),
               InkWell(
                 onTap: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ProfileEditPage(),
-                    ),
-                  );
+                  Get.to(() => ProfileEditPage());
                 },
                 child: CircleAvatar(
                   radius: 18,
@@ -57,10 +67,10 @@ class ProfileHeaderComponent extends StatelessWidget {
                 width: 80,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(40),
-                  image: const DecorationImage(
-                    image: AssetImage(
-                      "assets/images/cafe.jpg",
-                    ),
+                  image: DecorationImage(
+                    image: (profile?.businessLogo?.isNotEmpty ?? false)
+                        ? NetworkImage(profile?.businessLogo ?? "")
+                        : const AssetImage("assets/images/cafe.jpg"),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -71,7 +81,7 @@ class ProfileHeaderComponent extends StatelessWidget {
                 CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Bayito Cafe",
+                     profile?.businessName ?? "",
                     style:
                     TextStyle(
                       fontSize: 22,
@@ -82,7 +92,7 @@ class ProfileHeaderComponent extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    "Owner",
+                    profile?.name ?? "",
                     style: TextStyle(
                       fontSize: 15,
                       color:
@@ -105,15 +115,15 @@ class ProfileHeaderComponent extends StatelessWidget {
               children: [
                 infoTile(
                   Icons.email_outlined,
-                  "owner@bayitocafe.com",
+                  profile?.email ?? "",
                 ),
                 infoTile(
                   Icons.phone_outlined,
-                  "+91 9876543210",
+                   profile?.mobile?.toString() ?? "",
                 ),
                 infoTile(
                   Icons.location_on_outlined,
-                  "123, Jubille Check Post, Hyd, India",
+                  address,
                 ),
               ],
             ),

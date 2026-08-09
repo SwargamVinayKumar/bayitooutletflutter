@@ -4,15 +4,15 @@ part 'table_response_model.freezed.dart';
 part 'table_response_model.g.dart';
 
 @freezed
-abstract class TableResponse with _$TableResponse {
-  const factory TableResponse({
+abstract class FetchTablesResponse with _$FetchTablesResponse {
+  const factory FetchTablesResponse({
     int? status,
     String? message,
     TableData? data,
-  }) = _TableResponse;
+  }) = _FetchTablesResponse;
 
-  factory TableResponse.fromJson(Map<String, dynamic> json) =>
-      _$TableResponseFromJson(json);
+  factory FetchTablesResponse.fromJson(Map<String, dynamic> json) =>
+      _$FetchTablesResponseFromJson(json);
 }
 
 @freezed
@@ -87,7 +87,3 @@ abstract class Pagination with _$Pagination {
   factory Pagination.fromJson(Map<String, dynamic> json) =>
       _$PaginationFromJson(json);
 }
-
-
-
-
