@@ -1,3 +1,5 @@
+import 'package:bayitooutlet/models/requestModels/create_table_request_model.dart';
+import 'package:bayitooutlet/models/responseModels/create_table_response_model.dart';
 import 'package:bayitooutlet/models/responseModels/page_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +16,15 @@ class TableViewModel extends GetxController {
   final preferenceManager = Get.put(PreferenceManager());
 
   RxString searchText = "".obs;
+
+  // Create Table Fields
+  final tableNameController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final selectedCategory = 0.obs;
+  final seatCount = 1.obs;
+  final seats = <SeatRequestModel>[].obs;
+
+  final createTableObserver = ApiResult<CreateTableResponseModel>.init().obs;
 
   final fetchAllTablesObserver = PaginationModel(
     data: ApiResult<FetchTablesResponse>.init().obs,
@@ -54,6 +65,53 @@ class TableViewModel extends GetxController {
     page: 1,
     error: "",
   ).obs;
+
+  Future<void> createTable() async {
+    try {
+      createTableObserver.value = ApiResult.loading();
+
+      final request = CreateTableRequestModel(
+        tableNumber: tableNameController.text,
+        seatType: selectedCategory.value == 0 ? "Family" : selectedCategory.value == 1 ? "Couple" : "Outdoor",
+        seatCapacity: seatCount.value,
+        seats: seats.toList(),
+      );
+
+      final response = await apiProvider.post(
+        EndPoints.createTable,
+        request.toJson(),
+      );
+
+      final body = response.body;
+
+      if (response.isOk && body != null) {
+        final responseData = CreateTableResponseModel.fromJson(body);
+        if (responseData.status == 1) {
+          createTableObserver.value = ApiResult.success(responseData);
+          Get.snackbar(
+            "Success",
+            responseData.message ?? "Table created successfully",
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+          Get.back(); // Go back to tables list
+          return;
+        }
+        throw responseData.message ?? "Something went wrong";
+      }
+      throw "Response Body Null";
+    } catch (e) {
+      createTableObserver.value = ApiResult.error(e.toString());
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        backgroundColor: CustomColors.secondary,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
 
   Future<void> fetchTables(
       PaginationRequestModel request,
