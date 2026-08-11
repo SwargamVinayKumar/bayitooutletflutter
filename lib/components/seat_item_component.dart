@@ -108,6 +108,7 @@ class SeatItemComponent extends StatelessWidget {
           CustomTextFieldComponent(
             hintText: "Enter charge",
             keyboardType: TextInputType.number,
+            textController: chargeController,
           ),
         ],
       ),

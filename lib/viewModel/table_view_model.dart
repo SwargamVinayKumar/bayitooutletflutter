@@ -26,6 +26,15 @@ class TableViewModel extends GetxController {
 
   final createTableObserver = ApiResult<CreateTableResponseModel>.init().obs;
 
+  void clearFields() {
+    tableNameController.clear();
+    descriptionController.clear();
+    selectedCategory.value = 0;
+    seatCount.value = 1;
+    seats.clear();
+    createTableObserver.value = ApiResult.init();
+  }
+
   final fetchAllTablesObserver = PaginationModel(
     data: ApiResult<FetchTablesResponse>.init().obs,
     isLoading: false,
@@ -95,7 +104,9 @@ class TableViewModel extends GetxController {
             colorText: Colors.white,
             snackPosition: SnackPosition.BOTTOM,
           );
-          Get.back(); // Go back to tables list
+          clearFields();
+          Get.back(); // Back to CreateTablePage
+          Get.back(); // Back to Tables List
           return;
         }
         throw responseData.message ?? "Something went wrong";

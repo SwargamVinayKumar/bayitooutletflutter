@@ -1,7 +1,9 @@
 import 'package:bayitooutlet/components/custom_textfield.dart';
 import 'package:bayitooutlet/components/quick_action_card.dart';
 import 'package:bayitooutlet/pages/add_seat_page.dart';
+import 'package:bayitooutlet/viewModel/table_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../components/custom_gradient_button.dart';
 import '../components/seat_counter_component.dart';
@@ -14,14 +16,7 @@ class CreateTablePage extends StatefulWidget {
 }
 
 class _CreateTablePageState extends State<CreateTablePage> {
-
-  final TextEditingController tableNameController = TextEditingController();
-
-  final TextEditingController descriptionController = TextEditingController();
-
-  int selectedCategory = 0;
-
-  int seatCount = 1;
+  final TableViewModel tableViewModel = Get.find<TableViewModel>();
 
   final List<Map<String, dynamic>> categories = [
     {
@@ -40,7 +35,7 @@ class _CreateTablePageState extends State<CreateTablePage> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: const Color(0xffF8F8F8),
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -69,7 +64,7 @@ class _CreateTablePageState extends State<CreateTablePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               const Text(
                 "Table Name",
                 style: TextStyle(
@@ -77,9 +72,12 @@ class _CreateTablePageState extends State<CreateTablePage> {
                   fontSize: 14,
                 ),
               ),
-              SizedBox(height: 8),
-              CustomTextFieldComponent(hintText: "Table Name"),
-              SizedBox(height: 12),
+              const SizedBox(height: 8),
+              CustomTextFieldComponent(
+                hintText: "Table Name",
+                textController: tableViewModel.tableNameController,
+              ),
+              const SizedBox(height: 12),
               const Text(
                 "Category",
                 style: TextStyle(
@@ -87,30 +85,28 @@ class _CreateTablePageState extends State<CreateTablePage> {
                   fontSize: 14,
                 ),
               ),
-              SizedBox(height: 8),
-              Wrap(
+              const SizedBox(height: 8),
+              Obx(() => Wrap(
                 spacing: 10,
                 runSpacing: 10,
                 children: List.generate(
                   categories.length,
-                      (index) {
+                  (index) {
                     return SizedBox(
                       width: (MediaQuery.of(context).size.width - 60) / 3,
                       child: QuickActionCard(
                         title: categories[index]["title"],
                         icon: categories[index]["icon"],
-                        isSelected: selectedCategory == index,
+                        isSelected: tableViewModel.selectedCategory.value == index,
                         onTap: () {
-                          setState(() {
-                            selectedCategory = index;
-                          });
+                          tableViewModel.selectedCategory.value = index;
                         },
                       ),
                     );
                   },
                 ),
-              ),
-              SizedBox(height: 12),
+              )),
+              const SizedBox(height: 12),
               const Text(
                 "Capacity (Seats)",
                 style: TextStyle(
@@ -118,17 +114,15 @@ class _CreateTablePageState extends State<CreateTablePage> {
                   fontSize: 14,
                 ),
               ),
-              SeatCounterComponent(
-                value: seatCount,
+              Obx(() => SeatCounterComponent(
+                value: tableViewModel.seatCount.value,
                 min: 1,
                 max: 20,
                 onChanged: (value) {
-                  setState(() {
-                    seatCount = value;
-                  });
+                  tableViewModel.seatCount.value = value;
                 },
-              ),
-              SizedBox(height: 12),
+              )),
+              const SizedBox(height: 12),
               const Text(
                 "Description (Optional)",
                 style: TextStyle(
@@ -136,18 +130,16 @@ class _CreateTablePageState extends State<CreateTablePage> {
                   fontSize: 14,
                 ),
               ),
-              SizedBox(height: 8),
-              CustomTextFieldComponent(hintText: "Description"),
-              SizedBox(height: 18),
+              const SizedBox(height: 8),
+              CustomTextFieldComponent(
+                hintText: "Description",
+                textController: tableViewModel.descriptionController,
+              ),
+              const SizedBox(height: 18),
               CustomGradientButton(
                 title: "Add Seats",
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => AddSeatPage()
-                    ),
-                  );
+                  Get.to(() => const AddSeatPage());
                 },
               ),
             ],

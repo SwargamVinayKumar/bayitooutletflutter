@@ -1,9 +1,11 @@
-import 'package:bayitooutlet/pages/table_details_page.dart';
+import 'package:bayitooutlet/api/api_result.dart';
+import 'package:bayitooutlet/models/requestModels/create_table_request_model.dart';
+import 'package:bayitooutlet/viewModel/table_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../components/custom_gradient_button.dart';
 import '../components/seat_item_component.dart';
-
 
 class AddSeatPage extends StatefulWidget {
   const AddSeatPage({super.key});
@@ -13,17 +15,30 @@ class AddSeatPage extends StatefulWidget {
 }
 
 class _AddSeatPageState extends State<AddSeatPage> {
+  final TableViewModel tableViewModel = Get.find<TableViewModel>();
 
-  List<TextEditingController> chargeControllers = List.generate(4, (_) => TextEditingController(),);
+  late List<TextEditingController> chargeControllers;
+  late List<String?> seatTypes;
+  late List<bool> availability;
+  late List<int> seats;
 
-  List<String?> seatTypes = List.filled(4, null);
+  @override
+  void initState() {
+    super.initState();
+    int count = tableViewModel.seatCount.value;
+    chargeControllers = List.generate(count, (_) => TextEditingController());
+    seatTypes = List.filled(count, null);
+    availability = List.filled(count, true);
+    seats = List.generate(count, (index) => index + 1);
+  }
 
-  List<bool> availability = List.filled(4, true);
-
-  final List<int> seats = List.generate(4, (index) => index + 1);
-
-  // final List<int> seats =
-  // List.generate(seatCount, (index) => index + 1);
+  @override
+  void dispose() {
+    for (var controller in chargeControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +65,6 @@ class _AddSeatPageState extends State<AddSeatPage> {
           ),
         ),
       ),
-
       body: SafeArea(
         child: Column(
           children: [
@@ -81,21 +95,30 @@ class _AddSeatPageState extends State<AddSeatPage> {
                 },
               ),
             ),
-
             Container(
               padding: const EdgeInsets.all(20),
               color: Colors.white,
-              child: CustomGradientButton(
-                title: "Create Table",
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => TableDetailsPage()
-                    ),
-                  );
-                },
-              ),
+              child: Obx(() {
+                return tableViewModel.createTableObserver.value.maybeWhen(
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  orElse: () => CustomGradientButton(
+                    title: "Create Table",
+                    onTap: () {
+                      tableViewModel.seats.value = List.generate(seats.length, (index) {
+                        return SeatRequestModel(
+                          seatNumber: "S${index + 1}",
+                          seatType: seatTypes[index] ?? "Standard",
+                          available: availability[index],
+                          charges: ChargeRequestModel(
+                            perHour: int.tryParse(chargeControllers[index].text) ?? 0,
+                          ),
+                        );
+                      });
+                      tableViewModel.createTable();
+                    },
+                  ),
+                );
+              }),
             ),
           ],
         ),
