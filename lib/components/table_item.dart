@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TableItem extends StatelessWidget {
-  final String tableName;
+  final String tableNumber;
   final String seats;
   final String image;
   final String status;
@@ -10,7 +10,7 @@ class TableItem extends StatelessWidget {
 
   const TableItem({
     super.key,
-    required this.tableName,
+    required this.tableNumber,
     required this.seats,
     required this.image,
     required this.status,
@@ -62,7 +62,7 @@ class TableItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    tableName,
+                    tableNumber,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

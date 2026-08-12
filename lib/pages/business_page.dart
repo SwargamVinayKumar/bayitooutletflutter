@@ -1,285 +1,178 @@
 import 'dart:io';
 import 'package:bayitooutlet/pages/location_details_page.dart';
+import 'package:bayitooutlet/viewModel/auth_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import '../components/custom_gradient_button.dart';
 import '../components/custom_textfield.dart';
 import '../utils/custom_color.dart';
-import 'main_page.dart';
 
-class BusinessPage extends StatefulWidget {
+class BusinessPage extends StatelessWidget {
   const BusinessPage({super.key});
 
   @override
-  State<BusinessPage> createState() => _BusinessPageState();
-}
-
-class _BusinessPageState extends State<BusinessPage> {
-
-  File? businessLogo;
-  List<File> businessImages = [];
-
-  final ImagePicker picker = ImagePicker();
-
-  String? outletType;
-
-  Future<void> pickLogo() async {
-    final XFile? image = await picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 80,
-    );
-
-    if (image != null) {
-      setState(() {
-        businessLogo = File(image.path);
-      });
-    }
-  }
-
-  Future<void> pickBusinessImages() async {
-    final List<XFile> images = await picker.pickMultiImage(
-      imageQuality: 80,
-    );
-
-    if (images.isNotEmpty) {
-      setState(() {
-        businessImages.addAll(
-          images.map((e) => File(e.path)),
-        );
-      });
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final authViewModel = Get.find<AuthViewModel>();
+    final ImagePicker picker = ImagePicker();
+
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          color: CustomColors.white,
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      borderRadius: BorderRadius.circular(25),
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(.08),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.arrow_back_ios_new,
-                          color: CustomColors.darkBlack,
-                          size: 18,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    const Text(
-                      "Business Details",
-                      style: TextStyle(
-                        color: CustomColors.darkBlack,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 30),
-                GestureDetector(
-                  onTap: pickLogo,
-                  child: CircleAvatar(
-                    radius: 65,
-                    backgroundColor: Colors.black26,
-                    backgroundImage:
-                    businessLogo != null ? FileImage(businessLogo!) : null,
-                    child: businessLogo == null
-                        ? const Icon(
-                      Icons.add_a_photo,
-                      size: 40,
-                      color: Colors.white,
-                    )
-                        : null,
+      backgroundColor: CustomColors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () => Get.back(),
+                    icon: const Icon(Icons.arrow_back_ios_new, size: 18),
                   ),
-                ),
-
-                const SizedBox(height: 10),
-
-                const Text(
-                  "Upload Business Logo",
-                  style: TextStyle(color: Colors.white70),
-                ),
-                const SizedBox(height: 25),
-                CustomTextFieldComponent(
-                  hintText: "Business Name",
-                ),
-
-                const SizedBox(height: 12),
-
-                CustomTextFieldComponent(
-                  hintText: "Business Licence Number",
-                ),
-
-                const SizedBox(height: 12),
-
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(.4),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: Colors.black26),
+                  const SizedBox(width: 8),
+                  const Text(
+                    "Business Details",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      dropdownColor: Colors.grey.shade900,
-                      isExpanded: true,
-                      value: outletType,
-                      hint: const Text(
-                        "Select Outlet Type",
-                        style: TextStyle(color: Colors.black54),
-                      ),
-                      style: const TextStyle(color: Colors.black54),
-                      items: const [
-                        DropdownMenuItem(
-                          value: "Cafe",
-                          child: Text("Cafe", style: TextStyle(color: Colors.white),),
+                ],
+              ),
+              const SizedBox(height: 30),
+              Obx(() => GestureDetector(
+                onTap: () async {
+                  final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                  if (image != null) {
+                    authViewModel.businessLogo.value = File(image.path);
+                  }
+                },
+                child: CircleAvatar(
+                  radius: 65,
+                  backgroundColor: Colors.grey.shade200,
+                  backgroundImage: authViewModel.businessLogo.value != null 
+                      ? FileImage(authViewModel.businessLogo.value!) 
+                      : null,
+                  child: authViewModel.businessLogo.value == null
+                      ? const Icon(Icons.add_a_photo, size: 40, color: Colors.grey)
+                      : null,
+                ),
+              )),
+              const SizedBox(height: 10),
+              const Text("Upload Business Logo"),
+              const SizedBox(height: 25),
+              CustomTextFieldComponent(
+                hintText: "Business Name",
+                textController: authViewModel.businessNameController,
+              ),
+              const SizedBox(height: 12),
+              CustomTextFieldComponent(
+                hintText: "Business Licence Number",
+                textController: authViewModel.businessLicenceController,
+              ),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Obx(() => DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: authViewModel.outletType.value,
+                    items: const [
+                      DropdownMenuItem(value: "Cafe", child: Text("Cafe")),
+                      DropdownMenuItem(value: "Restaurant", child: Text("Restaurant")),
+                      DropdownMenuItem(value: "Lounge", child: Text("Lounge")),
+                      DropdownMenuItem(value: "Bakery", child: Text("Bakery")),
+                    ],
+                    onChanged: (value) {
+                      if (value != null) authViewModel.outletType.value = value;
+                    },
+                  ),
+                )),
+              ),
+              const SizedBox(height: 12),
+              CustomTextFieldComponent(
+                hintText: "About Business",
+                textController: authViewModel.aboutBusinessController,
+                maxLines: 3,
+                height: 100,
+              ),
+              const SizedBox(height: 20),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Business Images",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                height: 110,
+                child: Obx(() => ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: authViewModel.businessImages.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == authViewModel.businessImages.length) {
+                      return GestureDetector(
+                        onTap: () async {
+                          final List<XFile> images = await picker.pickMultiImage();
+                          if (images.isNotEmpty) {
+                            authViewModel.businessImages.addAll(images.map((e) => File(e.path)));
+                          }
+                        },
+                        child: Container(
+                          width: 100,
+                          margin: const EdgeInsets.only(right: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey.shade300),
+                          ),
+                          child: const Icon(Icons.add, color: Colors.grey, size: 35),
                         ),
-                        DropdownMenuItem(
-                          value: "Restaurant",
-                          child: Text("Restaurant"),
+                      );
+                    }
+                    return Stack(
+                      children: [
+                        Container(
+                          width: 100,
+                          margin: const EdgeInsets.only(right: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                              image: FileImage(authViewModel.businessImages[index]),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                        DropdownMenuItem(
-                          value: "Lounge",
-                          child: Text("Lounge"),
-                        ),
-                        DropdownMenuItem(
-                          value: "Bakery",
-                          child: Text("Bakery"),
+                        Positioned(
+                          top: 5,
+                          right: 15,
+                          child: GestureDetector(
+                            onTap: () => authViewModel.businessImages.removeAt(index),
+                            child: Container(
+                              decoration: const BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
+                              padding: const EdgeInsets.all(4),
+                              child: const Icon(Icons.close, color: Colors.white, size: 18),
+                            ),
+                          ),
                         ),
                       ],
-                      onChanged: (value) {
-                        setState(() {
-                          outletType = value;
-                        });
-                      },
-                    ),
-                  ),
+                    );
+                  },
+                )),
+              ),
+              const SizedBox(height: 35),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: CustomGradientButton(
+                  title: "Next",
+                  fontSize: 18,
+                  onTap: () => Get.to(() => const LocationDetailsPage()),
                 ),
-
-                const SizedBox(height: 12),
-
-                CustomTextFieldComponent(
-                  hintText: "About Business",
-
-                ),
-
-                const SizedBox(height: 20),
-
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Business Images",
-                    style: TextStyle(
-                      color: Colors.black45,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 12),
-
-                SizedBox(
-                  height: 110,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: businessImages.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index == businessImages.length) {
-                        return GestureDetector(
-                          onTap: pickBusinessImages,
-                          child: Container(
-                            width: 100,
-                            margin: const EdgeInsets.only(right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.black26),
-                            ),
-                            child: const Icon(
-                              Icons.add,
-                              color: Colors.black26,
-                              size: 35,
-                            ),
-                          ),
-                        );
-                      }
-                      return Stack(
-                        children: [
-                          Container(
-                            width: 100,
-                            margin: const EdgeInsets.only(right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              image: DecorationImage(
-                                image: FileImage(businessImages[index]),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            top: 5,
-                            right: 15,
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  businessImages.removeAt(index);
-                                });
-                              },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  color: Colors.black54,
-                                  shape: BoxShape.circle,
-                                ),
-                                padding: const EdgeInsets.all(4),
-                                child: const Icon(
-                                  Icons.close,
-                                  color: Colors.white,
-                                  size: 18,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 35),
-                Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 40),
-                  child: CustomGradientButton(
-                    title: "Next",
-                    fontSize: 18,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const LocationDetailsPage(),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 40),
-              ],
-            ),
+              ),
+              const SizedBox(height: 40),
+            ],
           ),
         ),
       ),

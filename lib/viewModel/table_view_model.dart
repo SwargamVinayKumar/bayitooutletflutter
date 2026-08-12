@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:bayitooutlet/models/requestModels/create_table_request_model.dart';
 import 'package:bayitooutlet/models/responseModels/create_table_response_model.dart';
 import 'package:bayitooutlet/models/responseModels/page_model.dart';
+import 'package:bayitooutlet/pages/all_tables_page.dart';
+import 'package:bayitooutlet/viewModel/file_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../api/api_provider.dart';
@@ -14,24 +17,36 @@ import '../utils/preference_manager.dart';
 class TableViewModel extends GetxController {
   final apiProvider = Get.put(ApiProvider());
   final preferenceManager = Get.put(PreferenceManager());
+  final fileViewModel = Get.put(FileViewModel());
 
   RxString searchText = "".obs;
 
   // Create Table Fields
-  final tableNameController = TextEditingController();
+  final tableNumberController = TextEditingController();
   final descriptionController = TextEditingController();
   final selectedCategory = 0.obs;
   final seatCount = 1.obs;
   final seats = <SeatRequestModel>[].obs;
+  
+  // Table Images
+  final tableImages = <File>[].obs;
+  final tableImagesUrls = <String>[].obs;
+  
+  // Seat Images (Index to Files)
+  final seatImages = <int, List<File>>{}.obs;
 
   final createTableObserver = ApiResult<CreateTableResponseModel>.init().obs;
+  final updateTableAvailabilityObserver = ApiResult<dynamic>.init().obs;
 
   void clearFields() {
-    tableNameController.clear();
+    tableNumberController.clear();
     descriptionController.clear();
     selectedCategory.value = 0;
     seatCount.value = 1;
     seats.clear();
+    tableImages.clear();
+    tableImagesUrls.clear();
+    seatImages.clear();
     createTableObserver.value = ApiResult.init();
   }
 
@@ -79,12 +94,35 @@ class TableViewModel extends GetxController {
     try {
       createTableObserver.value = ApiResult.loading();
 
+      // 1. Upload Table Images
+      if (tableImages.isNotEmpty && tableImagesUrls.isEmpty) {
+        for (var file in tableImages) {
+          final url = await fileViewModel.uploadImage(file, "outlet");
+          if (url != null) tableImagesUrls.add(url);
+        }
+      }
+
+      // 2. Prepare seats with uploaded images
+      List<SeatRequestModel> finalSeats = [];
+      for (int i = 0; i < seats.length; i++) {
+        List<String> seatUrls = [];
+        if (seatImages.containsKey(i)) {
+          for (var file in seatImages[i]!) {
+            final url = await fileViewModel.uploadImage(file, "seat");
+            if (url != null) seatUrls.add(url);
+          }
+        }
+        finalSeats.add(seats[i].copyWith(images: seatUrls));
+      }
+
       final request = CreateTableRequestModel(
-        tableNumber: tableNameController.text,
-        seatType: selectedCategory.value == 0 ? "Family" : selectedCategory.value == 1 ? "Couple" : "Outdoor",
+        tableNumber: tableNumberController.text,
+        seatType: selectedCategory.value == 0 ? "single" : selectedCategory.value == 1 ? "double" : "family",
         seatCapacity: seatCount.value,
-        seats: seats.toList(),
+        images: tableImagesUrls.toList(),
+        seats: finalSeats,
       );
+
 
       final response = await apiProvider.post(
         EndPoints.createTable,
@@ -107,6 +145,7 @@ class TableViewModel extends GetxController {
           clearFields();
           Get.back(); // Back to CreateTablePage
           Get.back(); // Back to Tables List
+          Get.to(() => AllTablesPage());
           return;
         }
         throw responseData.message ?? "Something went wrong";
@@ -114,6 +153,49 @@ class TableViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       createTableObserver.value = ApiResult.error(e.toString());
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        backgroundColor: CustomColors.secondary,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> updateTableAvailability(String tableId, bool available) async {
+    try {
+      updateTableAvailabilityObserver.value = ApiResult.loading();
+
+      final response = await apiProvider.post(
+        EndPoints.updateTableAvailability,
+        {
+          "tableId": tableId,
+          "available": available,
+        },
+      );
+
+      final body = response.body;
+
+      if (response.isOk && body != null) {
+        if (body["status"] == 1) {
+          updateTableAvailabilityObserver.value = ApiResult.success(body);
+          Get.snackbar(
+            "Success",
+            body["message"] ?? "Table availability updated successfully",
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+          // Refresh the table list after update
+          fetchTables(PaginationRequestModel(page: 1), true);
+          return;
+        }
+        throw body["message"] ?? "Something went wrong";
+      }
+      throw "Response Body Null";
+    } catch (e) {
+      updateTableAvailabilityObserver.value = ApiResult.error(e.toString());
       Get.snackbar(
         "Error",
         e.toString(),

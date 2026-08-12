@@ -20,6 +20,11 @@ dependencies:
   focus_detector: ^2.0.1
   image_picker: 1.1.2
   shared_preferences: 2.5.3
+  google_maps_flutter: ^2.18.0
+  geocoding: ^4.0.0
+  geolocator: ^14.0.3
+  easy_debounce: ^2.0.3
+  dio: ^5.11.0
 
 dev_dependencies:
   flutter_test:

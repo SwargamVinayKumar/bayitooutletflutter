@@ -60,7 +60,7 @@ class _TableDetailsPageState extends State<TableDetailsPage> {
               children: [
                 TableInfoCardComponent(
                   image: "assets/images/cafe.jpg",
-                  tableName: "Outdoor 02",
+                  tableNumber: "Outdoor 02",
                   status: "Available",
                   seats: 4,
                   statusColor: Colors.green,

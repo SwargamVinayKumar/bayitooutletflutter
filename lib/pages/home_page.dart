@@ -219,7 +219,7 @@ class _HomePageState extends State<HomePage> {
                           itemBuilder: (context, index) {
                             final table = tables[index];
                             return TableItem(
-                              tableName: table.tableNumber ?? "Table",
+                              tableNumber: table.tableNumber ?? "Table",
                               seats: "${table.seatCapacity ?? 0} Seats",
                               image: table.images?.isNotEmpty == true
                                   ? table.images!.first

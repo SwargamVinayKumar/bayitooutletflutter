@@ -4,6 +4,8 @@ import 'package:bayitooutlet/pages/add_seat_page.dart';
 import 'package:bayitooutlet/viewModel/table_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 import '../components/custom_gradient_button.dart';
 import '../components/seat_counter_component.dart';
@@ -17,19 +19,23 @@ class CreateTablePage extends StatefulWidget {
 
 class _CreateTablePageState extends State<CreateTablePage> {
   final TableViewModel tableViewModel = Get.find<TableViewModel>();
+  final ImagePicker picker = ImagePicker();
 
   final List<Map<String, dynamic>> categories = [
     {
-      "title": "Family",
-      "icon": Icons.family_restroom,
+      "title": "Single",
+      "value":"single",
+      "icon": Icons.table_bar_outlined,
     },
     {
       "title": "Couple",
-      "icon": Icons.people_alt_outlined,
+      "value":"double",
+      "icon": Icons.deck_outlined,
     },
     {
-      "title": "Outdoor",
-      "icon": Icons.deck_outlined,
+      "title": "Family",
+      "value":"family",
+      "icon": Icons.family_restroom,
     },
   ];
 
@@ -75,7 +81,7 @@ class _CreateTablePageState extends State<CreateTablePage> {
               const SizedBox(height: 8),
               CustomTextFieldComponent(
                 hintText: "Table Name",
-                textController: tableViewModel.tableNameController,
+                textController: tableViewModel.tableNumberController,
               ),
               const SizedBox(height: 12),
               const Text(
@@ -122,6 +128,70 @@ class _CreateTablePageState extends State<CreateTablePage> {
                   tableViewModel.seatCount.value = value;
                 },
               )),
+              const SizedBox(height: 12),
+              const Text(
+                "Table Images",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                height: 100,
+                child: Obx(() => ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: tableViewModel.tableImages.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == tableViewModel.tableImages.length) {
+                      return GestureDetector(
+                        onTap: () async {
+                          final List<XFile> images = await picker.pickMultiImage();
+                          if (images.isNotEmpty) {
+                            tableViewModel.tableImages.addAll(images.map((e) => File(e.path)));
+                          }
+                        },
+                        child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey.shade300),
+                          ),
+                          child: const Icon(Icons.add_a_photo, color: Colors.grey),
+                        ),
+                      );
+                    }
+                    return Stack(
+                      children: [
+                        Container(
+                          width: 100,
+                          margin: const EdgeInsets.only(right: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                              image: FileImage(tableViewModel.tableImages[index]),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 5,
+                          right: 15,
+                          child: GestureDetector(
+                            onTap: () => tableViewModel.tableImages.removeAt(index),
+                            child: Container(
+                              decoration: const BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
+                              padding: const EdgeInsets.all(4),
+                              child: const Icon(Icons.close, color: Colors.white, size: 18),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                )),
+              ),
               const SizedBox(height: 12),
               const Text(
                 "Description (Optional)",

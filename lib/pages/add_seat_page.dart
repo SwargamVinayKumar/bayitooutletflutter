@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:bayitooutlet/api/api_result.dart';
 import 'package:bayitooutlet/models/requestModels/create_table_request_model.dart';
 import 'package:bayitooutlet/viewModel/table_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../components/custom_gradient_button.dart';
 import '../components/seat_item_component.dart';
@@ -16,6 +18,7 @@ class AddSeatPage extends StatefulWidget {
 
 class _AddSeatPageState extends State<AddSeatPage> {
   final TableViewModel tableViewModel = Get.find<TableViewModel>();
+  final ImagePicker picker = ImagePicker();
 
   late List<TextEditingController> chargeControllers;
   late List<String?> seatTypes;
@@ -75,11 +78,12 @@ class _AddSeatPageState extends State<AddSeatPage> {
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16),
-                    child: SeatItemComponent(
+                    child: Obx(() => SeatItemComponent(
                       seatNumber: index + 1,
                       chargeController: chargeControllers[index],
                       seatType: seatTypes[index],
                       available: availability[index],
+                      images: tableViewModel.seatImages[index] ?? [],
                       onSeatTypeChanged: (value) {
                         setState(() {
                           seatTypes[index] = value;
@@ -90,7 +94,19 @@ class _AddSeatPageState extends State<AddSeatPage> {
                           availability[index] = value;
                         });
                       },
-                    ),
+                      onAddImage: () async {
+                        final List<XFile> images = await picker.pickMultiImage();
+                        if (images.isNotEmpty) {
+                          final currentImages = tableViewModel.seatImages[index] ?? [];
+                          tableViewModel.seatImages[index] = [...currentImages, ...images.map((e) => File(e.path))];
+                        }
+                      },
+                      onRemoveImage: (imgIndex) {
+                        final currentImages = tableViewModel.seatImages[index] ?? [];
+                        currentImages.removeAt(imgIndex);
+                        tableViewModel.seatImages[index] = [...currentImages];
+                      },
+                    )),
                   );
                 },
               ),

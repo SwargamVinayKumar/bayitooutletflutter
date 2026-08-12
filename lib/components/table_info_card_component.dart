@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class TableInfoCardComponent extends StatelessWidget {
   final String image;
-  final String tableName;
+  final String tableNumber;
   final String status;
   final int seats;
 
@@ -12,7 +12,7 @@ class TableInfoCardComponent extends StatelessWidget {
   const TableInfoCardComponent({
     super.key,
     required this.image,
-    required this.tableName,
+    required this.tableNumber,
     required this.status,
     required this.seats,
     required this.statusColor,
@@ -52,7 +52,7 @@ class TableInfoCardComponent extends StatelessWidget {
               CrossAxisAlignment.start,
               children: [
                 Text(
-                  tableName,
+                  tableNumber,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,

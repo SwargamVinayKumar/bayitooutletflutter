@@ -6,5 +6,6 @@ class EndPoints {
   static const getTables = "getTables";
   static const createTable = "createTable";
   static const updateTable = "updateTable";
-
+  static const uploadFile = "uploadFile";
+  static const updateTableAvailability = "updateTableAvailability";
 }

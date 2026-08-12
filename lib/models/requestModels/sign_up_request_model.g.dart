@@ -14,6 +14,7 @@ _SignUpRequestModel _$SignUpRequestModelFromJson(
   email: json['email'] as String?,
   password: json['password'] as String?,
   confirmPassword: json['confirmPassword'] as String?,
+  profilePic: json['profilePic'] as String?,
   businessLogo: json['businessLogo'] as String?,
   images:
       (json['images'] as List<dynamic>?)?.map((e) => e as String).toList() ??
@@ -36,6 +37,7 @@ Map<String, dynamic> _$SignUpRequestModelToJson(_SignUpRequestModel instance) =>
       'email': instance.email,
       'password': instance.password,
       'confirmPassword': instance.confirmPassword,
+      'profilePic': instance.profilePic,
       'businessLogo': instance.businessLogo,
       'images': instance.images,
       'businessLicence': instance.businessLicence,
