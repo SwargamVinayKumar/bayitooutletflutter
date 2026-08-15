@@ -5,24 +5,34 @@ import 'package:bayitooutlet/models/responseModels/auth_response_model.dart';
 import 'package:bayitooutlet/models/responseModels/file_upload_response_model.dart';
 import 'package:bayitooutlet/pages/main_page.dart';
 import 'package:bayitooutlet/pages/sign_in_page.dart';
+import 'package:bayitooutlet/pages/splash_page.dart';
 import 'package:bayitooutlet/utils/geo_util.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../api/api_provider.dart';
 import '../api/api_result.dart';
 import '../api/end_points.dart';
+import '../models/requestModels/auth_request_model.dart';
+import '../pages/update_version_screen.dart';
+import '../pages/user_blocked.dart';
+import '../utils/auth_utils.dart';
+import '../utils/custom_color.dart';
 import '../utils/preference_manager.dart';
 
 class AuthViewModel extends GetxController {
   final apiProvider = Get.put(ApiProvider());
   final preferenceManager = Get.put(PreferenceManager());
 
+  final validaVersionObserver =
+      const ApiResult<ValidateVersionResponseModel>.init().obs;
+
   // Observers
-  final fetchProfileDetailObserver = ApiResult<ProfileResponse>.init().obs;
-  final signInObserver = ApiResult<ProfileResponse>.init().obs;
-  final signUpObserver = ApiResult<ProfileResponse>.init().obs;
+  final fetchProfileDetailObserver = ApiResult<ProfileResponseModel>.init().obs;
+  final signInObserver = ApiResult<SignInResponseModel>.init().obs;
+  final signUpObserver = ApiResult<SignInResponseModel>.init().obs;
   final uploadFileObserver = ApiResult<FileUploadResponseModel>.init().obs;
 
   // Sign In Controllers
@@ -43,6 +53,8 @@ class AuthViewModel extends GetxController {
   final businessLicenceController = TextEditingController();
   final aboutBusinessController = TextEditingController();
   final outletType = "Cafe".obs;
+  RxList<String> outletTypesDropList = <String>[].obs;
+
   final businessLogo = Rxn<File>();
   final businessLogoUrl = "".obs;
   final businessImages = <File>[].obs;
@@ -63,6 +75,8 @@ class AuthViewModel extends GetxController {
   // Location Picker State
   final locationDetails = Rxn<LocationRequestModel>();
   final locationPosition = Rxn<Position>();
+
+
 
   @override
   void onInit() {
@@ -114,6 +128,57 @@ class AuthViewModel extends GetxController {
     }
   }
 
+  Future<void> validateVersion(ValidateVersionRequestModel request) async {
+    try {
+      validaVersionObserver.value = const ApiResult.loading();
+      final String? validatorResponse =
+      AuthUtils.validateRequestFields(['version'], request.toJson());
+      if (validatorResponse != null) throw validatorResponse;
+      final response =
+      await apiProvider.post(EndPoints.validateVersion, request.toJson());
+      final body = response.body;
+      if (response.statusCode == 401) {
+        await preferenceManager.clearAll();
+        Get.offAll(() => SignInPage());
+        throw "Please Login Again";
+      }
+      if (response.isOk && body != null) {
+        final responseData = ValidateVersionResponseModel.fromJson(body);
+        if (responseData.status == 1) {
+          outletTypesDropList.clear();
+          outletType.value = outletTypesDropList.first;
+          outletTypesDropList.assignAll(responseData.data?.outletTypes ?? []);
+
+          validaVersionObserver.value = ApiResult.success(responseData);
+
+          if (responseData.data?.validVersion == false) {
+            Get.offAll(() => const UpdateVersionScreen());
+          } else if ((responseData.data?.userBlocked ?? false) == true) {
+            Get.offAll(() => const UserBlocked());
+          } else {
+            final prefs = await SharedPreferences.getInstance();
+            final page = responseData.data?.page ?? (prefs.getString('page') ?? "");
+            if (page.isEmpty) {
+              Get.offAll(() => const SplashPage());
+            } else {
+              AuthUtils.navigateFromPageName(page);
+            }
+          }
+          return;
+        }
+        throw "${responseData.message}";
+      }
+      throw "Response Body Null";
+    } catch (e) {
+      Get.snackbar("Error", e.toString(),
+          backgroundColor: CustomColors.primary,
+          colorText: CustomColors.white,
+          snackPosition: SnackPosition.BOTTOM);
+      validaVersionObserver.value = ApiResult.error(e.toString());
+    }
+  }
+
+
   Future<void> signIn() async {
     try {
       signInObserver.value = ApiResult.loading();
@@ -124,10 +189,15 @@ class AuthViewModel extends GetxController {
       final response = await apiProvider.post(EndPoints.signIn, request.toJson());
       final body = response.body;
       if (response.isOk && body != null) {
-        final data = ProfileResponse.fromJson(body);
+        final data = SignInResponseModel.fromJson(body);
         if (data.status == 1) {
           signInObserver.value = ApiResult.success(data);
-          Get.offAll(() => const MainPage());
+          final page = data.data?.page;
+          preferenceManager.setValue("page", page ?? "");
+          preferenceManager.setValue("registerValue", request.key.toString());
+          preferenceManager.setValue("token", data.data?.token ?? "");
+          signInObserver.value = ApiResult.success(data);
+          AuthUtils.navigateFromPageName(page);
         } else {
           signInObserver.value = ApiResult.error(data.message ?? "");
           Get.snackbar('Failed', data.message ?? '');
@@ -194,7 +264,7 @@ class AuthViewModel extends GetxController {
       final response = await apiProvider.post(EndPoints.signUp, request.toJson());
       final body = response.body;
       if (response.isOk && body != null) {
-        final data = ProfileResponse.fromJson(body);
+        final data = SignInResponseModel.fromJson(body);
         if (data.status == 1) {
           signUpObserver.value = ApiResult.success(data);
           Get.snackbar('Success', data.message ?? 'Sign up successful');
@@ -217,7 +287,7 @@ class AuthViewModel extends GetxController {
       final response = await apiProvider.post(EndPoints.getProfile, {});
       final body = response.body;
       if (response.isOk && body != null) {
-        final data = ProfileResponse.fromJson(body);
+        final data = ProfileResponseModel.fromJson(body);
         if (data.status == 1) {
           fetchProfileDetailObserver.value = ApiResult.success(data);
         } else {

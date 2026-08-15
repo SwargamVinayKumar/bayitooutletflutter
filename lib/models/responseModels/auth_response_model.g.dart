@@ -6,23 +6,64 @@ part of 'auth_response_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_ProfileResponse _$ProfileResponseFromJson(Map<String, dynamic> json) =>
-    _ProfileResponse(
+_ProfileResponseModel _$ProfileResponseModelFromJson(
+  Map<String, dynamic> json,
+) => _ProfileResponseModel(
+  status: (json['status'] as num?)?.toInt(),
+  message: json['message'] as String?,
+  approvalStatus: json['approvalStatus'] as String?,
+  data: json['data'] == null
+      ? null
+      : ProfileData.fromJson(json['data'] as Map<String, dynamic>),
+);
+
+Map<String, dynamic> _$ProfileResponseModelToJson(
+  _ProfileResponseModel instance,
+) => <String, dynamic>{
+  'status': instance.status,
+  'message': instance.message,
+  'approvalStatus': instance.approvalStatus,
+  'data': instance.data,
+};
+
+_SignInResponseModel _$SignInResponseModelFromJson(Map<String, dynamic> json) =>
+    _SignInResponseModel(
       status: (json['status'] as num?)?.toInt(),
       message: json['message'] as String?,
-      approvalStatus: json['approvalStatus'] as String?,
       data: json['data'] == null
           ? null
-          : ProfileData.fromJson(json['data'] as Map<String, dynamic>),
+          : SignInResponseDataModel.fromJson(
+              json['data'] as Map<String, dynamic>,
+            ),
     );
 
-Map<String, dynamic> _$ProfileResponseToJson(_ProfileResponse instance) =>
-    <String, dynamic>{
-      'status': instance.status,
-      'message': instance.message,
-      'approvalStatus': instance.approvalStatus,
-      'data': instance.data,
-    };
+Map<String, dynamic> _$SignInResponseModelToJson(
+  _SignInResponseModel instance,
+) => <String, dynamic>{
+  'status': instance.status,
+  'message': instance.message,
+  'data': instance.data,
+};
+
+_SignInResponseDataModel _$SignInResponseDataModelFromJson(
+  Map<String, dynamic> json,
+) => _SignInResponseDataModel(
+  token: json['token'] as String?,
+  page: json['page'] as String?,
+  approvalStatus: json['approvalStatus'] as String?,
+  details: json['details'] == null
+      ? null
+      : ProfileData.fromJson(json['details'] as Map<String, dynamic>),
+);
+
+Map<String, dynamic> _$SignInResponseDataModelToJson(
+  _SignInResponseDataModel instance,
+) => <String, dynamic>{
+  'token': instance.token,
+  'page': instance.page,
+  'approvalStatus': instance.approvalStatus,
+  'details': instance.details,
+};
 
 _ProfileData _$ProfileDataFromJson(Map<String, dynamic> json) => _ProfileData(
   id: json['_id'] as String?,
@@ -99,4 +140,48 @@ Map<String, dynamic> _$LocationModelToJson(_LocationModel instance) =>
       '_id': instance.id,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
+    };
+
+_ValidateVersionResponseModel _$ValidateVersionResponseModelFromJson(
+  Map<String, dynamic> json,
+) => _ValidateVersionResponseModel(
+  status: (json['status'] as num?)?.toInt(),
+  message: json['message'] as String?,
+  data: json['data'] == null
+      ? null
+      : ValidateDataModel.fromJson(json['data'] as Map<String, dynamic>),
+);
+
+Map<String, dynamic> _$ValidateVersionResponseModelToJson(
+  _ValidateVersionResponseModel instance,
+) => <String, dynamic>{
+  'status': instance.status,
+  'message': instance.message,
+  'data': instance.data,
+};
+
+_ValidateDataModel _$ValidateDataModelFromJson(Map<String, dynamic> json) =>
+    _ValidateDataModel(
+      validVersion: json['validVersion'] as bool?,
+      userBlocked: json['userBlocked'] as bool?,
+      page: json['page'] as String?,
+      userData: json['userData'] == null
+          ? null
+          : ProfileData.fromJson(json['userData'] as Map<String, dynamic>),
+      banners: (json['banners'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      outletTypes: (json['outletTypes'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+    );
+
+Map<String, dynamic> _$ValidateDataModelToJson(_ValidateDataModel instance) =>
+    <String, dynamic>{
+      'validVersion': instance.validVersion,
+      'userBlocked': instance.userBlocked,
+      'page': instance.page,
+      'userData': instance.userData,
+      'banners': instance.banners,
+      'outletTypes': instance.outletTypes,
     };

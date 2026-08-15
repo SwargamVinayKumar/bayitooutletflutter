@@ -79,12 +79,7 @@ class BusinessPage extends StatelessWidget {
                   child: DropdownButton<String>(
                     isExpanded: true,
                     value: authViewModel.outletType.value,
-                    items: const [
-                      DropdownMenuItem(value: "Cafe", child: Text("Cafe")),
-                      DropdownMenuItem(value: "Restaurant", child: Text("Restaurant")),
-                      DropdownMenuItem(value: "Lounge", child: Text("Lounge")),
-                      DropdownMenuItem(value: "Bakery", child: Text("Bakery")),
-                    ],
+                    items: authViewModel.outletTypesDropList.map((option) => DropdownMenuItem(value: option, child: Text(option))).toList(),
                     onChanged: (value) {
                       if (value != null) authViewModel.outletType.value = value;
                     },

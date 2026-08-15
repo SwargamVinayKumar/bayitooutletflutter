@@ -1,5 +1,7 @@
 class EndPoints {
   EndPoints._();
+
+  static const validateVersion = "validateVersion";
   static const signIn = "signIn";
   static const signUp = "signUp";
   static const getProfile = "getProfile";

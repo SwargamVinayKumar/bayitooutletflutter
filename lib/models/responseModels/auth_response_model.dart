@@ -4,16 +4,41 @@ part 'auth_response_model.freezed.dart';
 part 'auth_response_model.g.dart';
 
 @freezed
-abstract class ProfileResponse with _$ProfileResponse {
-  const factory ProfileResponse({
+abstract class ProfileResponseModel with _$ProfileResponseModel {
+  const factory ProfileResponseModel({
     int? status,
     String? message,
     String? approvalStatus,
-    ProfileData? data,
-  }) = _ProfileResponse;
+    ProfileData? data
+  }) = _ProfileResponseModel;
 
-  factory ProfileResponse.fromJson(Map<String, dynamic> json) =>
-      _$ProfileResponseFromJson(json);
+  factory ProfileResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$ProfileResponseModelFromJson(json);
+}
+
+@freezed
+abstract class SignInResponseModel with _$SignInResponseModel {
+  const factory SignInResponseModel({
+    int? status,
+    String? message,
+    SignInResponseDataModel? data,
+  }) = _SignInResponseModel;
+
+  factory SignInResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$SignInResponseModelFromJson(json);
+}
+
+@freezed
+abstract class SignInResponseDataModel with _$SignInResponseDataModel {
+  const factory SignInResponseDataModel({
+    String? token,
+    String? page,
+    String? approvalStatus,
+    ProfileData? details
+  }) = _SignInResponseDataModel;
+
+  factory SignInResponseDataModel.fromJson(Map<String, dynamic> json) =>
+      _$SignInResponseDataModelFromJson(json);
 }
 
 @freezed
@@ -62,4 +87,29 @@ abstract class LocationModel with _$LocationModel {
 
   factory LocationModel.fromJson(Map<String, dynamic> json) =>
       _$LocationModelFromJson(json);
+}
+
+@Freezed()
+abstract class ValidateVersionResponseModel with _$ValidateVersionResponseModel{
+  const factory ValidateVersionResponseModel({
+    int? status,
+    String? message,
+    ValidateDataModel? data
+  }) = _ValidateVersionResponseModel;
+
+  factory ValidateVersionResponseModel.fromJson(Map<String, dynamic> json) => _$ValidateVersionResponseModelFromJson(json);
+}
+
+@Freezed()
+abstract class ValidateDataModel with _$ValidateDataModel{
+  const factory ValidateDataModel({
+    bool? validVersion,
+    bool? userBlocked,
+    String? page,
+    ProfileData? userData,
+    List<String>? banners,
+    List<String>? outletTypes
+  }) = _ValidateDataModel;
+
+  factory ValidateDataModel.fromJson(Map<String, dynamic> json) => _$ValidateDataModelFromJson(json);
 }

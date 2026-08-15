@@ -18,4 +18,13 @@ class PreferenceManager {
     await prefs.remove(token);
   }
 
+  Future<void> clearAll() async {
+    final prefs = await SharedPreferences.getInstance();
+    final entityValue = prefs.getString('entity');
+    await prefs.clear();
+    if (entityValue != null) {
+      await prefs.setString('entity', entityValue);
+    }
+  }
+
 }
