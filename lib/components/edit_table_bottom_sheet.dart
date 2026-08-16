@@ -1,46 +1,47 @@
 import 'dart:io';
 import 'package:bayitooutlet/api/api_result.dart';
-import 'package:bayitooutlet/viewModel/seat_view_model.dart';
+import 'package:bayitooutlet/utils/progress_dialog.dart';
+import 'package:bayitooutlet/viewModel/table_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../utils/progress_dialog.dart';
 import 'custom_gradient_button.dart';
 import 'custom_switch_component.dart';
 
-class EditSeatBottomSheet extends StatefulWidget {
-  final String seatNumber;
+class EditTableBottomSheet extends StatefulWidget {
+  final String tableNumber;
   final String seatType;
-  final int charge;
+  final String description;
   final bool available;
   final List<String> currentImages;
-  final SeatViewModel seatViewModel;
+  final TableViewModel tableViewModel;
 
   final Function(
+    String tableNumber,
     String seatType,
-    String charge,
+    String description,
     bool available,
     List<String> remainingImages,
     List<File> newImages,
   ) onSave;
 
-  const EditSeatBottomSheet({
+  const EditTableBottomSheet({
     super.key,
-    required this.seatNumber,
+    required this.tableNumber,
     required this.seatType,
-    required this.charge,
+    required this.description,
     required this.available,
     required this.currentImages,
-    required this.onSave, required this.seatViewModel,
+    required this.onSave, required this.tableViewModel,
   });
 
   @override
-  State<EditSeatBottomSheet> createState() => _EditSeatBottomSheetState();
+  State<EditTableBottomSheet> createState() => _EditTableBottomSheetState();
 }
 
-class _EditSeatBottomSheetState extends State<EditSeatBottomSheet> {
-  late TextEditingController chargeController;
+class _EditTableBottomSheetState extends State<EditTableBottomSheet> {
+  late TextEditingController tableNumberController;
+  late TextEditingController descriptionController;
   late String selectedSeatType;
   late bool available;
   late List<String> remainingImages;
@@ -50,15 +51,17 @@ class _EditSeatBottomSheetState extends State<EditSeatBottomSheet> {
   @override
   void initState() {
     super.initState();
+    tableNumberController = TextEditingController(text: widget.tableNumber);
+    descriptionController = TextEditingController(text: widget.description);
     selectedSeatType = widget.seatType;
     available = widget.available;
     remainingImages = List.from(widget.currentImages);
-    chargeController = TextEditingController(text: widget.charge.toString());
   }
 
   @override
   void dispose() {
-    chargeController.dispose();
+    tableNumberController.dispose();
+    descriptionController.dispose();
     super.dispose();
   }
 
@@ -74,7 +77,7 @@ class _EditSeatBottomSheetState extends State<EditSeatBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.8,
+      height: MediaQuery.of(context).size.height * 0.85,
       padding: EdgeInsets.only(
         left: 20,
         right: 20,
@@ -94,14 +97,24 @@ class _EditSeatBottomSheetState extends State<EditSeatBottomSheet> {
               ),
             ),
             const SizedBox(height: 20),
-            Text(
-              widget.seatNumber,
-              style: const TextStyle(
+            const Text(
+              "Edit Table Details",
+              style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 25),
+            TextField(
+              controller: tableNumberController,
+              decoration: InputDecoration(
+                labelText: "Table Number",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            const SizedBox(height: 18),
             DropdownButtonFormField<String>(
               value: selectedSeatType,
               decoration: InputDecoration(
@@ -111,10 +124,10 @@ class _EditSeatBottomSheetState extends State<EditSeatBottomSheet> {
                 ),
               ),
               items: const [
-                DropdownMenuItem(value: "middle", child: Text("Middle")),
-                DropdownMenuItem(value: "corner", child: Text("Corner")),
-                DropdownMenuItem(value: "window", child: Text("Window")),
-                DropdownMenuItem(value: "wall", child: Text("Wall")),
+                DropdownMenuItem(value: "single", child: Text("Single")),
+                DropdownMenuItem(value: "double", child: Text("Double")),
+                DropdownMenuItem(value: "family", child: Text("Family")),
+                DropdownMenuItem(value: "outdoor", child: Text("Outdoor")),
               ],
               onChanged: (value) {
                 setState(() {
@@ -124,11 +137,10 @@ class _EditSeatBottomSheetState extends State<EditSeatBottomSheet> {
             ),
             const SizedBox(height: 18),
             TextField(
-              controller: chargeController,
-              keyboardType: TextInputType.number,
+              controller: descriptionController,
+              maxLines: 3,
               decoration: InputDecoration(
-                labelText: "Per Hour Charge",
-                prefixText: "₹ ",
+                labelText: "Description",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -139,7 +151,7 @@ class _EditSeatBottomSheetState extends State<EditSeatBottomSheet> {
               children: [
                 const Expanded(
                   child: Text(
-                    "Seat Available",
+                    "Table Available",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -160,7 +172,7 @@ class _EditSeatBottomSheetState extends State<EditSeatBottomSheet> {
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Seat Images",
+                "Table Images",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
             ),
@@ -234,34 +246,23 @@ class _EditSeatBottomSheetState extends State<EditSeatBottomSheet> {
               ),
             ),
             const SizedBox(height: 30),
-            Obx(() {
-              final updateLoading = widget.seatViewModel.updateSeatDetailsObserver.value.maybeWhen(
-                loading: () => true,
-                orElse: () => false,
-              );
-              final addLoading = widget.seatViewModel.addSeatToTableObserver.value.maybeWhen(
-                loading: () => true,
-                orElse: () => false,
-              );
+            Obx(() => widget.tableViewModel.updateTableDetailsObserver.value.maybeWhen(
+              loading: () => Center(child: ProgressDialog()),
+                orElse: () => CustomGradientButton(
+              title: "Save Changes",
+              onTap: () {
+                widget.onSave(
+                  tableNumberController.text,
+                  selectedSeatType,
+                  descriptionController.text,
+                  available,
+                  remainingImages,
+                  newImages,
+                );
+              },
+            ))
 
-              if (updateLoading || addLoading) {
-                return Center(child: ProgressDialog());
-              }
-
-              return CustomGradientButton(
-                title: "Save Changes",
-                onTap: () {
-                  widget.onSave(
-                    selectedSeatType,
-                    chargeController.text,
-                    available,
-                    remainingImages,
-                    newImages,
-                  );
-                },
-              );
-            })
-
+            ),
           ],
         ),
       ),

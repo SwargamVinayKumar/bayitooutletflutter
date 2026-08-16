@@ -3,6 +3,7 @@ import 'package:bayitooutlet/models/requestModels/create_table_request_model.dar
 import 'package:bayitooutlet/models/responseModels/create_table_response_model.dart';
 import 'package:bayitooutlet/models/responseModels/page_model.dart';
 import 'package:bayitooutlet/pages/all_tables_page.dart';
+import 'package:bayitooutlet/pages/main_page.dart';
 import 'package:bayitooutlet/viewModel/file_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -36,7 +37,10 @@ class TableViewModel extends GetxController {
   final seatImages = <int, List<File>>{}.obs;
 
   final createTableObserver = ApiResult<CreateTableResponseModel>.init().obs;
+  final tableDetailsObserver = ApiResult<CreateTableResponseModel>.init().obs;
+
   final updateTableAvailabilityObserver = ApiResult<dynamic>.init().obs;
+  final updateTableDetailsObserver = ApiResult<CreateTableResponseModel>.init().obs;
 
   void clearFields() {
     tableNumberController.clear();
@@ -50,7 +54,7 @@ class TableViewModel extends GetxController {
     createTableObserver.value = ApiResult.init();
   }
 
-  final fetchAllTablesObserver = PaginationModel(
+  final Rx<PaginationModel<Rx<ApiResult<FetchTablesResponse>>>> fetchAllTablesObserver = PaginationModel(
     data: ApiResult<FetchTablesResponse>.init().obs,
     isLoading: false,
     isPaginationCompleted: false,
@@ -58,7 +62,7 @@ class TableViewModel extends GetxController {
     error: "",
   ).obs;
 
-  final fetchOngoingTablesObserver = PaginationModel(
+  final Rx<PaginationModel<Rx<ApiResult<FetchTablesResponse>>>> fetchOngoingTablesObserver = PaginationModel(
     data: ApiResult<FetchTablesResponse>.init().obs,
     isLoading: false,
     isPaginationCompleted: false,
@@ -66,7 +70,7 @@ class TableViewModel extends GetxController {
     error: "",
   ).obs;
 
-  final fetchUpComingTablesObserver = PaginationModel(
+  final Rx<PaginationModel<Rx<ApiResult<FetchTablesResponse>>>> fetchUpComingTablesObserver = PaginationModel(
     data: ApiResult<FetchTablesResponse>.init().obs,
     isLoading: false,
     isPaginationCompleted: false,
@@ -74,7 +78,7 @@ class TableViewModel extends GetxController {
     error: "",
   ).obs;
 
-  final fetchCompletedTablesObserver = PaginationModel(
+  final Rx<PaginationModel<Rx<ApiResult<FetchTablesResponse>>>> fetchCompletedTablesObserver = PaginationModel(
     data: ApiResult<FetchTablesResponse>.init().obs,
     isLoading: false,
     isPaginationCompleted: false,
@@ -82,7 +86,7 @@ class TableViewModel extends GetxController {
     error: "",
   ).obs;
 
-  final fetchSearchTablesObserver = PaginationModel(
+  final Rx<PaginationModel<Rx<ApiResult<FetchTablesResponse>>>> fetchSearchTablesObserver = PaginationModel(
     data: ApiResult<FetchTablesResponse>.init().obs,
     isLoading: false,
     isPaginationCompleted: false,
@@ -120,6 +124,7 @@ class TableViewModel extends GetxController {
         seatType: selectedCategory.value == 0 ? "single" : selectedCategory.value == 1 ? "double" : "family",
         seatCapacity: seatCount.value,
         images: tableImagesUrls.toList(),
+        description:descriptionController.text,
         seats: finalSeats,
       );
 
@@ -143,9 +148,7 @@ class TableViewModel extends GetxController {
             snackPosition: SnackPosition.BOTTOM,
           );
           clearFields();
-          Get.back(); // Back to CreateTablePage
-          Get.back(); // Back to Tables List
-          Get.to(() => AllTablesPage());
+          Get.offAll(() => MainPage());
           return;
         }
         throw responseData.message ?? "Something went wrong";
@@ -153,6 +156,72 @@ class TableViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       createTableObserver.value = ApiResult.error(e.toString());
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        backgroundColor: CustomColors.secondary,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> updateTableDetails({
+    required String tableId,
+    required String tableNumber,
+    required String seatType,
+    required String description,
+    required bool available,
+    required List<String> remainingImages,
+    required List<File> newImages,
+  }) async {
+    try {
+      updateTableDetailsObserver.value = ApiResult.loading();
+
+      // 1. Upload new images if any
+      List<String> uploadedUrls = List.from(remainingImages);
+      if (newImages.isNotEmpty) {
+        for (var image in newImages) {
+          final url = await fileViewModel.uploadImage(image, "outlet");
+          if (url != null) {
+            uploadedUrls.add(url);
+          }
+        }
+      }
+
+      final response = await apiProvider.post(
+        EndPoints.updateTable,
+        {
+          "tableId": tableId,
+          "tableNumber": tableNumber,
+          "seatType": seatType,
+          "images": uploadedUrls,
+          "description": description,
+          "available": available,
+        },
+      );
+
+      final body = response.body;
+      if (response.isOk && body != null) {
+        final data = CreateTableResponseModel.fromJson(body);
+        if (data.status == 1) {
+          updateTableDetailsObserver.value = ApiResult.success(data);
+          tableDetailsObserver.value = ApiResult.success(data);
+          Get.close(1);
+          Get.snackbar(
+            "Success",
+            data.message ?? "Table updated successfully",
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+          );// Close bottom sheet
+          return;
+        }
+        throw data.message ?? "Something went wrong";
+      }
+      throw "Response Body Null";
+    } catch (e) {
+      updateTableDetailsObserver.value = ApiResult.error(e.toString());
       Get.snackbar(
         "Error",
         e.toString(),
@@ -176,10 +245,10 @@ class TableViewModel extends GetxController {
       );
 
       final body = response.body;
-
       if (response.isOk && body != null) {
-        if (body["status"] == 1) {
-          updateTableAvailabilityObserver.value = ApiResult.success(body);
+        final data = CreateTableResponseModel.fromJson(body);
+        if (data.status == 1) {
+          updateTableAvailabilityObserver.value = ApiResult.success(data);
           Get.snackbar(
             "Success",
             body["message"] ?? "Table availability updated successfully",
@@ -187,8 +256,14 @@ class TableViewModel extends GetxController {
             colorText: Colors.white,
             snackPosition: SnackPosition.BOTTOM,
           );
-          // Refresh the table list after update
-          fetchTables(PaginationRequestModel(page: 1), true);
+
+          tableDetailsObserver.value.whenOrNull(success: (fetchedDetailsResponse){
+            final fetchedDetails = (fetchedDetailsResponse as CreateTableResponseModel).data;
+            final updatedModel = fetchedDetails?.copyWith(available: available);
+            final updatingResponse =  fetchedDetailsResponse.copyWith(data: updatedModel);
+            tableDetailsObserver.value = ApiResult.success(updatingResponse);
+          });
+
           return;
         }
         throw body["message"] ?? "Something went wrong";
@@ -262,7 +337,9 @@ class TableViewModel extends GetxController {
 
         if (responseData.status == 1) {
 
-          observer.value.data.value.maybeWhen(
+          final ApiResult<FetchTablesResponse> currentState = observer.value.data.value;
+          
+          currentState.maybeWhen(
             success: (oldData) {
 
               final oldTables =
@@ -327,5 +404,46 @@ class TableViewModel extends GetxController {
       );
     }
   }
+
+
+
+  Future<void> fetchTableDetails(String tableId) async {
+    try {
+      tableDetailsObserver.value = ApiResult.loading();
+
+      final response = await apiProvider.post(
+        EndPoints.getTableById,
+        {
+          "tableId": tableId
+        },
+      );
+
+      final body = response.body;
+
+      if (response.isOk && body != null) {
+        final data = CreateTableResponseModel.fromJson(body);
+        if (data.status == 1) {
+          tableDetailsObserver.value = ApiResult.success(data);
+          return;
+        }
+        throw body["message"] ?? "Something went wrong";
+      }
+      throw "Response Body Null";
+    } catch (e) {
+      tableDetailsObserver.value = ApiResult.error(e.toString());
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        backgroundColor: CustomColors.secondary,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+
+
+
+
 }
 

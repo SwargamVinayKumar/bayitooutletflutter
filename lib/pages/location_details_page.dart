@@ -43,7 +43,7 @@ class LocationDetailsPage extends StatelessWidget {
                   onTap: () => Get.to(() => const LocationPickerPage()),
                 ),
                 const SizedBox(height: 20),
-                Obx(() => Column(
+                Column(
                   children: [
                     CustomTextFieldComponent(
                       hintText: "Address Line 1",
@@ -104,7 +104,7 @@ class LocationDetailsPage extends StatelessWidget {
                       ],
                     ),
                   ],
-                )),
+                ),
                 const SizedBox(height: 10),
                 CustomTextFieldComponent(
                   hintText: "GST Number",

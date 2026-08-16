@@ -1,3 +1,4 @@
+import 'package:bayitooutlet/utils/custom_color.dart';
 import 'package:flutter/material.dart';
 
 class QuickActionCard extends StatelessWidget {
@@ -25,7 +26,7 @@ class QuickActionCard extends StatelessWidget {
           vertical: 8,
         ),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isSelected == true ? CustomColors.secondary : Colors.white,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: Colors.grey.shade200,
@@ -60,10 +61,10 @@ class QuickActionCard extends StatelessWidget {
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Color(0xff2F2F2F),
+                color: isSelected == true ? CustomColors.white : Color(0xff2F2F2F),
                 height: 1.4,
               ),
             ),

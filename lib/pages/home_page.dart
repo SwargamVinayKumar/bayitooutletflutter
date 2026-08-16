@@ -2,11 +2,14 @@ import 'package:bayitooutlet/components/over_view_card.dart';
 import 'package:bayitooutlet/components/table_item.dart';
 import 'package:bayitooutlet/pages/all_tables_page.dart';
 import 'package:bayitooutlet/pages/create_table_page.dart';
+import 'package:bayitooutlet/pages/table_details_page.dart';
 import 'package:bayitooutlet/utils/state_ful_wrapper.dart';
 import 'package:flutter/material.dart';
 import '../api/api_result.dart';
+import '../components/empty_data_view.dart';
 import '../components/quick_action_card.dart';
 import '../models/requestModels/page_request_model.dart';
+import '../models/responseModels/table_response_model.dart';
 import '../utils/gradient_text.dart';
 import '../viewModel/table_view_model.dart';
 import 'check_availability_page.dart';
@@ -95,7 +98,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 24),
                   Obx(() {
-                    return tableViewModel.fetchAllTablesObserver.value.data.value.maybeWhen(
+                    final ApiResult<FetchTablesResponse> state = tableViewModel.fetchAllTablesObserver.value.data.value;
+                    return state.maybeWhen(
                       success: (response) {
                         final tables = response?.data?.tables ?? [];
                         final total = tables.length;
@@ -194,7 +198,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 12),
                   Obx(() {
-                    return tableViewModel.fetchAllTablesObserver.value.data.value.maybeWhen(
+                    final ApiResult<FetchTablesResponse> state = tableViewModel.fetchAllTablesObserver.value.data.value;
+                    return state.maybeWhen(
                       loading: () => const Padding(
                         padding: EdgeInsets.only(top: 30),
                         child: Center(
@@ -207,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                           return const Center(
                             child: Padding(
                               padding: EdgeInsets.symmetric(vertical: 40),
-                              child: Text("No Recent Tables"),
+                              child: EmptyDataView(text: "No Tables Added Yet."),
                             ),
                           );
                         }
@@ -219,11 +224,10 @@ class _HomePageState extends State<HomePage> {
                           itemBuilder: (context, index) {
                             final table = tables[index];
                             return TableItem(
+
                               tableNumber: table.tableNumber ?? "Table",
                               seats: "${table.seatCapacity ?? 0} Seats",
-                              image: table.images?.isNotEmpty == true
-                                  ? table.images!.first
-                                  : "",
+                              images: table.images ?? [],
                               status: table.available == true
                                   ? "Available"
                                   : "Occupied",
@@ -231,6 +235,7 @@ class _HomePageState extends State<HomePage> {
                                   ? Colors.green
                                   : Colors.red,
                               onTap: () {
+                                Get.to(() => TableDetailsPage(tableId: table.id));
                                 // Navigate to table details if needed
                               },
                             );

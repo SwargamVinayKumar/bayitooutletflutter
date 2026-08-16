@@ -1,3 +1,4 @@
+import 'package:bayitooutlet/api/api_result.dart';
 import 'package:bayitooutlet/models/requestModels/sign_up_request_model.dart';
 import 'package:bayitooutlet/utils/auth_utils.dart';
 import 'package:bayitooutlet/utils/custom_color.dart';
@@ -103,41 +104,47 @@ class _AddressSheetState extends State<AddressSheet> {
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 16),
-            CustomGradientButton(
-              title: "Confirm Location",
-              onTap: () {
-                final location = LocationRequestModel(
-                  address1: authViewModel.address1Controller.text,
-                  address2: authViewModel.address2Controller.text,
-                  city: authViewModel.cityController.text,
-                  state: authViewModel.stateController.text,
-                  landMark: authViewModel.landmarkController.text,
-                  pinCode: authViewModel.pincodeController.text,
-                  latitude: authViewModel.latitudeController.text,
-                  longitude: authViewModel.longitudeController.text,
-                );
-                
-                authViewModel.locationDetails.value = location;
-                
-                final validatorResponse = AuthUtils.validateRequestFields(
-                  ['address1', 'city', 'state', 'pinCode'],
-                  location.toJson(),
-                );
-                
-                if (validatorResponse != null) {
-                  Get.snackbar(
-                    "Error",
-                    validatorResponse,
-                    backgroundColor: CustomColors.secondary,
-                    colorText: Colors.white,
-                    snackPosition: SnackPosition.BOTTOM,
-                  );
-                  return;
-                }
-                
-                Get.close(2); // Close sheet and location picker
-              },
-            ),
+            Obx(() {
+              final state = authViewModel.registerOutLetObserver.value;
+              return state.maybeWhen(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                orElse: () => CustomGradientButton(
+                  title: "Confirm & Create Account",
+                  onTap: () {
+                    final location = LocationRequestModel(
+                      address1: authViewModel.address1Controller.text,
+                      address2: authViewModel.address2Controller.text,
+                      city: authViewModel.cityController.text,
+                      state: authViewModel.stateController.text,
+                      landMark: authViewModel.landmarkController.text,
+                      pinCode: authViewModel.pincodeController.text,
+                      latitude: authViewModel.latitudeController.text,
+                      longitude: authViewModel.longitudeController.text,
+                    );
+                    
+                    authViewModel.locationDetails.value = location;
+                    
+                    final validatorResponse = AuthUtils.validateRequestFields(
+                      ['address1', 'city', 'state', 'pinCode', 'latitude', 'longitude'],
+                      location.toJson(),
+                    );
+                    
+                    if (validatorResponse != null) {
+                      Get.snackbar(
+                        "Error",
+                        validatorResponse,
+                        backgroundColor: CustomColors.secondary,
+                        colorText: Colors.white,
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                      return;
+                    }
+                    
+                    authViewModel.registerOutLet();
+                  },
+                ),
+              );
+            }),
           ],
         ),
       ),

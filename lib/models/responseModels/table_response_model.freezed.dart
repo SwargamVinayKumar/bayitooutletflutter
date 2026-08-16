@@ -606,7 +606,7 @@ $PaginationCopyWith<$Res>? get pagination {
 /// @nodoc
 mixin _$TableModel {
 
-@JsonKey(name: '_id') String get id; String? get dealerId; String? get tableNumber; String? get seatType; List<String>? get images; bool? get available; int? get seatCapacity; List<SeatModel>? get seats; String? get createdAt; String? get updatedAt;
+@JsonKey(name: '_id') String get id; String? get outletId; String? get tableNumber; String? get description; String? get seatType; List<String>? get images; bool? get available; int? get seatCapacity; List<SeatModel>? get seats; String? get createdAt; String? get updatedAt;
 /// Create a copy of TableModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -619,16 +619,16 @@ $TableModelCopyWith<TableModel> get copyWith => _$TableModelCopyWithImpl<TableMo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TableModel&&(identical(other.id, id) || other.id == id)&&(identical(other.dealerId, dealerId) || other.dealerId == dealerId)&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.seatType, seatType) || other.seatType == seatType)&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.available, available) || other.available == available)&&(identical(other.seatCapacity, seatCapacity) || other.seatCapacity == seatCapacity)&&const DeepCollectionEquality().equals(other.seats, seats)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TableModel&&(identical(other.id, id) || other.id == id)&&(identical(other.outletId, outletId) || other.outletId == outletId)&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.description, description) || other.description == description)&&(identical(other.seatType, seatType) || other.seatType == seatType)&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.available, available) || other.available == available)&&(identical(other.seatCapacity, seatCapacity) || other.seatCapacity == seatCapacity)&&const DeepCollectionEquality().equals(other.seats, seats)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,dealerId,tableNumber,seatType,const DeepCollectionEquality().hash(images),available,seatCapacity,const DeepCollectionEquality().hash(seats),createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,outletId,tableNumber,description,seatType,const DeepCollectionEquality().hash(images),available,seatCapacity,const DeepCollectionEquality().hash(seats),createdAt,updatedAt);
 
 @override
 String toString() {
-  return 'TableModel(id: $id, dealerId: $dealerId, tableNumber: $tableNumber, seatType: $seatType, images: $images, available: $available, seatCapacity: $seatCapacity, seats: $seats, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'TableModel(id: $id, outletId: $outletId, tableNumber: $tableNumber, description: $description, seatType: $seatType, images: $images, available: $available, seatCapacity: $seatCapacity, seats: $seats, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -639,7 +639,7 @@ abstract mixin class $TableModelCopyWith<$Res>  {
   factory $TableModelCopyWith(TableModel value, $Res Function(TableModel) _then) = _$TableModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: '_id') String id, String? dealerId, String? tableNumber, String? seatType, List<String>? images, bool? available, int? seatCapacity, List<SeatModel>? seats, String? createdAt, String? updatedAt
+@JsonKey(name: '_id') String id, String? outletId, String? tableNumber, String? description, String? seatType, List<String>? images, bool? available, int? seatCapacity, List<SeatModel>? seats, String? createdAt, String? updatedAt
 });
 
 
@@ -656,11 +656,12 @@ class _$TableModelCopyWithImpl<$Res>
 
 /// Create a copy of TableModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? dealerId = freezed,Object? tableNumber = freezed,Object? seatType = freezed,Object? images = freezed,Object? available = freezed,Object? seatCapacity = freezed,Object? seats = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? outletId = freezed,Object? tableNumber = freezed,Object? description = freezed,Object? seatType = freezed,Object? images = freezed,Object? available = freezed,Object? seatCapacity = freezed,Object? seats = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,dealerId: freezed == dealerId ? _self.dealerId : dealerId // ignore: cast_nullable_to_non_nullable
+as String,outletId: freezed == outletId ? _self.outletId : outletId // ignore: cast_nullable_to_non_nullable
 as String?,tableNumber: freezed == tableNumber ? _self.tableNumber : tableNumber // ignore: cast_nullable_to_non_nullable
+as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,seatType: freezed == seatType ? _self.seatType : seatType // ignore: cast_nullable_to_non_nullable
 as String?,images: freezed == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
 as List<String>?,available: freezed == available ? _self.available : available // ignore: cast_nullable_to_non_nullable
@@ -753,10 +754,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String? dealerId,  String? tableNumber,  String? seatType,  List<String>? images,  bool? available,  int? seatCapacity,  List<SeatModel>? seats,  String? createdAt,  String? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String? outletId,  String? tableNumber,  String? description,  String? seatType,  List<String>? images,  bool? available,  int? seatCapacity,  List<SeatModel>? seats,  String? createdAt,  String? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TableModel() when $default != null:
-return $default(_that.id,_that.dealerId,_that.tableNumber,_that.seatType,_that.images,_that.available,_that.seatCapacity,_that.seats,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.outletId,_that.tableNumber,_that.description,_that.seatType,_that.images,_that.available,_that.seatCapacity,_that.seats,_that.createdAt,_that.updatedAt);case _:
   return orElse();
 
 }
@@ -774,10 +775,10 @@ return $default(_that.id,_that.dealerId,_that.tableNumber,_that.seatType,_that.i
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String? dealerId,  String? tableNumber,  String? seatType,  List<String>? images,  bool? available,  int? seatCapacity,  List<SeatModel>? seats,  String? createdAt,  String? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String id,  String? outletId,  String? tableNumber,  String? description,  String? seatType,  List<String>? images,  bool? available,  int? seatCapacity,  List<SeatModel>? seats,  String? createdAt,  String? updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _TableModel():
-return $default(_that.id,_that.dealerId,_that.tableNumber,_that.seatType,_that.images,_that.available,_that.seatCapacity,_that.seats,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.outletId,_that.tableNumber,_that.description,_that.seatType,_that.images,_that.available,_that.seatCapacity,_that.seats,_that.createdAt,_that.updatedAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -794,10 +795,10 @@ return $default(_that.id,_that.dealerId,_that.tableNumber,_that.seatType,_that.i
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id,  String? dealerId,  String? tableNumber,  String? seatType,  List<String>? images,  bool? available,  int? seatCapacity,  List<SeatModel>? seats,  String? createdAt,  String? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String id,  String? outletId,  String? tableNumber,  String? description,  String? seatType,  List<String>? images,  bool? available,  int? seatCapacity,  List<SeatModel>? seats,  String? createdAt,  String? updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _TableModel() when $default != null:
-return $default(_that.id,_that.dealerId,_that.tableNumber,_that.seatType,_that.images,_that.available,_that.seatCapacity,_that.seats,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.outletId,_that.tableNumber,_that.description,_that.seatType,_that.images,_that.available,_that.seatCapacity,_that.seats,_that.createdAt,_that.updatedAt);case _:
   return null;
 
 }
@@ -809,12 +810,13 @@ return $default(_that.id,_that.dealerId,_that.tableNumber,_that.seatType,_that.i
 @JsonSerializable()
 
 class _TableModel implements TableModel {
-  const _TableModel({@JsonKey(name: '_id') required this.id, this.dealerId, this.tableNumber, this.seatType, final  List<String>? images, this.available, this.seatCapacity, final  List<SeatModel>? seats, this.createdAt, this.updatedAt}): _images = images,_seats = seats;
+  const _TableModel({@JsonKey(name: '_id') required this.id, this.outletId, this.tableNumber, this.description, this.seatType, final  List<String>? images, this.available, this.seatCapacity, final  List<SeatModel>? seats, this.createdAt, this.updatedAt}): _images = images,_seats = seats;
   factory _TableModel.fromJson(Map<String, dynamic> json) => _$TableModelFromJson(json);
 
 @override@JsonKey(name: '_id') final  String id;
-@override final  String? dealerId;
+@override final  String? outletId;
 @override final  String? tableNumber;
+@override final  String? description;
 @override final  String? seatType;
  final  List<String>? _images;
 @override List<String>? get images {
@@ -852,16 +854,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TableModel&&(identical(other.id, id) || other.id == id)&&(identical(other.dealerId, dealerId) || other.dealerId == dealerId)&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.seatType, seatType) || other.seatType == seatType)&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.available, available) || other.available == available)&&(identical(other.seatCapacity, seatCapacity) || other.seatCapacity == seatCapacity)&&const DeepCollectionEquality().equals(other._seats, _seats)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TableModel&&(identical(other.id, id) || other.id == id)&&(identical(other.outletId, outletId) || other.outletId == outletId)&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.description, description) || other.description == description)&&(identical(other.seatType, seatType) || other.seatType == seatType)&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.available, available) || other.available == available)&&(identical(other.seatCapacity, seatCapacity) || other.seatCapacity == seatCapacity)&&const DeepCollectionEquality().equals(other._seats, _seats)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,dealerId,tableNumber,seatType,const DeepCollectionEquality().hash(_images),available,seatCapacity,const DeepCollectionEquality().hash(_seats),createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,outletId,tableNumber,description,seatType,const DeepCollectionEquality().hash(_images),available,seatCapacity,const DeepCollectionEquality().hash(_seats),createdAt,updatedAt);
 
 @override
 String toString() {
-  return 'TableModel(id: $id, dealerId: $dealerId, tableNumber: $tableNumber, seatType: $seatType, images: $images, available: $available, seatCapacity: $seatCapacity, seats: $seats, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'TableModel(id: $id, outletId: $outletId, tableNumber: $tableNumber, description: $description, seatType: $seatType, images: $images, available: $available, seatCapacity: $seatCapacity, seats: $seats, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -872,7 +874,7 @@ abstract mixin class _$TableModelCopyWith<$Res> implements $TableModelCopyWith<$
   factory _$TableModelCopyWith(_TableModel value, $Res Function(_TableModel) _then) = __$TableModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: '_id') String id, String? dealerId, String? tableNumber, String? seatType, List<String>? images, bool? available, int? seatCapacity, List<SeatModel>? seats, String? createdAt, String? updatedAt
+@JsonKey(name: '_id') String id, String? outletId, String? tableNumber, String? description, String? seatType, List<String>? images, bool? available, int? seatCapacity, List<SeatModel>? seats, String? createdAt, String? updatedAt
 });
 
 
@@ -889,11 +891,12 @@ class __$TableModelCopyWithImpl<$Res>
 
 /// Create a copy of TableModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? dealerId = freezed,Object? tableNumber = freezed,Object? seatType = freezed,Object? images = freezed,Object? available = freezed,Object? seatCapacity = freezed,Object? seats = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? outletId = freezed,Object? tableNumber = freezed,Object? description = freezed,Object? seatType = freezed,Object? images = freezed,Object? available = freezed,Object? seatCapacity = freezed,Object? seats = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
   return _then(_TableModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,dealerId: freezed == dealerId ? _self.dealerId : dealerId // ignore: cast_nullable_to_non_nullable
+as String,outletId: freezed == outletId ? _self.outletId : outletId // ignore: cast_nullable_to_non_nullable
 as String?,tableNumber: freezed == tableNumber ? _self.tableNumber : tableNumber // ignore: cast_nullable_to_non_nullable
+as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,seatType: freezed == seatType ? _self.seatType : seatType // ignore: cast_nullable_to_non_nullable
 as String?,images: freezed == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
 as List<String>?,available: freezed == available ? _self.available : available // ignore: cast_nullable_to_non_nullable

@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../components/custom_gradient_button.dart';
 import '../components/custom_textfield.dart';
 import '../utils/custom_color.dart';
+import 'location_picker_page.dart';
 
 class BusinessPage extends StatelessWidget {
   const BusinessPage({super.key});
@@ -75,16 +76,19 @@ class BusinessPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(color: Colors.grey.shade300),
                 ),
-                child: Obx(() => DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    value: authViewModel.outletType.value,
-                    items: authViewModel.outletTypesDropList.map((option) => DropdownMenuItem(value: option, child: Text(option))).toList(),
-                    onChanged: (value) {
-                      if (value != null) authViewModel.outletType.value = value;
-                    },
-                  ),
-                )),
+                child: Obx(() {
+                  final dropdownList = authViewModel.outletTypesDropList.value;
+                  return DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      value: authViewModel.outletType.value,
+                      items: dropdownList.map((option) => DropdownMenuItem(value: option, child: Text(option))).toList(),
+                      onChanged: (value) {
+                        if (value != null) authViewModel.outletType.value = value;
+                      },
+                    ),
+                  );
+                }),
               ),
               const SizedBox(height: 12),
               CustomTextFieldComponent(
@@ -92,6 +96,16 @@ class BusinessPage extends StatelessWidget {
                 textController: authViewModel.aboutBusinessController,
                 maxLines: 3,
                 height: 100,
+              ),
+              const SizedBox(height: 12),
+              CustomTextFieldComponent(
+                hintText: "GST Number",
+                textController: authViewModel.gstNumberController,
+              ),
+              const SizedBox(height: 12),
+              CustomTextFieldComponent(
+                hintText: "FSSAI Number",
+                textController: authViewModel.fssaiNumberController,
               ),
               const SizedBox(height: 20),
               const Align(
@@ -163,7 +177,25 @@ class BusinessPage extends StatelessWidget {
                 child: CustomGradientButton(
                   title: "Next",
                   fontSize: 18,
-                  onTap: () => Get.to(() => const LocationDetailsPage()),
+                  onTap: () {
+                    if (authViewModel.businessNameController.text.isEmpty) {
+                      Get.snackbar("Error", "Please enter business name");
+                      return;
+                    }
+                    if (authViewModel.businessLicenceController.text.isEmpty) {
+                      Get.snackbar("Error", "Please enter business license number");
+                      return;
+                    }
+                    if (authViewModel.gstNumberController.text.isEmpty) {
+                      Get.snackbar("Error", "Please enter GST number");
+                      return;
+                    }
+                    if (authViewModel.fssaiNumberController.text.isEmpty) {
+                      Get.snackbar("Error", "Please enter FSSAI number");
+                      return;
+                    }
+                    Get.to(() => const LocationPickerPage());
+                  },
                 ),
               ),
               const SizedBox(height: 40),

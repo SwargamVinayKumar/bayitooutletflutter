@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'image_carousel_component.dart';
 
 class TableItem extends StatelessWidget {
   final String tableNumber;
   final String seats;
-  final String image;
+  final List<String> images;
   final String status;
   final Color statusColor;
   final VoidCallback? onTap;
@@ -12,7 +13,7 @@ class TableItem extends StatelessWidget {
     super.key,
     required this.tableNumber,
     required this.seats,
-    required this.image,
+    required this.images,
     required this.status,
     required this.statusColor,
     this.onTap,
@@ -31,29 +32,15 @@ class TableItem extends StatelessWidget {
         ),
         child: Row(
           children: [
-
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: image.isEmpty
-                  ? Image.asset(
-                "assets/images/cafe.jpg",
-                width: 80,
+            SizedBox(
+              width: 80,
+              height: 80,
+              child: ImageCarouselComponent(
+                imageUrls: images,
                 height: 80,
-                fit: BoxFit.cover,
-              )
-                  : Image.network(
-                image,
                 width: 80,
-                height: 80,
+                borderRadius: 12,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) {
-                  return Image.asset(
-                    "assets/images/cafe.jpg",
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.cover,
-                  );
-                },
               ),
             ),
             const SizedBox(width: 15),

@@ -30,8 +30,9 @@ abstract class TableData with _$TableData {
 abstract class TableModel with _$TableModel {
   const factory TableModel({
     @JsonKey(name: '_id') required String id,
-    String? dealerId,
+    String? outletId,
     String? tableNumber,
+    String? description,
     String? seatType,
     List<String>? images,
     bool? available,

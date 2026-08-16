@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../components/custom_gradient_button.dart';
 import '../components/seat_item_component.dart';
+import '../utils/progress_dialog.dart';
 
 class AddSeatPage extends StatefulWidget {
   const AddSeatPage({super.key});
@@ -69,73 +70,82 @@ class _AddSeatPageState extends State<AddSeatPage> {
         ),
       ),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.all(20),
-                itemCount: seats.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: Obx(() => SeatItemComponent(
-                      seatNumber: index + 1,
-                      chargeController: chargeControllers[index],
-                      seatType: seatTypes[index],
-                      available: availability[index],
-                      images: tableViewModel.seatImages[index] ?? [],
-                      onSeatTypeChanged: (value) {
-                        setState(() {
-                          seatTypes[index] = value;
-                        });
+            SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(20),
+                      itemCount: seats.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Obx(() => SeatItemComponent(
+                            seatNumber: index + 1,
+                            chargeController: chargeControllers[index],
+                            seatType: seatTypes[index],
+                            available: availability[index],
+                            images: tableViewModel.seatImages[index] ?? [],
+                            onSeatTypeChanged: (value) {
+                              setState(() {
+                                seatTypes[index] = value;
+                              });
+                            },
+                            onAvailabilityChanged: (value) {
+                              setState(() {
+                                availability[index] = value;
+                              });
+                            },
+                            onAddImage: () async {
+                              final List<XFile> images = await picker.pickMultiImage();
+                              if (images.isNotEmpty) {
+                                final currentImages = tableViewModel.seatImages[index] ?? [];
+                                tableViewModel.seatImages[index] = [...currentImages, ...images.map((e) => File(e.path))];
+                              }
+                            },
+                            onRemoveImage: (imgIndex) {
+                              final currentImages = tableViewModel.seatImages[index] ?? [];
+                              currentImages.removeAt(imgIndex);
+                              tableViewModel.seatImages[index] = [...currentImages];
+                            },
+                          )),
+                        );
                       },
-                      onAvailabilityChanged: (value) {
-                        setState(() {
-                          availability[index] = value;
-                        });
-                      },
-                      onAddImage: () async {
-                        final List<XFile> images = await picker.pickMultiImage();
-                        if (images.isNotEmpty) {
-                          final currentImages = tableViewModel.seatImages[index] ?? [];
-                          tableViewModel.seatImages[index] = [...currentImages, ...images.map((e) => File(e.path))];
-                        }
-                      },
-                      onRemoveImage: (imgIndex) {
-                        final currentImages = tableViewModel.seatImages[index] ?? [];
-                        currentImages.removeAt(imgIndex);
-                        tableViewModel.seatImages[index] = [...currentImages];
-                      },
-                    )),
-                  );
-                },
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    color: Colors.white,
+                    child: Obx(() {
+                      return tableViewModel.createTableObserver.value.maybeWhen(
+                        loading: () => const Center(child: CircularProgressIndicator()),
+                        orElse: () => CustomGradientButton(
+                          title: "Create Table",
+                          onTap: () {
+                            tableViewModel.seats.value = List.generate(seats.length, (index) {
+                              return SeatRequestModel(
+                                seatNumber: "S${index + 1}",
+                                seatType: seatTypes[index] ?? "Standard",
+                                available: availability[index],
+                                charges: ChargeRequestModel(
+                                  perHour: int.tryParse(chargeControllers[index].text) ?? 0,
+                                ),
+                              );
+                            });
+                            tableViewModel.createTable();
+                          },
+                        ),
+                      );
+                    }),
+                  ),
+                ],
               ),
             ),
-            Container(
-              padding: const EdgeInsets.all(20),
-              color: Colors.white,
-              child: Obx(() {
-                return tableViewModel.createTableObserver.value.maybeWhen(
-                  loading: () => const Center(child: CircularProgressIndicator()),
-                  orElse: () => CustomGradientButton(
-                    title: "Create Table",
-                    onTap: () {
-                      tableViewModel.seats.value = List.generate(seats.length, (index) {
-                        return SeatRequestModel(
-                          seatNumber: "S${index + 1}",
-                          seatType: seatTypes[index] ?? "Standard",
-                          available: availability[index],
-                          charges: ChargeRequestModel(
-                            perHour: int.tryParse(chargeControllers[index].text) ?? 0,
-                          ),
-                        );
-                      });
-                      tableViewModel.createTable();
-                    },
-                  ),
-                );
-              }),
-            ),
+            Obx(() => tableViewModel.createTableObserver.value.maybeWhen(loading: () => Container(color: Colors.black.withOpacity(0.2),child: Center(child: ProgressDialog(),)),orElse: () => SizedBox())),
           ],
         ),
       ),

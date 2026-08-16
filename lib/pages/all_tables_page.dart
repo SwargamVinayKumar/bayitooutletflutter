@@ -5,6 +5,7 @@ import 'package:bayitooutlet/components/table_item.dart';
 import 'package:bayitooutlet/models/requestModels/page_request_model.dart';
 import 'package:bayitooutlet/models/responseModels/table_response_model.dart';
 import 'package:bayitooutlet/pages/create_table_page.dart';
+import 'package:bayitooutlet/pages/table_details_page.dart';
 import 'package:bayitooutlet/utils/state_ful_wrapper.dart';
 import 'package:bayitooutlet/viewModel/table_view_model.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _AllTablesPageState extends State<AllTablesPage> {
 
   final TextEditingController searchController = TextEditingController();
 
-  int selectedTab = 0;
+  final selectedTab = 0.obs;
 
   final List<String> tabs = const [
     "All",
@@ -92,87 +93,74 @@ class _AllTablesPageState extends State<AllTablesPage> {
               const SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: CustomTabComponent(
+                child: Obx(() => CustomTabComponent(
                   tabs: tabs,
-                  selectedIndex: selectedTab,
+                  selectedIndex: selectedTab.value,
                   onChanged: (index) {
-                    setState(() {
-                      selectedTab = index;
-                    });
+                    selectedTab.value = index;
                     _refreshData();
                   },
-                ),
+                )),
               ),
               const SizedBox(height: 18),
               Expanded(
                 child: Obx(() {
-                  return tableViewModel.fetchAllTablesObserver.value.data.value.maybeWhen(
-                    init: () => const Expanded(
-                      child: SizedBox(),
+                  final observer = getCurrentObserver();
+                  final ApiResult<FetchTablesResponse> state = observer.value.data.value;
+                  
+                  return state.maybeWhen(
+                    init: () => const SizedBox(),
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(),
                     ),
-                    loading: () => const Expanded(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                    error: (message) => Expanded(
-                      child: Center(
-                        child: Text(message),
-                      ),
+                    error: (message) => Center(
+                      child: Text(message),
                     ),
                     success: (response) {
                       final tableList = response?.data?.tables ?? [];
                       if (tableList.isEmpty) {
-                        return const Expanded(
-                          child: Center(
-                            child: Text("No Tables Found"),
-                          ),
+                        return Center(
+                          child: Text("No Tables Found"),
                         );
                       }
-                      return Expanded(
-                        child: NotificationListener<ScrollNotification>(
-                          onNotification: (notification) {
-                            if (notification.metrics.pixels >=
-                                notification.metrics.maxScrollExtent - 20) {
-                              _addData();
-                            }
-                            return false;
-                          },
-                          child: RefreshIndicator(
-                            onRefresh: _refreshData,
-                            child: ListView.builder(
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
-                              itemCount: tableList.length +
-                                  (tableViewModel.fetchAllTablesObserver.value.isLoading ? 1 : 0),
-                              itemBuilder: (context, index) {
-                                if (index == tableList.length) {
-                                  return const Padding(
-                                    padding: EdgeInsets.all(16),
-                                    child: Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  );
-                                }
-                                final table = tableList[index];
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  child: TableItem(
-                                    tableNumber: table.tableNumber ?? "",
-                                    seats: "${table.seatCapacity ?? 0} Seats",
-                                    image: table.images?.isNotEmpty == true
-                                        ? table.images!.first
-                                        : "assets/images/cafe.jpg",
-                                    status: table.available == true
-                                        ? "Available"
-                                        : "Occupied",
-                                    statusColor: table.available == true
-                                        ? Colors.green
-                                        : Colors.red,
-                                    onTap: () {},
+                      return NotificationListener<ScrollNotification>(
+                        onNotification: (notification) {
+                          if (notification.metrics.pixels >=
+                              notification.metrics.maxScrollExtent - 20) {
+                            _addData();
+                          }
+                          return false;
+                        },
+                        child: RefreshIndicator(
+                          onRefresh: _refreshData,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            itemCount: tableList.length +
+                                (observer.value.isLoading ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index == tableList.length) {
+                                return const Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
                                   ),
                                 );
-                              },
-                            ),
+                              }
+                              final table = tableList[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: TableItem(
+                                  tableNumber: table.tableNumber ?? "",
+                                  seats: "${table.seatCapacity ?? 0} Seats",
+                                  images: table.images ?? [],
+                                  status: getStatus(table),
+                                  statusColor: getStatusColor(table),
+                                  onTap: () {
+                                    Get.to(() => TableDetailsPage(tableId: table.id));
+                                  },
+                                ),
+                              );
+                            },
                           ),
                         ),
                       );
@@ -193,7 +181,7 @@ class _AllTablesPageState extends State<AllTablesPage> {
       PaginationRequestModel(
         page: 1,
         query: value,
-        bookingType: tabs[selectedTab],
+        bookingType: tabs[selectedTab.value],
       ),
       true,
     );
@@ -203,8 +191,8 @@ class _AllTablesPageState extends State<AllTablesPage> {
     await tableViewModel.fetchTables(
       PaginationRequestModel(
         page: 1,
-        query: searchController.text,
-        bookingType: tabs[selectedTab],
+        query: tableViewModel.searchText.value,
+        bookingType: tabs[selectedTab.value],
       ),
       true,
     );
@@ -221,20 +209,20 @@ class _AllTablesPageState extends State<AllTablesPage> {
     await tableViewModel.fetchTables(
       PaginationRequestModel(
         page: observer.value.page,
-        query: searchController.text,
-        bookingType: tabs[selectedTab],
+        query: tableViewModel.searchText.value,
+        bookingType: tabs[selectedTab.value],
       ),
       false,
     );
   }
 
-  Rx<PaginationModel> getCurrentObserver() {
+  Rx<PaginationModel<Rx<ApiResult<FetchTablesResponse>>>> getCurrentObserver() {
 
-    if (searchController.text.trim().isNotEmpty) {
+    if (tableViewModel.searchText.value.trim().isNotEmpty) {
       return tableViewModel.fetchSearchTablesObserver;
     }
 
-    switch (tabs[selectedTab]) {
+    switch (tabs[selectedTab.value]) {
 
       case "Available":
         return tableViewModel.fetchOngoingTablesObserver;
@@ -256,7 +244,7 @@ class _AllTablesPageState extends State<AllTablesPage> {
       return "Available";
     }
 
-    if (tabs[selectedTab] == "Reserved") {
+    if (tabs[selectedTab.value] == "Reserved") {
       return "Reserved";
     }
 
@@ -269,7 +257,7 @@ class _AllTablesPageState extends State<AllTablesPage> {
       return Colors.green;
     }
 
-    if (tabs[selectedTab] == "Reserved") {
+    if (tabs[selectedTab.value] == "Reserved") {
       return Colors.orange;
     }
 

@@ -13,6 +13,7 @@ _CreateTableRequestModel _$CreateTableRequestModelFromJson(
   seatType: json['seatType'] as String?,
   images: (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
   seatCapacity: (json['seatCapacity'] as num?)?.toInt(),
+  description: json['description'] as String?,
   seats: (json['seats'] as List<dynamic>?)
       ?.map((e) => SeatRequestModel.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -25,6 +26,7 @@ Map<String, dynamic> _$CreateTableRequestModelToJson(
   'seatType': instance.seatType,
   'images': instance.images,
   'seatCapacity': instance.seatCapacity,
+  'description': instance.description,
   'seats': instance.seats,
 };
 

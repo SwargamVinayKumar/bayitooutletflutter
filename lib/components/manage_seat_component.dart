@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'custom_switch_component.dart';
+import 'image_carousel_component.dart';
 
 class ManageSeatComponent extends StatelessWidget {
-
+  final List<String>? images;
   final String seatNumber;
   final String seatType;
-  final String charge;
+  final int charge;
   final bool available;
 
   final VoidCallback onEdit;
   final ValueChanged<bool> onAvailabilityChanged;
 
   const ManageSeatComponent({super.key,
+    required this.images,
     required this.seatNumber,
     required this.seatType,
     required this.charge,
@@ -39,17 +41,15 @@ class ManageSeatComponent extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                width: 52,
-                height: 52,
-                decoration: BoxDecoration(
-                  color: const Color(0xffFFF5EF),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: const Icon(
-                  Icons.event_seat,
-                  color: Color(0xffFF7B54),
-                  size: 28,
+              SizedBox(
+                width: 80,
+                height: 80,
+                child: ImageCarouselComponent(
+                  imageUrls: images ?? [],
+                  height: 80,
+                  width: 80,
+                  borderRadius: 14,
+                  fit: BoxFit.cover,
                 ),
               ),
               const SizedBox(width: 14),
@@ -93,7 +93,7 @@ class ManageSeatComponent extends StatelessWidget {
                 child: _InfoItem(
                   icon: Icons.currency_rupee,
                   title: "Charge",
-                  value: charge,
+                  value: charge.toString(),
                 ),
               ),
               const SizedBox(width: 12),

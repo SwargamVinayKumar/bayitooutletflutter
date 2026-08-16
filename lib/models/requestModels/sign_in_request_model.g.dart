@@ -10,7 +10,14 @@ _SignInRequestModel _$SignInRequestModelFromJson(Map<String, dynamic> json) =>
     _SignInRequestModel(
       key: json['key'] as String?,
       password: json['password'] as String?,
+      version: json['version'] as String?,
+      deviceDetails: json['deviceDetails'],
     );
 
 Map<String, dynamic> _$SignInRequestModelToJson(_SignInRequestModel instance) =>
-    <String, dynamic>{'key': instance.key, 'password': instance.password};
+    <String, dynamic>{
+      'key': instance.key,
+      'password': instance.password,
+      'version': instance.version,
+      'deviceDetails': instance.deviceDetails,
+    };

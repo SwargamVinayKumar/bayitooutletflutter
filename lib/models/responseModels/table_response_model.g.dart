@@ -40,8 +40,9 @@ Map<String, dynamic> _$TableDataToJson(_TableData instance) =>
 
 _TableModel _$TableModelFromJson(Map<String, dynamic> json) => _TableModel(
   id: json['_id'] as String,
-  dealerId: json['dealerId'] as String?,
+  outletId: json['outletId'] as String?,
   tableNumber: json['tableNumber'] as String?,
+  description: json['description'] as String?,
   seatType: json['seatType'] as String?,
   images: (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
   available: json['available'] as bool?,
@@ -56,8 +57,9 @@ _TableModel _$TableModelFromJson(Map<String, dynamic> json) => _TableModel(
 Map<String, dynamic> _$TableModelToJson(_TableModel instance) =>
     <String, dynamic>{
       '_id': instance.id,
-      'dealerId': instance.dealerId,
+      'outletId': instance.outletId,
       'tableNumber': instance.tableNumber,
+      'description': instance.description,
       'seatType': instance.seatType,
       'images': instance.images,
       'available': instance.available,

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SignInRequestModel {
 
- String? get key; String? get password;
+ String? get key; String? get password; String? get version; dynamic get deviceDetails;
 /// Create a copy of SignInRequestModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $SignInRequestModelCopyWith<SignInRequestModel> get copyWith => _$SignInRequestM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignInRequestModel&&(identical(other.key, key) || other.key == key)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignInRequestModel&&(identical(other.key, key) || other.key == key)&&(identical(other.password, password) || other.password == password)&&(identical(other.version, version) || other.version == version)&&const DeepCollectionEquality().equals(other.deviceDetails, deviceDetails));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,key,password);
+int get hashCode => Object.hash(runtimeType,key,password,version,const DeepCollectionEquality().hash(deviceDetails));
 
 @override
 String toString() {
-  return 'SignInRequestModel(key: $key, password: $password)';
+  return 'SignInRequestModel(key: $key, password: $password, version: $version, deviceDetails: $deviceDetails)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $SignInRequestModelCopyWith<$Res>  {
   factory $SignInRequestModelCopyWith(SignInRequestModel value, $Res Function(SignInRequestModel) _then) = _$SignInRequestModelCopyWithImpl;
 @useResult
 $Res call({
- String? key, String? password
+ String? key, String? password, String? version, dynamic deviceDetails
 });
 
 
@@ -65,11 +65,13 @@ class _$SignInRequestModelCopyWithImpl<$Res>
 
 /// Create a copy of SignInRequestModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? key = freezed,Object? password = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? key = freezed,Object? password = freezed,Object? version = freezed,Object? deviceDetails = freezed,}) {
   return _then(_self.copyWith(
 key: freezed == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
 as String?,password: freezed == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
+as String?,deviceDetails: freezed == deviceDetails ? _self.deviceDetails : deviceDetails // ignore: cast_nullable_to_non_nullable
+as dynamic,
   ));
 }
 
@@ -154,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? key,  String? password)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? key,  String? password,  String? version,  dynamic deviceDetails)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SignInRequestModel() when $default != null:
-return $default(_that.key,_that.password);case _:
+return $default(_that.key,_that.password,_that.version,_that.deviceDetails);case _:
   return orElse();
 
 }
@@ -175,10 +177,10 @@ return $default(_that.key,_that.password);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? key,  String? password)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? key,  String? password,  String? version,  dynamic deviceDetails)  $default,) {final _that = this;
 switch (_that) {
 case _SignInRequestModel():
-return $default(_that.key,_that.password);case _:
+return $default(_that.key,_that.password,_that.version,_that.deviceDetails);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +197,10 @@ return $default(_that.key,_that.password);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? key,  String? password)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? key,  String? password,  String? version,  dynamic deviceDetails)?  $default,) {final _that = this;
 switch (_that) {
 case _SignInRequestModel() when $default != null:
-return $default(_that.key,_that.password);case _:
+return $default(_that.key,_that.password,_that.version,_that.deviceDetails);case _:
   return null;
 
 }
@@ -210,11 +212,13 @@ return $default(_that.key,_that.password);case _:
 @JsonSerializable()
 
 class _SignInRequestModel implements SignInRequestModel {
-  const _SignInRequestModel({this.key, this.password});
+  const _SignInRequestModel({this.key, this.password, this.version, this.deviceDetails});
   factory _SignInRequestModel.fromJson(Map<String, dynamic> json) => _$SignInRequestModelFromJson(json);
 
 @override final  String? key;
 @override final  String? password;
+@override final  String? version;
+@override final  dynamic deviceDetails;
 
 /// Create a copy of SignInRequestModel
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +233,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SignInRequestModel&&(identical(other.key, key) || other.key == key)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SignInRequestModel&&(identical(other.key, key) || other.key == key)&&(identical(other.password, password) || other.password == password)&&(identical(other.version, version) || other.version == version)&&const DeepCollectionEquality().equals(other.deviceDetails, deviceDetails));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,key,password);
+int get hashCode => Object.hash(runtimeType,key,password,version,const DeepCollectionEquality().hash(deviceDetails));
 
 @override
 String toString() {
-  return 'SignInRequestModel(key: $key, password: $password)';
+  return 'SignInRequestModel(key: $key, password: $password, version: $version, deviceDetails: $deviceDetails)';
 }
 
 
@@ -249,7 +253,7 @@ abstract mixin class _$SignInRequestModelCopyWith<$Res> implements $SignInReques
   factory _$SignInRequestModelCopyWith(_SignInRequestModel value, $Res Function(_SignInRequestModel) _then) = __$SignInRequestModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? key, String? password
+ String? key, String? password, String? version, dynamic deviceDetails
 });
 
 
@@ -266,11 +270,13 @@ class __$SignInRequestModelCopyWithImpl<$Res>
 
 /// Create a copy of SignInRequestModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? key = freezed,Object? password = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? key = freezed,Object? password = freezed,Object? version = freezed,Object? deviceDetails = freezed,}) {
   return _then(_SignInRequestModel(
 key: freezed == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
 as String?,password: freezed == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
+as String?,deviceDetails: freezed == deviceDetails ? _self.deviceDetails : deviceDetails // ignore: cast_nullable_to_non_nullable
+as dynamic,
   ));
 }
 

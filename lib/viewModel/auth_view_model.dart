@@ -33,6 +33,10 @@ class AuthViewModel extends GetxController {
   final fetchProfileDetailObserver = ApiResult<ProfileResponseModel>.init().obs;
   final signInObserver = ApiResult<SignInResponseModel>.init().obs;
   final signUpObserver = ApiResult<SignInResponseModel>.init().obs;
+  final verifyOtpObserver = ApiResult<SignInResponseModel>.init().obs;
+
+  final registerOutLetObserver = ApiResult<SignInResponseModel>.init().obs;
+
   final uploadFileObserver = ApiResult<FileUploadResponseModel>.init().obs;
 
   // Sign In Controllers
@@ -45,6 +49,7 @@ class AuthViewModel extends GetxController {
   final mobileController = TextEditingController();
   final signUpPasswordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  final otpController = TextEditingController();
   final profilePic = Rxn<File>();
   final profilePicUrl = "".obs;
 
@@ -131,8 +136,7 @@ class AuthViewModel extends GetxController {
   Future<void> validateVersion(ValidateVersionRequestModel request) async {
     try {
       validaVersionObserver.value = const ApiResult.loading();
-      final String? validatorResponse =
-      AuthUtils.validateRequestFields(['version'], request.toJson());
+      final String? validatorResponse = AuthUtils.validateRequestFields(['version'], request.toJson());
       if (validatorResponse != null) throw validatorResponse;
       final response =
       await apiProvider.post(EndPoints.validateVersion, request.toJson());
@@ -146,7 +150,7 @@ class AuthViewModel extends GetxController {
         final responseData = ValidateVersionResponseModel.fromJson(body);
         if (responseData.status == 1) {
           outletTypesDropList.clear();
-          outletType.value = outletTypesDropList.first;
+          outletType.value = responseData.data?.outletTypes?.firstOrNull ?? "";
           outletTypesDropList.assignAll(responseData.data?.outletTypes ?? []);
 
           validaVersionObserver.value = ApiResult.success(responseData);
@@ -182,9 +186,12 @@ class AuthViewModel extends GetxController {
   Future<void> signIn() async {
     try {
       signInObserver.value = ApiResult.loading();
+      final version = await AuthUtils.getAppVersion();
+      final deviceDetails = await AuthUtils.getDeviceDetails();
       final request = SignInRequestModel(
         key: emailMobileController.text,
-        password: signInPasswordController.text,
+        password: signInPasswordController.text, version:version,
+        deviceDetails:deviceDetails
       );
       final response = await apiProvider.post(EndPoints.signIn, request.toJson());
       final body = response.body;
@@ -212,12 +219,112 @@ class AuthViewModel extends GetxController {
 
   Future<void> signUp() async {
     try {
+      // Final Validation
+      if (fullNameController.text.isEmpty ||
+          signUpEmailController.text.isEmpty ||
+          mobileController.text.isEmpty ||
+          signUpPasswordController.text.isEmpty) {
+        Get.snackbar("Error", "Please complete all registration steps");
+        return;
+      }
+
       signUpObserver.value = ApiResult.loading();
 
       // 1. Upload Profile Pic if exists
       if (profilePic.value != null && profilePicUrl.isEmpty) {
         profilePicUrl.value = await uploadImage(profilePic.value!, "profile") ?? "";
       }
+
+
+      final request = SignUpRequestModel(
+        mobile: int.tryParse(mobileController.text),
+        name: fullNameController.text,
+        email: signUpEmailController.text,
+        password: signUpPasswordController.text,
+        confirmPassword: confirmPasswordController.text,
+        profilePic: profilePicUrl.value
+      );
+
+      final response = await apiProvider.post(EndPoints.signUp, request.toJson());
+      final body = response.body;
+      if (response.isOk && body != null) {
+        final data = SignInResponseModel.fromJson(body);
+        if (data.status == 1) {
+          signUpObserver.value = ApiResult.success(data);
+          Get.snackbar('Success', data.message ?? 'Otp Send successful');
+        } else {
+          signUpObserver.value = ApiResult.error(data.message ?? "");
+          Get.snackbar('Failed', data.message ?? '');
+        }
+      } else {
+        signUpObserver.value = ApiResult.error("Something went wrong");
+      }
+    } catch (e) {
+      signUpObserver.value = ApiResult.error(e.toString());
+    }
+  }
+
+  Future<void> verifyOtp() async {
+    try {
+      // Final Validation
+      if (fullNameController.text.isEmpty ||
+          signUpEmailController.text.isEmpty ||
+          mobileController.text.isEmpty ||
+          signUpPasswordController.text.isEmpty || otpController.text.isEmpty) {
+        Get.snackbar("Error", "Please complete all registration steps");
+        return;
+      }
+
+      verifyOtpObserver.value = ApiResult.loading();
+
+
+
+      final request = SignUpRequestModel(
+          mobile: int.tryParse(mobileController.text),
+          name: fullNameController.text,
+          email: signUpEmailController.text,
+          password: signUpPasswordController.text,
+          confirmPassword: confirmPasswordController.text,
+          profilePic: profilePicUrl.value,
+          otp: int.tryParse(otpController.text),
+      );
+
+      final response = await apiProvider.post(EndPoints.verifyOtp, request.toJson());
+      final body = response.body;
+      if (response.isOk && body != null) {
+        final data = SignInResponseModel.fromJson(body);
+        if (data.status == 1) {
+          verifyOtpObserver.value = ApiResult.success(data);
+          final page = data.data?.page;
+          preferenceManager.setValue("page", page ?? "");
+          preferenceManager.setValue("token", data.data?.token ?? "");
+          Get.snackbar('Success', data.message ?? 'Otp Send successful');
+          AuthUtils.navigateFromPageName(data.data?.page);
+        } else {
+          verifyOtpObserver.value = ApiResult.error(data.message ?? "");
+          Get.snackbar('Failed', data.message ?? '');
+        }
+      } else {
+        verifyOtpObserver.value = ApiResult.error("Something went wrong");
+      }
+    } catch (e) {
+      verifyOtpObserver.value = ApiResult.error(e.toString());
+    }
+  }
+
+
+
+  Future<void> registerOutLet() async {
+    try {
+      // Final Validation
+      if (businessNameController.text.isEmpty ||
+          gstNumberController.text.isEmpty ||
+          locationDetails.value == null) {
+        Get.snackbar("Error", "Please complete all registration steps");
+        return;
+      }
+
+      registerOutLetObserver.value = ApiResult.loading();
 
       // 2. Upload Business Logo if exists
       if (businessLogo.value != null && businessLogoUrl.isEmpty) {
@@ -235,12 +342,6 @@ class AuthViewModel extends GetxController {
       }
 
       final request = SignUpRequestModel(
-        mobile: int.tryParse(mobileController.text),
-        name: fullNameController.text,
-        email: signUpEmailController.text,
-        password: signUpPasswordController.text,
-        confirmPassword: confirmPasswordController.text,
-        profilePic: profilePicUrl.value,
         businessLogo: businessLogoUrl.value,
         images: businessImagesUrls.toList(),
         businessLicence: businessLicenceController.text,
@@ -261,25 +362,26 @@ class AuthViewModel extends GetxController {
         fssaiId: fssaiNumberController.text,
       );
 
-      final response = await apiProvider.post(EndPoints.signUp, request.toJson());
+      final response = await apiProvider.post(EndPoints.registerOutlet, request.toJson());
       final body = response.body;
       if (response.isOk && body != null) {
         final data = SignInResponseModel.fromJson(body);
         if (data.status == 1) {
-          signUpObserver.value = ApiResult.success(data);
-          Get.snackbar('Success', data.message ?? 'Sign up successful');
-          Get.offAll(() => const SignInPage());
+          registerOutLetObserver.value = ApiResult.success(data);
+          Get.snackbar('Success', data.message ?? 'Register successful');
+          Get.offAll(() => const MainPage());
         } else {
-          signUpObserver.value = ApiResult.error(data.message ?? "");
+          registerOutLetObserver.value = ApiResult.error(data.message ?? "");
           Get.snackbar('Failed', data.message ?? '');
         }
       } else {
-        signUpObserver.value = ApiResult.error("Something went wrong");
+        registerOutLetObserver.value = ApiResult.error("Something went wrong");
       }
     } catch (e) {
-      signUpObserver.value = ApiResult.error(e.toString());
+      registerOutLetObserver.value = ApiResult.error(e.toString());
     }
   }
+
 
   Future<void> fetchProfileDetails() async {
     try {

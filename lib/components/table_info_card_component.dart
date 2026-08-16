@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'image_carousel_component.dart';
 
 class TableInfoCardComponent extends StatelessWidget {
-  final String image;
+  final List<String> images;
   final String tableNumber;
   final String status;
   final int seats;
@@ -11,7 +12,7 @@ class TableInfoCardComponent extends StatelessWidget {
 
   const TableInfoCardComponent({
     super.key,
-    required this.image,
+    required this.images,
     required this.tableNumber,
     required this.status,
     required this.seats,
@@ -36,12 +37,14 @@ class TableInfoCardComponent extends StatelessWidget {
       ),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(14),
-            child: Image.asset(
-              image,
-              width: 80,
+          SizedBox(
+            width: 80,
+            height: 80,
+            child: ImageCarouselComponent(
+              imageUrls: images,
               height: 80,
+              width: 80,
+              borderRadius: 14,
               fit: BoxFit.cover,
             ),
           ),

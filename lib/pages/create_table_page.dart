@@ -92,26 +92,26 @@ class _CreateTablePageState extends State<CreateTablePage> {
                 ),
               ),
               const SizedBox(height: 8),
-              Obx(() => Wrap(
+              Wrap(
                 spacing: 10,
                 runSpacing: 10,
                 children: List.generate(
                   categories.length,
-                  (index) {
+                      (index) {
                     return SizedBox(
                       width: (MediaQuery.of(context).size.width - 60) / 3,
-                      child: QuickActionCard(
+                      child: Obx(() => QuickActionCard(
                         title: categories[index]["title"],
                         icon: categories[index]["icon"],
                         isSelected: tableViewModel.selectedCategory.value == index,
                         onTap: () {
                           tableViewModel.selectedCategory.value = index;
                         },
-                      ),
+                      )),
                     );
                   },
                 ),
-              )),
+              ),
               const SizedBox(height: 12),
               const Text(
                 "Capacity (Seats)",
@@ -209,6 +209,14 @@ class _CreateTablePageState extends State<CreateTablePage> {
               CustomGradientButton(
                 title: "Add Seats",
                 onTap: () {
+                  if(tableViewModel.tableNumberController.text.trim().isEmpty){
+                    Get.snackbar('Success', "Please enter table name");
+                    return;
+                  }
+                  if(tableViewModel.tableImages.isEmpty){
+                    Get.snackbar('Success', "Add at least one table image");
+                    return;
+                  }
                   Get.to(() => const AddSeatPage());
                 },
               ),

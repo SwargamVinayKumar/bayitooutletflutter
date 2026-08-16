@@ -12,6 +12,7 @@ abstract class SignUpRequestModel with _$SignUpRequestModel {
     String? password,
     String? confirmPassword,
     String? profilePic,
+    int? otp,
     String? businessLogo,
     @Default([]) List<String>? images,
     String? businessLicence,

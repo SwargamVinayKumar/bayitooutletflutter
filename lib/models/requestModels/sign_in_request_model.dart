@@ -8,6 +8,8 @@ abstract class SignInRequestModel with _$SignInRequestModel {
   const factory SignInRequestModel({
     String? key,
     String? password,
+    String? version,
+    dynamic deviceDetails
   }) = _SignInRequestModel;
 
   factory SignInRequestModel.fromJson(Map<String, dynamic> json) =>

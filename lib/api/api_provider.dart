@@ -4,7 +4,7 @@ import 'package:get/get_connect/http/src/request/request.dart';
 
 class ApiProvider<T> extends GetConnect {
   String apiKey = '343532213454';
-  String apiLiveBaseUrl = 'https://bayito-1b5b8.el.r.appspot.com/outlet/';
+  String apiLiveBaseUrl = false ? 'https://bayito-1b5b8.el.r.appspot.com/outlet/' : "http://192.168.29.4:3055/outlet/";
   String token = '';
 
   @override
@@ -16,7 +16,7 @@ class ApiProvider<T> extends GetConnect {
       final preferenceManager = Get.find<PreferenceManager>();
       token = await preferenceManager.getValue(preferenceManager.token) ?? "";
       final modifiedRequest = request as Request<T>;
-      modifiedRequest.headers['Authorization'] = "Bearer ${token}";
+      modifiedRequest.headers['Authorization'] = token.isNotEmpty ?  "Bearer ${token}" : "";
       modifiedRequest.headers['ApiKey'] = apiKey;
       return modifiedRequest;
     });
