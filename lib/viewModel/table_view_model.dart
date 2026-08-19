@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:bayitooutlet/models/requestModels/create_table_request_model.dart';
 import 'package:bayitooutlet/models/responseModels/create_table_response_model.dart';
 import 'package:bayitooutlet/models/responseModels/page_model.dart';
-import 'package:bayitooutlet/pages/all_tables_page.dart';
 import 'package:bayitooutlet/pages/main_page.dart';
 import 'package:bayitooutlet/viewModel/file_view_model.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ import '../models/requestModels/page_request_model.dart';
 import '../models/responseModels/table_response_model.dart';
 import '../utils/custom_color.dart';
 import '../utils/preference_manager.dart';
+import '../utils/snack_bar_extension.dart';
 
 class TableViewModel extends GetxController {
   final apiProvider = Get.put(ApiProvider());
@@ -140,13 +140,7 @@ class TableViewModel extends GetxController {
         final responseData = CreateTableResponseModel.fromJson(body);
         if (responseData.status == 1) {
           createTableObserver.value = ApiResult.success(responseData);
-          Get.snackbar(
-            "Success",
-            responseData.message ?? "Table created successfully",
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM,
-          );
+          Get.showSnackBar(title: 'Success', message: responseData.message ?? "Table created successfully");
           clearFields();
           Get.offAll(() => MainPage());
           return;
@@ -156,13 +150,7 @@ class TableViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       createTableObserver.value = ApiResult.error(e.toString());
-      Get.snackbar(
-        "Error",
-        e.toString(),
-        backgroundColor: CustomColors.secondary,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.showSnackBar(title: 'Error', message: e.toString());
     }
   }
 
@@ -208,13 +196,7 @@ class TableViewModel extends GetxController {
           updateTableDetailsObserver.value = ApiResult.success(data);
           tableDetailsObserver.value = ApiResult.success(data);
           Get.close(1);
-          Get.snackbar(
-            "Success",
-            data.message ?? "Table updated successfully",
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM,
-          );// Close bottom sheet
+          Get.showSnackBar(title: 'Success', message: data.message ?? "Table updated successfully");
           return;
         }
         throw data.message ?? "Something went wrong";
@@ -222,13 +204,7 @@ class TableViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       updateTableDetailsObserver.value = ApiResult.error(e.toString());
-      Get.snackbar(
-        "Error",
-        e.toString(),
-        backgroundColor: CustomColors.secondary,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.showSnackBar(title: 'Error', message: e.toString());
     }
   }
 
@@ -249,14 +225,7 @@ class TableViewModel extends GetxController {
         final data = CreateTableResponseModel.fromJson(body);
         if (data.status == 1) {
           updateTableAvailabilityObserver.value = ApiResult.success(data);
-          Get.snackbar(
-            "Success",
-            body["message"] ?? "Table availability updated successfully",
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM,
-          );
-
+          Get.showSnackBar(title: 'Success', message: body["message"] ?? "Table availability updated successfully");
           tableDetailsObserver.value.whenOrNull(success: (fetchedDetailsResponse){
             final fetchedDetails = (fetchedDetailsResponse as CreateTableResponseModel).data;
             final updatedModel = fetchedDetails?.copyWith(available: available);
@@ -271,13 +240,7 @@ class TableViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       updateTableAvailabilityObserver.value = ApiResult.error(e.toString());
-      Get.snackbar(
-        "Error",
-        e.toString(),
-        backgroundColor: CustomColors.secondary,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.showSnackBar(title: 'Error', message: e.toString());
     }
   }
 
@@ -394,14 +357,7 @@ class TableViewModel extends GetxController {
       observer.value.data.value = ApiResult.error(e.toString());
       observer.value.isLoading = false;
       observer.refresh();
-
-      Get.snackbar(
-        "Error",
-        e.toString(),
-        backgroundColor: CustomColors.secondary,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.showSnackBar(title: 'Error', message: e.toString());
     }
   }
 
@@ -431,13 +387,7 @@ class TableViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       tableDetailsObserver.value = ApiResult.error(e.toString());
-      Get.snackbar(
-        "Error",
-        e.toString(),
-        backgroundColor: CustomColors.secondary,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.showSnackBar(title: 'Error', message: e.toString());
     }
   }
 

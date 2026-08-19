@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import '../models/responseModels/open_hour_model.dart';
 import 'custom_switch_component.dart';
 
+
+import 'package:flutter/material.dart';
+
+import '../models/responseModels/open_hour_model.dart';
+import 'custom_switch_component.dart';
+
 class OpeningHourCardComponent extends StatelessWidget {
-  final OpeningHourModel model;
+  final DaySlotModel model;
+
   final VoidCallback onOpenTimeTap;
   final VoidCallback onCloseTimeTap;
   final ValueChanged<bool> onStatusChanged;
@@ -18,6 +25,8 @@ class OpeningHourCardComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isOpen = model.status ?? false;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 18),
       padding: const EdgeInsets.all(18),
@@ -26,7 +35,7 @@ class OpeningHourCardComponent extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.04),
+            color: Colors.black.withOpacity(0.04),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -34,49 +43,60 @@ class OpeningHourCardComponent extends StatelessWidget {
       ),
       child: Column(
         children: [
+          // DAY + STATUS + SWITCH
           Row(
             children: [
               Expanded(
                 child: Text(
-                  model.day,
+                  _capitalizeDay(model.day ?? ""),
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
+
+              // OPEN / CLOSED
               Text(
-                model.isOpen ? "Open" : "Closed",
+                isOpen ? "Open" : "Closed",
                 style: TextStyle(
-                  color: model.isOpen
+                  color: isOpen
                       ? Colors.green
                       : Colors.red,
                   fontWeight: FontWeight.w600,
                 ),
               ),
+
               const SizedBox(width: 10),
+
+              // SWITCH
               CustomSwitchComponent(
-                value: model.isOpen,
+                value: isOpen,
                 onChanged: onStatusChanged,
               ),
             ],
           ),
+
           const SizedBox(height: 20),
+
+          // OPENING + CLOSING TIME
           Row(
             children: [
               Expanded(
                 child: _TimeBox(
                   title: "Opening",
-                  time: model.openingTime,
+                  time: model.startTime ?? "--:--",
                   icon: Icons.login,
                   onTap: onOpenTimeTap,
                 ),
               ),
+
               const SizedBox(width: 16),
+
               Expanded(
                 child: _TimeBox(
                   title: "Closing",
-                  time: model.closingTime,
+                  time: model.endTime ?? "--:--",
                   icon: Icons.logout,
                   onTap: onCloseTimeTap,
                 ),
@@ -86,6 +106,15 @@ class OpeningHourCardComponent extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _capitalizeDay(String day) {
+    if (day.isEmpty) {
+      return day;
+    }
+
+    return day[0].toUpperCase() +
+        day.substring(1).toLowerCase();
   }
 }
 
@@ -127,7 +156,9 @@ class _TimeBox extends StatelessWidget {
                   color: const Color(0xff8B5A2B),
                   size: 18,
                 ),
+
                 const SizedBox(width: 6),
+
                 Text(
                   title,
                   style: TextStyle(
@@ -137,7 +168,10 @@ class _TimeBox extends StatelessWidget {
                 ),
               ],
             ),
+
             const SizedBox(height: 12),
+
+            // 24 HOUR FORMAT
             Text(
               time,
               style: const TextStyle(
@@ -145,16 +179,21 @@ class _TimeBox extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+
             const SizedBox(height: 10),
-            Row(
-              children: const [
-                Spacer(),
+
+            const Row(
+              mainAxisAlignment:
+              MainAxisAlignment.end,
+              children: [
                 Icon(
                   Icons.edit_calendar,
                   size: 18,
                   color: Color(0xff8B5A2B),
                 ),
+
                 SizedBox(width: 5),
+
                 Text(
                   "Edit",
                   style: TextStyle(

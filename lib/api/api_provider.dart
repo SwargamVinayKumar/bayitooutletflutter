@@ -4,7 +4,7 @@ import 'package:get/get_connect/http/src/request/request.dart';
 
 class ApiProvider<T> extends GetConnect {
   String apiKey = '343532213454';
-  String apiLiveBaseUrl = false ? 'https://bayito-1b5b8.el.r.appspot.com/outlet/' : "http://192.168.29.4:3055/outlet/";
+  String apiLiveBaseUrl = true ? 'https://bayito-1b5b8.el.r.appspot.com/outlet/' : "http://192.168.29.4:3055/outlet/";
   String token = '';
 
   @override

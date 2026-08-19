@@ -1,20 +1,15 @@
 import 'dart:io';
 import 'package:bayitooutlet/models/requestModels/create_table_request_model.dart';
 import 'package:bayitooutlet/models/responseModels/create_table_response_model.dart';
-import 'package:bayitooutlet/models/responseModels/page_model.dart';
-import 'package:bayitooutlet/pages/all_tables_page.dart';
-import 'package:bayitooutlet/pages/main_page.dart';
 import 'package:bayitooutlet/viewModel/file_view_model.dart';
 import 'package:bayitooutlet/viewModel/table_view_model.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../api/api_provider.dart';
 import '../api/api_result.dart';
 import '../api/end_points.dart';
-import '../models/requestModels/page_request_model.dart';
 import '../models/responseModels/table_response_model.dart';
-import '../utils/custom_color.dart';
 import '../utils/preference_manager.dart';
+import '../utils/snack_bar_extension.dart';
 
 class SeatViewModel extends GetxController {
   final apiProvider = Get.put(ApiProvider());
@@ -64,13 +59,7 @@ class SeatViewModel extends GetxController {
           tableViewModel.tableDetailsObserver.value = ApiResult.success(data);
           
           Get.close(1); // Close bottom sheet
-          Get.snackbar(
-            "Success",
-            data.message ?? "Seat added successfully",
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM,
-          );
+          Get.showSnackBar(title: 'Success', message: data.message ?? "Seat added successfully",);
           return;
         }
         throw data.message ?? "Something went wrong";
@@ -78,13 +67,7 @@ class SeatViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       addSeatToTableObserver.value = ApiResult.error(e.toString());
-      Get.snackbar(
-        "Error",
-        e.toString(),
-        backgroundColor: CustomColors.secondary,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.showSnackBar(title: 'Error', message: e.toString(),);
     }
   }
 
@@ -137,13 +120,7 @@ class SeatViewModel extends GetxController {
           );
 
           Get.close(1); // Close bottom sheet
-          Get.snackbar(
-            "Success",
-            data.message ?? "Seat updated successfully",
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM,
-          );
+          Get.showSnackBar(title: 'Success', message: data.message ?? "Seat updated successfully");
           return;
         }
         throw data.message ?? "Something went wrong";
@@ -151,13 +128,7 @@ class SeatViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       updateSeatDetailsObserver.value = ApiResult.error(e.toString());
-      Get.snackbar(
-        "Error",
-        e.toString(),
-        backgroundColor: CustomColors.secondary,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.showSnackBar(title: 'Error', message: e.toString());
     }
   }
 
@@ -179,14 +150,7 @@ class SeatViewModel extends GetxController {
         final data = CreateTableResponseModel.fromJson(body);
         if (data.status == 1) {
           updateTableSeatAvailabilityObserver.value = ApiResult.success(data);
-          Get.snackbar(
-            "Success",
-            body["message"] ?? "Table availability updated successfully",
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM,
-          );
-
+          Get.showSnackBar(title: 'Success', message: body["message"] ?? "Table availability updated successfully");
           tableViewModel.tableDetailsObserver.value.whenOrNull(
             success: (fetchedDetailsResponse) {
               final fetchedDetails =
@@ -226,13 +190,7 @@ class SeatViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       updateTableSeatAvailabilityObserver.value = ApiResult.error(e.toString());
-      Get.snackbar(
-        "Error",
-        e.toString(),
-        backgroundColor: CustomColors.secondary,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.showSnackBar(title: 'Error', message: e.toString());
     }
   }
 

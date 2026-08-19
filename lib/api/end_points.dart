@@ -19,4 +19,7 @@ class EndPoints {
   static const updateTableSeatAvailability = "updateSeatAvailability";
   static const updateSeat = "updateSeat";
   static const addSeatToTable = "addSeatToTable";
+
+  static const getOutletDaySlots = "getOutletDaySlots";
+  static const updateOutletDaySlots = "updateOutletDaySlots";
 }

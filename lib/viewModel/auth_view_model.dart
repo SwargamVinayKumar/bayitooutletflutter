@@ -3,6 +3,7 @@ import 'package:bayitooutlet/models/requestModels/sign_in_request_model.dart';
 import 'package:bayitooutlet/models/requestModels/sign_up_request_model.dart';
 import 'package:bayitooutlet/models/responseModels/auth_response_model.dart';
 import 'package:bayitooutlet/models/responseModels/file_upload_response_model.dart';
+import 'package:bayitooutlet/models/responseModels/open_hour_model.dart';
 import 'package:bayitooutlet/pages/main_page.dart';
 import 'package:bayitooutlet/pages/sign_in_page.dart';
 import 'package:bayitooutlet/pages/splash_page.dart';
@@ -16,11 +17,12 @@ import '../api/api_provider.dart';
 import '../api/api_result.dart';
 import '../api/end_points.dart';
 import '../models/requestModels/auth_request_model.dart';
+import '../models/requestModels/update_hour_request_model.dart';
 import '../pages/update_version_screen.dart';
 import '../pages/user_blocked.dart';
 import '../utils/auth_utils.dart';
-import '../utils/custom_color.dart';
 import '../utils/preference_manager.dart';
+import '../utils/snack_bar_extension.dart';
 
 class AuthViewModel extends GetxController {
   final apiProvider = Get.put(ApiProvider());
@@ -34,6 +36,8 @@ class AuthViewModel extends GetxController {
   final signInObserver = ApiResult<SignInResponseModel>.init().obs;
   final signUpObserver = ApiResult<SignInResponseModel>.init().obs;
   final verifyOtpObserver = ApiResult<SignInResponseModel>.init().obs;
+  final openingHoursObserver = ApiResult<OpeningHoursResponseModel>.init().obs;
+  final updateOpeningHoursObserver = ApiResult<OpeningHoursResponseModel>.init().obs;
 
   final registerOutLetObserver = ApiResult<SignInResponseModel>.init().obs;
 
@@ -80,6 +84,10 @@ class AuthViewModel extends GetxController {
   // Location Picker State
   final locationDetails = Rxn<LocationRequestModel>();
   final locationPosition = Rxn<Position>();
+
+  // Opening Hours
+  final RxList<DaySlotModel> openingHours =
+      <DaySlotModel>[].obs;
 
 
 
@@ -128,7 +136,7 @@ class AuthViewModel extends GetxController {
       throw "Upload failed";
     } catch (e) {
       uploadFileObserver.value = ApiResult.error(e.toString());
-      Get.snackbar("Error", "Image upload failed: $e");
+      Get.showSnackBar(title: 'Error', message: "Image upload failed: $e");
       return null;
     }
   }
@@ -174,10 +182,7 @@ class AuthViewModel extends GetxController {
       }
       throw "Response Body Null";
     } catch (e) {
-      Get.snackbar("Error", e.toString(),
-          backgroundColor: CustomColors.primary,
-          colorText: CustomColors.white,
-          snackPosition: SnackPosition.BOTTOM);
+      Get.showSnackBar(title: 'Error', message: "$e");
       validaVersionObserver.value = ApiResult.error(e.toString());
     }
   }
@@ -207,7 +212,7 @@ class AuthViewModel extends GetxController {
           AuthUtils.navigateFromPageName(page);
         } else {
           signInObserver.value = ApiResult.error(data.message ?? "");
-          Get.snackbar('Failed', data.message ?? '');
+          Get.showSnackBar(title: 'Failed', message: data.message ?? '');
         }
       } else {
         signInObserver.value = ApiResult.error("Something went wrong");
@@ -224,7 +229,7 @@ class AuthViewModel extends GetxController {
           signUpEmailController.text.isEmpty ||
           mobileController.text.isEmpty ||
           signUpPasswordController.text.isEmpty) {
-        Get.snackbar("Error", "Please complete all registration steps");
+        Get.showSnackBar(title: 'Error', message: "Please complete all registration steps");
         return;
       }
 
@@ -251,10 +256,10 @@ class AuthViewModel extends GetxController {
         final data = SignInResponseModel.fromJson(body);
         if (data.status == 1) {
           signUpObserver.value = ApiResult.success(data);
-          Get.snackbar('Success', data.message ?? 'Otp Send successful');
+          Get.showSnackBar(title: 'Success', message: data.message ?? 'Otp Send successful');
         } else {
           signUpObserver.value = ApiResult.error(data.message ?? "");
-          Get.snackbar('Failed', data.message ?? '');
+          Get.showSnackBar(title: 'Failed', message: data.message ?? '');
         }
       } else {
         signUpObserver.value = ApiResult.error("Something went wrong");
@@ -271,7 +276,7 @@ class AuthViewModel extends GetxController {
           signUpEmailController.text.isEmpty ||
           mobileController.text.isEmpty ||
           signUpPasswordController.text.isEmpty || otpController.text.isEmpty) {
-        Get.snackbar("Error", "Please complete all registration steps");
+        Get.showSnackBar(title: 'Error', message: "Please complete all registration steps");
         return;
       }
 
@@ -298,11 +303,11 @@ class AuthViewModel extends GetxController {
           final page = data.data?.page;
           preferenceManager.setValue("page", page ?? "");
           preferenceManager.setValue("token", data.data?.token ?? "");
-          Get.snackbar('Success', data.message ?? 'Otp Send successful');
+          Get.showSnackBar(title: 'Success', message: data.message ?? 'Otp Send successful');
           AuthUtils.navigateFromPageName(data.data?.page);
         } else {
           verifyOtpObserver.value = ApiResult.error(data.message ?? "");
-          Get.snackbar('Failed', data.message ?? '');
+          Get.showSnackBar(title: 'Failed', message: data.message ?? '');
         }
       } else {
         verifyOtpObserver.value = ApiResult.error("Something went wrong");
@@ -320,7 +325,7 @@ class AuthViewModel extends GetxController {
       if (businessNameController.text.isEmpty ||
           gstNumberController.text.isEmpty ||
           locationDetails.value == null) {
-        Get.snackbar("Error", "Please complete all registration steps");
+        Get.showSnackBar(title: 'Error', message: "Please complete all registration steps");
         return;
       }
 
@@ -368,11 +373,11 @@ class AuthViewModel extends GetxController {
         final data = SignInResponseModel.fromJson(body);
         if (data.status == 1) {
           registerOutLetObserver.value = ApiResult.success(data);
-          Get.snackbar('Success', data.message ?? 'Register successful');
+          Get.showSnackBar(title: 'Success', message: data.message ?? 'Register successful');
           Get.offAll(() => const MainPage());
         } else {
           registerOutLetObserver.value = ApiResult.error(data.message ?? "");
-          Get.snackbar('Failed', data.message ?? '');
+          Get.showSnackBar(title: 'Failed', message: data.message ?? '');
         }
       } else {
         registerOutLetObserver.value = ApiResult.error("Something went wrong");
@@ -393,7 +398,7 @@ class AuthViewModel extends GetxController {
         if (data.status == 1) {
           fetchProfileDetailObserver.value = ApiResult.success(data);
         } else {
-          Get.snackbar('Failed', data.message ?? '');
+          Get.showSnackBar(title: 'Failed', message: data.message ?? '');
           fetchProfileDetailObserver.value = ApiResult.error(data.message ?? "");
         }
       } else {
@@ -401,6 +406,55 @@ class AuthViewModel extends GetxController {
       }
     } catch (e) {
       fetchProfileDetailObserver.value = ApiResult.error(e.toString());
+    }
+  }
+
+  Future<void> fetchTimeSlotDetails() async {
+    try {
+      openingHoursObserver.value = ApiResult.loading();
+      final response = await apiProvider.post(EndPoints.getOutletDaySlots, {});
+      final body = response.body;
+      if (response.isOk && body != null) {
+        final data = OpeningHoursResponseModel.fromJson(body);
+        if (data.success == 1) {
+          openingHours.assignAll(data.data?.daySlots ?? []);
+          openingHoursObserver.value = ApiResult.success(data);
+        } else {
+          Get.showSnackBar(title: 'Failed', message: "Something went wrong");
+          openingHoursObserver.value = ApiResult.error("Something went wrong");
+        }
+      } else {
+        openingHoursObserver.value = ApiResult.error("Something went wrong");
+      }
+    } catch (e) {
+      openingHoursObserver.value = ApiResult.error(e.toString());
+    }
+  }
+  Future<void> updateTimeSlotDetails(UpdateOpeningHoursRequest request) async {
+    try {
+      updateOpeningHoursObserver.value = ApiResult.loading();
+      final response = await apiProvider.post(EndPoints.updateOutletDaySlots, request.toJson(),);
+      final body = response.body;
+      print("Body :$body");
+      if (response.isOk && body != null) {
+        final data = OpeningHoursResponseModel.fromJson(body);
+        print("data :$data");
+        if (data.success == 1) {
+          openingHours.assignAll(data.data?.daySlots ?? [],);
+          updateOpeningHoursObserver.value = ApiResult.success(data);
+          Get.showSnackBar(title: 'Success', message: data.message ?? "",);
+
+        } else {
+          Get.showSnackBar(title: 'Failed', message: data.message ?? "",);
+          updateOpeningHoursObserver.value = ApiResult.error("Failed to update opening hours",);
+        }
+      } else {
+        updateOpeningHoursObserver.value = ApiResult.error("Failed to update opening hours",);
+        Get.showSnackBar(title: 'Failed', message: "Something went wrong",);
+      }
+    } catch (e) {
+      updateOpeningHoursObserver.value = ApiResult.error(e.toString());
+      Get.showSnackBar(title: 'Error', message: e.toString(),);
     }
   }
 }
