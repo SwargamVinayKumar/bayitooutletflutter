@@ -36,14 +36,7 @@ class CustomTabComponent extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: isSelected ? null : Colors.transparent,
-                gradient: isSelected
-                    ? const LinearGradient(
-                  colors: CustomColors.secondaryGradient,
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                )
-                    : null,
+                color: isSelected ? CustomColors.secondary : Colors.transparent,
                 border: Border.all(
                   color: Colors.grey.shade300,
                 ),

@@ -40,7 +40,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           horizontal: 16,
         ),
         decoration: BoxDecoration(
-          color: CustomColors.white.withOpacity(0.8),
+          color: CustomColors.primary.withOpacity(0.8),
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
             color: CustomColors.midGray.withOpacity(0.6),

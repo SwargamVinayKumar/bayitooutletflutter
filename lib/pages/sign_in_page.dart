@@ -19,7 +19,7 @@ class SignInPage extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
-          color: CustomColors.white,
+          color: CustomColors.primary,
         ),
         child: SafeArea(
           child: Padding(
@@ -73,7 +73,7 @@ class SignInPage extends StatelessWidget {
                   }),
                   const SizedBox(height: 30),
                   GestureDetector(
-                    onTap: () => Get.to(() => const SignUpPage()),
+                    onTap: () => Get.offAll(() => const SignUpPage()),
                     child: RichText(
                       text: const TextSpan(
                         text: "Don't have an account? ",

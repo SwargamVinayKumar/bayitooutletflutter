@@ -18,7 +18,7 @@ class HelperBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      color: CustomColors.white,
+      color: CustomColors.primary,
       child: Padding(
         padding: EdgeInsets.only(
           left: 16,
@@ -48,7 +48,7 @@ class HelperBottomSheet extends StatelessWidget {
                           margin: const EdgeInsets.symmetric(horizontal: 5),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: CustomColors.white,
+                            color: CustomColors.primary,
                             border: Border.all(width: 0.5,color: CustomColors.darkGray)
                           ),
                           child: TextButton(
@@ -56,7 +56,7 @@ class HelperBottomSheet extends StatelessWidget {
                             child: Text(
                               btn1Txt ?? "",
                               style: TextStyle(
-                                color: CustomColors.textColor,
+                                color: CustomColors.secondary,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -71,13 +71,14 @@ class HelperBottomSheet extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: CustomColors.primary,
+                            border: Border.all(width: 0.5,color: CustomColors.darkGray)
                           ),
                           child: TextButton(
                             onPressed: btn2Click,
                             child: Text(
                               btn2Txt ?? "",
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: CustomColors.secondary,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
                               ),

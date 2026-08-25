@@ -1,4 +1,4 @@
-import 'package:bayitooutlet/pages/sign_in_page.dart';
+import 'package:bayitooutlet/utils/custom_color.dart';
 import 'package:bayitooutlet/utils/progress_dialog.dart';
 import 'package:bayitooutlet/utils/state_ful_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -30,13 +30,13 @@ class _SplashPageState extends State<SplashPage> {
         // Future.delayed(const Duration(seconds: 2), () { Get.offAll(() =>  const MainPage()); });
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: CustomColors.secondary,
         body: Column(
           children: [
             Expanded(
               child: Center(
                 child: Image.asset(
-                  'assets/images/Bayito.png',
+                  'assets/images/bayitoLogo.png',
                   width: 220,
                   fit: BoxFit.contain,
                 ),

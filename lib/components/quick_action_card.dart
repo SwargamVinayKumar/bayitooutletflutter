@@ -64,7 +64,7 @@ class QuickActionCard extends StatelessWidget {
               style:  TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: isSelected == true ? CustomColors.white : Color(0xff2F2F2F),
+                color: isSelected == true ? CustomColors.primary : Color(0xff2F2F2F),
                 height: 1.4,
               ),
             ),

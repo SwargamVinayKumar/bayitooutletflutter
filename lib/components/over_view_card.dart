@@ -1,8 +1,9 @@
 import 'package:bayitooutlet/components/over_view_item.dart';
 import 'package:flutter/material.dart';
 import '../pages/all_tables_page.dart';
-import '../utils/gradient_text.dart';
 import 'package:get/get.dart';
+
+import '../utils/gradient_text.dart';
 
 class OverViewCard extends StatelessWidget {
 

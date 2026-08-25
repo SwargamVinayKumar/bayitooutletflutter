@@ -49,7 +49,7 @@ class _SignUpPageState extends State<SignUpPage> with CodeAutoFill {
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
-          color: CustomColors.white,
+          color: CustomColors.primary,
         ),
         child: SafeArea(
           child: Padding(

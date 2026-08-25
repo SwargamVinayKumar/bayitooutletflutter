@@ -1,5 +1,5 @@
-import 'package:bayitooutlet/utils/gradient_text.dart';
 import 'package:flutter/material.dart';
+import '../utils/gradient_text.dart';
 
 class BookingCardComponent extends StatelessWidget {
 

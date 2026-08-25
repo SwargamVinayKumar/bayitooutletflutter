@@ -36,7 +36,7 @@ class _UpdateVersionScreenState extends State<UpdateVersionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColors.white,
+      backgroundColor: CustomColors.primary,
       body: SafeArea(
         top: true,
         child: Padding(

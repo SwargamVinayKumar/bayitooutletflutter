@@ -42,15 +42,15 @@ class _MainPageState extends State<MainPage> {
       bool confirmExit = await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Confirm Exit'),
-          content: const Text('Are you sure you want to exit the app?'),
+          title: const Text('Confirm Exit',style: TextStyle(color: CustomColors.darkBlack)),
+          content: const Text('Are you sure you want to exit the app?',style: TextStyle(color: CustomColors.secondary),),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.pop(context,false);
                 // Get.back(result: false);
               },
-              child: const Text('No'),
+              child: const Text('No',style: TextStyle(color: CustomColors.secondary)),
             ),
             TextButton(
               onPressed: () {
@@ -58,7 +58,7 @@ class _MainPageState extends State<MainPage> {
 
                 // Get.back(result: true);
               },
-              child: const Text('Yes'),
+              child: const Text('Yes',style: TextStyle(color: CustomColors.secondary)),
             ),
           ],
         ),
@@ -98,7 +98,7 @@ class _MainPageState extends State<MainPage> {
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.transparent,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: CustomColors.white,
+          selectedItemColor: CustomColors.secondary,
           unselectedIconTheme: const IconThemeData(
             color: CustomColors.midGray,
           ),
@@ -106,7 +106,7 @@ class _MainPageState extends State<MainPage> {
           selectedLabelStyle: const TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: 10,
-              color: CustomColors.white),
+              color: CustomColors.primary),
           unselectedLabelStyle: const TextStyle(
               color: CustomColors.midGray,
               fontSize: 10,

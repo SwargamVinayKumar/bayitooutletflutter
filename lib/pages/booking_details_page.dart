@@ -101,20 +101,20 @@ class BookingDetailsPage extends StatelessWidget {
                   Expanded(
                     child: CustomGradientButton(
                       title: "Check In",
-                      gradientColors: [
-                        Color(0xff5CCB5F),
-                        Color(0xff3DAE42),
-                      ],
+                      // gradientColors: [
+                      //   Color(0xff5CCB5F),
+                      //   Color(0xff3DAE42),
+                      // ],
                       onTap: () {},
                     ),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
                     child: CustomGradientButton(
-                      gradientColors: [
-                        Color(0xffC48754),
-                        Color(0xff8B5E3C),
-                      ],
+                      // gradientColors: [
+                      //   Color(0xffC48754),
+                      //   Color(0xff8B5E3C),
+                      // ],
                       title: "Complete",
                       onTap: () {},
                     ),

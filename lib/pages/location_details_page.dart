@@ -16,7 +16,7 @@ class LocationDetailsPage extends StatelessWidget {
     final authViewModel = Get.find<AuthViewModel>();
 
     return Scaffold(
-      backgroundColor: CustomColors.white,
+      backgroundColor: CustomColors.primary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

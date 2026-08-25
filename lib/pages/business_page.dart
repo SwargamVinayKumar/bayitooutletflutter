@@ -18,7 +18,7 @@ class BusinessPage extends StatelessWidget {
     final ImagePicker picker = ImagePicker();
 
     return Scaffold(
-      backgroundColor: CustomColors.white,
+      backgroundColor: CustomColors.primary,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),

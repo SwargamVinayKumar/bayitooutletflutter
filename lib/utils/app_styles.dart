@@ -5,7 +5,7 @@ import 'custom_color.dart';
 class AppStyles {
   AppStyles._();
 
-      static  final  bottomBg = BoxDecoration(color: CustomColors.white,borderRadius: const BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)));
+      static  final  bottomBg = BoxDecoration(color: CustomColors.primary,borderRadius: const BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)));
 
   static  final  trueCallerContainerStyle = BoxDecoration(
     color: Colors.white
@@ -22,12 +22,12 @@ class AppStyles {
 
 
   static final gradientColorDecoration1 = BoxDecoration(gradient: LinearGradient(
-          colors: [CustomColors.primary.withOpacity(0.2), CustomColors.white],
+          colors: [CustomColors.primary.withOpacity(0.2), CustomColors.primary],
           transform: GradientRotation(0.1), // rotates the gradient (in radians)
           ),borderRadius: BorderRadius.circular(10));
 
       static final gradientColorDecoration2 = BoxDecoration(gradient: LinearGradient(
-        colors: [CustomColors.green.withOpacity(0.2), CustomColors.white],
+        colors: [CustomColors.secondary.withOpacity(0.2), CustomColors.primary],
         transform: GradientRotation(0.1), // rotates the gradient (in radians)
       ),borderRadius: BorderRadius.circular(10));
 
@@ -78,7 +78,7 @@ class AppStyles {
       );
 
       static  final  whiteCircleBg = BoxDecoration(
-          color: CustomColors.white
+          color: CustomColors.primary
           ,borderRadius: BorderRadius.circular(500),
           border: Border.all(
               width: 0.5,
@@ -175,7 +175,7 @@ class AppStyles {
         ,borderRadius: BorderRadius.circular(200)
     );
 
-    static final strokeBorder = BoxDecoration(color: CustomColors.white,borderRadius: BorderRadius.circular(200),border: Border.all(width: 0.8,color: Color(0xFFE2E2E2)));
+    static final strokeBorder = BoxDecoration(color: CustomColors.primary,borderRadius: BorderRadius.circular(200),border: Border.all(width: 0.8,color: Color(0xFFE2E2E2)));
 
 
   static  final  secondaryContainerStyle = BoxDecoration(
