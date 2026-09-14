@@ -1,4 +1,5 @@
 import 'package:bayitooutlet/pages/splash_page.dart';
+import 'package:bayitooutlet/utils/custom_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +16,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Bayito',
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        fontFamily: 'Inter',
+        colorScheme: ColorScheme.fromSeed(seedColor: CustomColors.primary),
+        useMaterial3: true,
       ),
       home: SplashPage(),
     );

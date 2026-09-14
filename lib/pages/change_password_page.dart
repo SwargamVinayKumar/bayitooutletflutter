@@ -1,8 +1,7 @@
 import 'package:bayitooutlet/components/custom_textfield.dart';
+import 'package:bayitooutlet/utils/snack_bar_extension.dart';
 import 'package:flutter/material.dart';
-
-
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../components/custom_gradient_button.dart';
 
@@ -215,10 +214,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     hasSpecial &&
                     passwordsMatch
                     ? () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Password Updated Successfully"),
-                    ),
+                  Get.showCustomSnackBar(
+                    message: "Password Updated Successfully",
                   );
                 }
                     : null,

@@ -59,7 +59,7 @@ class SeatViewModel extends GetxController {
           tableViewModel.tableDetailsObserver.value = ApiResult.success(data);
           
           Get.close(1); // Close bottom sheet
-          Get.showSnackBar(title: 'Success', message: data.message ?? "Seat added successfully",);
+          Get.showCustomSnackBar(title: 'Success', message: data.message ?? "Seat added successfully",);
           return;
         }
         throw data.message ?? "Something went wrong";
@@ -67,7 +67,7 @@ class SeatViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       addSeatToTableObserver.value = ApiResult.error(e.toString());
-      Get.showSnackBar(title: 'Error', message: e.toString(),);
+      Get.showCustomSnackBar(title: 'Error', message: e.toString(),);
     }
   }
 
@@ -120,7 +120,7 @@ class SeatViewModel extends GetxController {
           );
 
           Get.close(1); // Close bottom sheet
-          Get.showSnackBar(title: 'Success', message: data.message ?? "Seat updated successfully");
+          Get.showCustomSnackBar(title: 'Success', message: data.message ?? "Seat updated successfully");
           return;
         }
         throw data.message ?? "Something went wrong";
@@ -128,7 +128,7 @@ class SeatViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       updateSeatDetailsObserver.value = ApiResult.error(e.toString());
-      Get.showSnackBar(title: 'Error', message: e.toString());
+      Get.showCustomSnackBar(title: 'Error', message: e.toString());
     }
   }
 
@@ -150,7 +150,7 @@ class SeatViewModel extends GetxController {
         final data = CreateTableResponseModel.fromJson(body);
         if (data.status == 1) {
           updateTableSeatAvailabilityObserver.value = ApiResult.success(data);
-          Get.showSnackBar(title: 'Success', message: body["message"] ?? "Table availability updated successfully");
+          Get.showCustomSnackBar(title: 'Success', message: body["message"] ?? "Table availability updated successfully");
           tableViewModel.tableDetailsObserver.value.whenOrNull(
             success: (fetchedDetailsResponse) {
               final fetchedDetails =
@@ -190,7 +190,7 @@ class SeatViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       updateTableSeatAvailabilityObserver.value = ApiResult.error(e.toString());
-      Get.showSnackBar(title: 'Error', message: e.toString());
+      Get.showCustomSnackBar(title: 'Error', message: e.toString());
     }
   }
 

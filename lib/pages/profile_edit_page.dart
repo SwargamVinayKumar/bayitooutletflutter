@@ -1,6 +1,8 @@
 import 'package:bayitooutlet/components/custom_gradient_button.dart';
 import 'package:bayitooutlet/components/profile_image_picker_component.dart';
+import 'package:bayitooutlet/utils/snack_bar_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../components/profile_form_component.dart';
 
@@ -45,10 +47,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     super.dispose();
   }
   void _changePhoto() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Image Picker Coming Soon"),
-      ),
+    Get.showCustomSnackBar(
+      message: "Image Picker Coming Soon",
     );
   }
 
@@ -111,13 +111,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 child: CustomGradientButton(
                   title: "Save Changes",
                   onTap: () {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          "Profile Updated Successfully",
-                        ),
-                      ),
+                    Get.showCustomSnackBar(
+                      message: "Profile Updated Successfully",
                     );
                   },
                 ),

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:bayitooutlet/models/requestModels/create_table_request_model.dart';
+import 'package:bayitooutlet/models/responseModels/amenity_response_model.dart';
 import 'package:bayitooutlet/models/responseModels/create_table_response_model.dart';
 import 'package:bayitooutlet/models/responseModels/page_model.dart';
 import 'package:bayitooutlet/pages/main_page.dart';
@@ -25,7 +26,7 @@ class TableViewModel extends GetxController {
   // Create Table Fields
   final tableNumberController = TextEditingController();
   final descriptionController = TextEditingController();
-  final selectedCategory = 0.obs;
+  final selectedCategory = "Corner".obs;
   final seatCount = 1.obs;
   final seats = <SeatRequestModel>[].obs;
   
@@ -36,6 +37,17 @@ class TableViewModel extends GetxController {
   // Seat Images (Index to Files)
   final seatImages = <int, List<File>>{}.obs;
 
+  // Amenities
+  final selectedAmenities = <String>[].obs;
+
+  final Rx<PaginationModel<Rx<ApiResult<FetchAmenitiesResponse>>>> fetchAmenitiesObserver = PaginationModel(
+    data: ApiResult<FetchAmenitiesResponse>.init().obs,
+    isLoading: false,
+    isPaginationCompleted: false,
+    page: 1,
+    error: "",
+  ).obs;
+
   final createTableObserver = ApiResult<CreateTableResponseModel>.init().obs;
   final tableDetailsObserver = ApiResult<CreateTableResponseModel>.init().obs;
 
@@ -45,12 +57,13 @@ class TableViewModel extends GetxController {
   void clearFields() {
     tableNumberController.clear();
     descriptionController.clear();
-    selectedCategory.value = 0;
+    selectedCategory.value = "Corner";
     seatCount.value = 1;
     seats.clear();
     tableImages.clear();
     tableImagesUrls.clear();
     seatImages.clear();
+    selectedAmenities.clear();
     createTableObserver.value = ApiResult.init();
   }
 
@@ -121,10 +134,11 @@ class TableViewModel extends GetxController {
 
       final request = CreateTableRequestModel(
         tableNumber: tableNumberController.text,
-        seatType: selectedCategory.value == 0 ? "single" : selectedCategory.value == 1 ? "double" : "family",
+        seatType: selectedCategory.value,
         seatCapacity: seatCount.value,
         images: tableImagesUrls.toList(),
         description:descriptionController.text,
+        amenities: selectedAmenities.toList(),
         seats: finalSeats,
       );
 
@@ -140,7 +154,7 @@ class TableViewModel extends GetxController {
         final responseData = CreateTableResponseModel.fromJson(body);
         if (responseData.status == 1) {
           createTableObserver.value = ApiResult.success(responseData);
-          Get.showSnackBar(title: 'Success', message: responseData.message ?? "Table created successfully");
+          Get.showCustomSnackBar(title: 'Success', message: responseData.message ?? "Table created successfully");
           clearFields();
           Get.offAll(() => MainPage());
           return;
@@ -150,7 +164,7 @@ class TableViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       createTableObserver.value = ApiResult.error(e.toString());
-      Get.showSnackBar(title: 'Error', message: e.toString());
+      Get.showCustomSnackBar(title: 'Error', message: e.toString());
     }
   }
 
@@ -196,7 +210,7 @@ class TableViewModel extends GetxController {
           updateTableDetailsObserver.value = ApiResult.success(data);
           tableDetailsObserver.value = ApiResult.success(data);
           Get.close(1);
-          Get.showSnackBar(title: 'Success', message: data.message ?? "Table updated successfully");
+          Get.showCustomSnackBar(title: 'Success', message: data.message ?? "Table updated successfully");
           return;
         }
         throw data.message ?? "Something went wrong";
@@ -204,7 +218,7 @@ class TableViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       updateTableDetailsObserver.value = ApiResult.error(e.toString());
-      Get.showSnackBar(title: 'Error', message: e.toString());
+      Get.showCustomSnackBar(title: 'Error', message: e.toString());
     }
   }
 
@@ -225,7 +239,7 @@ class TableViewModel extends GetxController {
         final data = CreateTableResponseModel.fromJson(body);
         if (data.status == 1) {
           updateTableAvailabilityObserver.value = ApiResult.success(data);
-          Get.showSnackBar(title: 'Success', message: body["message"] ?? "Table availability updated successfully");
+          Get.showCustomSnackBar(title: 'Success', message: body["message"] ?? "Table availability updated successfully");
           tableDetailsObserver.value.whenOrNull(success: (fetchedDetailsResponse){
             final fetchedDetails = (fetchedDetailsResponse as CreateTableResponseModel).data;
             final updatedModel = fetchedDetails?.copyWith(available: available);
@@ -240,7 +254,7 @@ class TableViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       updateTableAvailabilityObserver.value = ApiResult.error(e.toString());
-      Get.showSnackBar(title: 'Error', message: e.toString());
+      Get.showCustomSnackBar(title: 'Error', message: e.toString());
     }
   }
 
@@ -357,7 +371,7 @@ class TableViewModel extends GetxController {
       observer.value.data.value = ApiResult.error(e.toString());
       observer.value.isLoading = false;
       observer.refresh();
-      Get.showSnackBar(title: 'Error', message: e.toString());
+      Get.showCustomSnackBar(title: 'Error', message: e.toString());
     }
   }
 
@@ -387,13 +401,80 @@ class TableViewModel extends GetxController {
       throw "Response Body Null";
     } catch (e) {
       tableDetailsObserver.value = ApiResult.error(e.toString());
-      Get.showSnackBar(title: 'Error', message: e.toString());
+      Get.showCustomSnackBar(title: 'Error', message: e.toString());
     }
   }
 
+  Future<void> fetchAmenities(bool refresh) async {
+    final observer = fetchAmenitiesObserver;
 
+    try {
+      if (refresh) {
+        observer.value = PaginationModel(
+          data: ApiResult<FetchAmenitiesResponse>.init().obs,
+          isLoading: false,
+          isPaginationCompleted: false,
+          page: 1,
+          error: "",
+        );
+      }
 
+      if (observer.value.isPaginationCompleted || observer.value.isLoading) {
+        return;
+      }
 
+      if (observer.value.page == 1) {
+        observer.value.data.value = ApiResult.loading();
+      } else {
+        observer.value.isLoading = true;
+        observer.refresh();
+      }
 
+      final response = await apiProvider.post(
+        EndPoints.fetchAmenities,
+        {"page": observer.value.page},
+      );
+
+      final body = response.body;
+
+      if (response.isOk && body != null) {
+        final responseData = FetchAmenitiesResponse.fromJson(body);
+
+        if (responseData.status == 1) {
+          final ApiResult<FetchAmenitiesResponse> currentState = observer.value.data.value;
+
+          currentState.maybeWhen(
+            success: (oldData) {
+              final oldAmenities = oldData?.data?.toList() ?? [];
+              oldAmenities.addAll(responseData.data ?? []);
+
+              observer.value.data.value = ApiResult.success(
+                responseData.copyWith(data: oldAmenities),
+              );
+            },
+            orElse: () {
+              observer.value.data.value = ApiResult.success(responseData);
+            },
+          );
+          observer.value.page++;
+
+          if ((responseData.data?.length ?? 0) < 10) {
+            observer.value.isPaginationCompleted = true;
+          }
+
+          observer.value.isLoading = false;
+          observer.refresh();
+          return;
+        }
+        throw responseData.message ?? "Something went wrong";
+      }
+      throw "Response Body Null";
+    } catch (e) {
+      observer.value.data.value = ApiResult.error(e.toString());
+      observer.value.isLoading = false;
+      observer.refresh();
+      Get.showCustomSnackBar(title: 'Error', message: e.toString());
+    }
+  }
 }
 

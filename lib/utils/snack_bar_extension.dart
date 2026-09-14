@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'custom_color.dart';
 
 extension GetSnackbarExtension on GetInterface {
-  void showSnackBar({
+  void showCustomSnackBar({
     String? title,
     required String message,
     Duration? duration,

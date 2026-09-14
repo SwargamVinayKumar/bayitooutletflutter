@@ -136,7 +136,7 @@ class AuthViewModel extends GetxController {
       throw "Upload failed";
     } catch (e) {
       uploadFileObserver.value = ApiResult.error(e.toString());
-      Get.showSnackBar(title: 'Error', message: "Image upload failed: $e");
+      Get.showCustomSnackBar(title: 'Error', message: "Image upload failed: $e");
       return null;
     }
   }
@@ -182,7 +182,7 @@ class AuthViewModel extends GetxController {
       }
       throw "Response Body Null";
     } catch (e) {
-      Get.showSnackBar(title: 'Error', message: "$e");
+      Get.showCustomSnackBar(title: 'Error', message: "$e");
       validaVersionObserver.value = ApiResult.error(e.toString());
     }
   }
@@ -212,7 +212,7 @@ class AuthViewModel extends GetxController {
           AuthUtils.navigateFromPageName(page);
         } else {
           signInObserver.value = ApiResult.error(data.message ?? "");
-          Get.showSnackBar(title: 'Failed', message: data.message ?? '');
+          Get.showCustomSnackBar(title: 'Failed', message: data.message ?? '');
         }
       } else {
         signInObserver.value = ApiResult.error("Something went wrong");
@@ -229,7 +229,7 @@ class AuthViewModel extends GetxController {
           signUpEmailController.text.isEmpty ||
           mobileController.text.isEmpty ||
           signUpPasswordController.text.isEmpty) {
-        Get.showSnackBar(title: 'Error', message: "Please complete all registration steps");
+        Get.showCustomSnackBar(title: 'Error', message: "Please complete all registration steps");
         return;
       }
 
@@ -256,10 +256,10 @@ class AuthViewModel extends GetxController {
         final data = SignInResponseModel.fromJson(body);
         if (data.status == 1) {
           signUpObserver.value = ApiResult.success(data);
-          Get.showSnackBar(title: 'Success', message: data.message ?? 'Otp Send successful');
+          Get.showCustomSnackBar(title: 'Success', message: data.message ?? 'Otp Send successful');
         } else {
           signUpObserver.value = ApiResult.error(data.message ?? "");
-          Get.showSnackBar(title: 'Failed', message: data.message ?? '');
+          Get.showCustomSnackBar(title: 'Failed', message: data.message ?? '');
         }
       } else {
         signUpObserver.value = ApiResult.error("Something went wrong");
@@ -276,7 +276,7 @@ class AuthViewModel extends GetxController {
           signUpEmailController.text.isEmpty ||
           mobileController.text.isEmpty ||
           signUpPasswordController.text.isEmpty || otpController.text.isEmpty) {
-        Get.showSnackBar(title: 'Error', message: "Please complete all registration steps");
+        Get.showCustomSnackBar(title: 'Error', message: "Please complete all registration steps");
         return;
       }
 
@@ -303,11 +303,11 @@ class AuthViewModel extends GetxController {
           final page = data.data?.page;
           preferenceManager.setValue("page", page ?? "");
           preferenceManager.setValue("token", data.data?.token ?? "");
-          Get.showSnackBar(title: 'Success', message: data.message ?? 'Otp Send successful');
+          Get.showCustomSnackBar(title: 'Success', message: data.message ?? 'Otp Send successful');
           AuthUtils.navigateFromPageName(data.data?.page);
         } else {
           verifyOtpObserver.value = ApiResult.error(data.message ?? "");
-          Get.showSnackBar(title: 'Failed', message: data.message ?? '');
+          Get.showCustomSnackBar(title: 'Failed', message: data.message ?? '');
         }
       } else {
         verifyOtpObserver.value = ApiResult.error("Something went wrong");
@@ -325,7 +325,7 @@ class AuthViewModel extends GetxController {
       if (businessNameController.text.isEmpty ||
           gstNumberController.text.isEmpty ||
           locationDetails.value == null) {
-        Get.showSnackBar(title: 'Error', message: "Please complete all registration steps");
+        Get.showCustomSnackBar(title: 'Error', message: "Please complete all registration steps");
         return;
       }
 
@@ -373,11 +373,11 @@ class AuthViewModel extends GetxController {
         final data = SignInResponseModel.fromJson(body);
         if (data.status == 1) {
           registerOutLetObserver.value = ApiResult.success(data);
-          Get.showSnackBar(title: 'Success', message: data.message ?? 'Register successful');
+          Get.showCustomSnackBar(title: 'Success', message: data.message ?? 'Register successful');
           Get.offAll(() => const MainPage());
         } else {
           registerOutLetObserver.value = ApiResult.error(data.message ?? "");
-          Get.showSnackBar(title: 'Failed', message: data.message ?? '');
+          Get.showCustomSnackBar(title: 'Failed', message: data.message ?? '');
         }
       } else {
         registerOutLetObserver.value = ApiResult.error("Something went wrong");
@@ -398,7 +398,7 @@ class AuthViewModel extends GetxController {
         if (data.status == 1) {
           fetchProfileDetailObserver.value = ApiResult.success(data);
         } else {
-          Get.showSnackBar(title: 'Failed', message: data.message ?? '');
+          Get.showCustomSnackBar(title: 'Failed', message: data.message ?? '');
           fetchProfileDetailObserver.value = ApiResult.error(data.message ?? "");
         }
       } else {
@@ -420,7 +420,7 @@ class AuthViewModel extends GetxController {
           openingHours.assignAll(data.data?.daySlots ?? []);
           openingHoursObserver.value = ApiResult.success(data);
         } else {
-          Get.showSnackBar(title: 'Failed', message: "Something went wrong");
+          Get.showCustomSnackBar(title: 'Failed', message: "Something went wrong");
           openingHoursObserver.value = ApiResult.error("Something went wrong");
         }
       } else {
@@ -442,19 +442,19 @@ class AuthViewModel extends GetxController {
         if (data.success == 1) {
           openingHours.assignAll(data.data?.daySlots ?? [],);
           updateOpeningHoursObserver.value = ApiResult.success(data);
-          Get.showSnackBar(title: 'Success', message: data.message ?? "",);
+          Get.showCustomSnackBar(title: 'Success', message: data.message ?? "",);
 
         } else {
-          Get.showSnackBar(title: 'Failed', message: data.message ?? "",);
+          Get.showCustomSnackBar(title: 'Failed', message: data.message ?? "",);
           updateOpeningHoursObserver.value = ApiResult.error("Failed to update opening hours",);
         }
       } else {
         updateOpeningHoursObserver.value = ApiResult.error("Failed to update opening hours",);
-        Get.showSnackBar(title: 'Failed', message: "Something went wrong",);
+        Get.showCustomSnackBar(title: 'Failed', message: "Something went wrong",);
       }
     } catch (e) {
       updateOpeningHoursObserver.value = ApiResult.error(e.toString());
-      Get.showSnackBar(title: 'Error', message: e.toString(),);
+      Get.showCustomSnackBar(title: 'Error', message: e.toString(),);
     }
   }
 }

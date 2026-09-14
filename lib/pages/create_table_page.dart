@@ -1,6 +1,8 @@
 import 'package:bayitooutlet/components/custom_textfield.dart';
 import 'package:bayitooutlet/components/quick_action_card.dart';
 import 'package:bayitooutlet/pages/add_seat_page.dart';
+import 'package:bayitooutlet/pages/amenities_page.dart';
+import 'package:bayitooutlet/utils/custom_color.dart';
 import 'package:bayitooutlet/viewModel/table_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,8 +25,18 @@ class _CreateTablePageState extends State<CreateTablePage> {
 
   final List<Map<String, dynamic>> categories = [
     {
-      "title": "Single",
-      "value":"single",
+      "title": "Corner Table",
+      "value":"Corner",
+      "icon": Icons.table_bar_outlined,
+    },
+    {
+      "title": "Middle Table",
+      "value":"Middle",
+      "icon": Icons.table_bar_outlined,
+    },
+    {
+      "title": "Ventilation Table",
+      "value":"Ventilation",
       "icon": Icons.table_bar_outlined,
     },
     {
@@ -34,8 +46,38 @@ class _CreateTablePageState extends State<CreateTablePage> {
     },
     {
       "title": "Family",
-      "value":"family",
+      "value":"Family",
       "icon": Icons.family_restroom,
+    },
+    {
+      "title": "Photography Table",
+      "value":"Photography",
+      "icon": Icons.table_bar_outlined,
+    },
+    {
+      "title": "Work Table",
+      "value":"Work",
+      "icon": Icons.table_bar_outlined,
+    },
+    {
+      "title": "Business Table",
+      "value":"Business",
+      "icon": Icons.table_bar_outlined,
+    },
+    {
+      "title": "Study Table",
+      "value":"Study",
+      "icon": Icons.table_bar_outlined,
+    },
+    {
+      "title": "Sofa Type Table",
+      "value":"Sofa Type",
+      "icon": Icons.table_bar_outlined,
+    },
+    {
+      "title": "Date & Couple Table",
+      "value":"Date & Couple",
+      "icon": Icons.table_bar_outlined,
     },
   ];
 
@@ -85,6 +127,19 @@ class _CreateTablePageState extends State<CreateTablePage> {
               ),
               const SizedBox(height: 12),
               const Text(
+                "Description (Optional)",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 8),
+              CustomTextFieldComponent(
+                hintText: "Description",
+                textController: tableViewModel.descriptionController,
+              ),
+              const SizedBox(height: 18),
+              const Text(
                 "Category",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -103,31 +158,15 @@ class _CreateTablePageState extends State<CreateTablePage> {
                       child: Obx(() => QuickActionCard(
                         title: categories[index]["title"],
                         icon: categories[index]["icon"],
-                        isSelected: tableViewModel.selectedCategory.value == index,
+                        isSelected: tableViewModel.selectedCategory.value == categories[index]["value"],
                         onTap: () {
-                          tableViewModel.selectedCategory.value = index;
+                          tableViewModel.selectedCategory.value = categories[index]["value"];
                         },
                       )),
                     );
                   },
                 ),
               ),
-              const SizedBox(height: 12),
-              const Text(
-                "Capacity (Seats)",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                ),
-              ),
-              Obx(() => SeatCounterComponent(
-                value: tableViewModel.seatCount.value,
-                min: 1,
-                max: 20,
-                onChanged: (value) {
-                  tableViewModel.seatCount.value = value;
-                },
-              )),
               const SizedBox(height: 12),
               const Text(
                 "Table Images",
@@ -192,20 +231,58 @@ class _CreateTablePageState extends State<CreateTablePage> {
                   },
                 )),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 18),
               const Text(
-                "Description (Optional)",
+                "Amenities",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
                 ),
               ),
               const SizedBox(height: 8),
-              CustomTextFieldComponent(
-                hintText: "Description",
-                textController: tableViewModel.descriptionController,
+              InkWell(
+                onTap: () => Get.to(() => const AmenitiesPage()),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.apps, color: CustomColors.primary),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Obx(() => Text(
+                          tableViewModel.selectedAmenities.isEmpty
+                              ? "Select Amenities"
+                              : "${tableViewModel.selectedAmenities.length} Amenities Selected",
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        )),
+                      ),
+                      const Icon(Icons.arrow_forward_ios, size: 16),
+                    ],
+                  ),
+                ),
               ),
               const SizedBox(height: 18),
+              const Text(
+                "Capacity (Seats)",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+              Obx(() => SeatCounterComponent(
+                value: tableViewModel.seatCount.value,
+                min: 1,
+                max: 20,
+                onChanged: (value) {
+                  tableViewModel.seatCount.value = value;
+                },
+              )),
+              const SizedBox(height: 12),
               CustomGradientButton(
                 title: "Add Seats",
                 onTap: () {

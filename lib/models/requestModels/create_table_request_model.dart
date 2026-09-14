@@ -11,6 +11,7 @@ abstract class CreateTableRequestModel with _$CreateTableRequestModel {
     List<String>? images,
     int? seatCapacity,
     String? description,
+    List<String>? amenities,
     List<SeatRequestModel>? seats,
   }) = _CreateTableRequestModel;
 
