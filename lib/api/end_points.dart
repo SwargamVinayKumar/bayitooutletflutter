@@ -23,4 +23,7 @@ class EndPoints {
   static const getOutletDaySlots = "getOutletDaySlots";
   static const updateOutletDaySlots = "updateOutletDaySlots";
   static const fetchAmenities = "fetchAmenities";
+
+  static const fetchBookings = "fetchBookings";
+  static const fetchUserBookingDetails = "fetchUserBookingDetails";
 }
