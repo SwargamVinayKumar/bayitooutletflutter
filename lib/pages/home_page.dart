@@ -2,6 +2,7 @@ import 'package:bayitooutlet/components/over_view_card.dart';
 import 'package:bayitooutlet/components/table_item.dart';
 import 'package:bayitooutlet/pages/all_tables_page.dart';
 import 'package:bayitooutlet/pages/create_table_page.dart';
+import 'package:bayitooutlet/pages/statistics_page.dart';
 import 'package:bayitooutlet/pages/table_details_page.dart';
 import 'package:bayitooutlet/utils/state_ful_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -137,33 +138,33 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 12),
                   Row(
-                    children:  [
+                    children: [
                       Expanded(
                         child: QuickActionCard(
                           icon: Icons.add_circle_outline,
                           title: "Create Table",
-                          onTap: (){
-                            Get.to(() => CreateTablePage());
+                          onTap: () {
+                            Get.to(() => const CreateTablePage());
                           },
                         ),
                       ),
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: QuickActionCard(
+                          icon: Icons.bar_chart,
+                          title: "Statistics",
+                          onTap: () {
+                            Get.to(() => const StatisticsPage());
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: QuickActionCard(
                           icon: Icons.calendar_today_outlined,
                           title: "Check\nAvailability",
-                          onTap: (){
-                            Get.to(() => CheckAvailabilityPage());
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: QuickActionCard(
-                          icon: Icons.refresh,
-                          title: "Refresh",
-                          onTap: () async {
-                            await _refreshData();
+                          onTap: () {
+                            Get.to(() => const CheckAvailabilityPage());
                           },
                         ),
                       ),

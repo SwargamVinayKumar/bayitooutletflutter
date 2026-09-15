@@ -24,7 +24,11 @@ class AvailabilitySeatComponent extends StatelessWidget {
         return const Color(0xff3B82F6);
 
       case "Unavailable":
+      case "maintenance":
         return const Color(0xff9CA3AF);
+
+      case "selected":
+        return const Color(0xff3B82F6);
 
       default:
         return Colors.grey;

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:bayitooutlet/models/requestModels/create_table_request_model.dart';
 import 'package:bayitooutlet/models/responseModels/amenity_response_model.dart';
+import 'package:bayitooutlet/models/responseModels/availability_check_response_model.dart';
 import 'package:bayitooutlet/models/responseModels/create_table_response_model.dart';
 import 'package:bayitooutlet/models/responseModels/page_model.dart';
 import 'package:bayitooutlet/pages/main_page.dart';
@@ -47,6 +48,8 @@ class TableViewModel extends GetxController {
     page: 1,
     error: "",
   ).obs;
+
+  final checkAvailabilityObserver = ApiResult<AvailabilityCheckResponse>.init().obs;
 
   final createTableObserver = ApiResult<CreateTableResponseModel>.init().obs;
   final tableDetailsObserver = ApiResult<CreateTableResponseModel>.init().obs;
@@ -375,7 +378,41 @@ class TableViewModel extends GetxController {
     }
   }
 
+  Future<void> checkAvailability({
+    required String date,
+    required String startTime,
+    required String endTime,
+    String? tableId,
+    String? seatId,
+  }) async {
+    try {
+      checkAvailabilityObserver.value = const ApiResult.loading();
 
+      Map<String, dynamic> body = {
+        "date": date,
+        "startTime": startTime,
+        "endTime": endTime,
+      };
+
+      if (tableId != null) body["tableId"] = tableId;
+      if (seatId != null) body["seatId"] = seatId;
+
+      final response = await apiProvider.post(EndPoints.checkAvailability, body);
+
+      if (response.isOk && response.body != null) {
+        final data = AvailabilityCheckResponse.fromJson(response.body);
+        if (data.status == 1) {
+          checkAvailabilityObserver.value = ApiResult.success(data);
+          return;
+        }
+        throw data.message ?? "Failed to fetch availability";
+      }
+      throw "Response Body Null";
+    } catch (e) {
+      checkAvailabilityObserver.value = ApiResult.error(e.toString());
+      Get.showCustomSnackBar(title: 'Error', message: e.toString());
+    }
+  }
 
   Future<void> fetchTableDetails(String tableId) async {
     try {
