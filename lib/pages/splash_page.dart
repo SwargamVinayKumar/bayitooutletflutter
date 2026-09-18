@@ -26,7 +26,11 @@ class _SplashPageState extends State<SplashPage> {
       onInit: () async {
 
         final version = await AuthUtils.getAppVersion();
-        await authViewModel.validateVersion(ValidateVersionRequestModel(version: version));
+        await Future.wait([
+        authViewModel.determinePosition(),
+        authViewModel.validateVersion(ValidateVersionRequestModel(version: version)),
+        ]);
+ ;
         // Future.delayed(const Duration(seconds: 2), () { Get.offAll(() =>  const MainPage()); });
       },
       child: Scaffold(

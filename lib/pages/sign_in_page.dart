@@ -73,7 +73,7 @@ class SignInPage extends StatelessWidget {
                   }),
                   const SizedBox(height: 30),
                   GestureDetector(
-                    onTap: () => Get.offAll(() => const SignUpPage()),
+                    onTap: () => Get.to(() => const SignUpPage()),
                     child: RichText(
                       text: const TextSpan(
                         text: "Don't have an account? ",

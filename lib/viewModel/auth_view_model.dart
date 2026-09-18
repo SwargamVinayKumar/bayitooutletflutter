@@ -94,10 +94,10 @@ class AuthViewModel extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _determinePosition();
+    determinePosition();
   }
 
-  Future<void> _determinePosition() async {
+  Future<void> determinePosition() async {
     try {
       Position position = await GeoUtil().getCurrentPosition();
       locationPosition.value = position;
@@ -140,6 +140,9 @@ class AuthViewModel extends GetxController {
       return null;
     }
   }
+
+
+
 
   Future<void> validateVersion(ValidateVersionRequestModel request) async {
     try {

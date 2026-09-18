@@ -5,6 +5,8 @@ import 'package:bayitooutlet/models/responseModels/booking_response_model.dart';
 import 'package:bayitooutlet/models/responseModels/page_model.dart';
 import 'package:get/get.dart';
 
+import '../utils/snack_bar_extension.dart';
+
 class BookingViewModel extends GetxController {
   final apiProvider = Get.put(ApiProvider());
 
@@ -37,6 +39,62 @@ class BookingViewModel extends GetxController {
   ).obs;
 
   final fetchBookingDetailsObserver = ApiResult<BookingDetailsResponse>.init().obs;
+  final bookingActionObserver = ApiResult<dynamic>.init().obs;
+
+  Future<void> checkInUser(String bookingId, String otp) async {
+    try {
+      bookingActionObserver.value = const ApiResult.loading();
+      final response = await apiProvider.post(EndPoints.checkInUser, {
+        "bookingId": bookingId,
+        "bookingOTP": otp,
+      });
+
+      if (response.isOk && response.body != null) {
+        if (response.body["status"] == 1) {
+          bookingActionObserver.value = ApiResult.success(response.body);
+          Get.showCustomSnackBar(
+            title: 'Success',
+            message: response.body["message"] ?? 'Check-in successful',
+          );
+          fetchBookingDetails(bookingId); // Refresh details
+        } else {
+          throw response.body["message"] ?? "Check-in failed";
+        }
+      } else {
+        throw "Something went wrong";
+      }
+    } catch (e) {
+      bookingActionObserver.value = ApiResult.error(e.toString());
+      Get.showCustomSnackBar(title: 'Error', message: e.toString());
+    }
+  }
+
+  Future<void> checkOutUser(String bookingId) async {
+    try {
+      bookingActionObserver.value = const ApiResult.loading();
+      final response = await apiProvider.post(EndPoints.checkOutUser, {
+        "bookingId": bookingId,
+      });
+
+      if (response.isOk && response.body != null) {
+        if (response.body["status"] == 1) {
+          bookingActionObserver.value = ApiResult.success(response.body);
+          Get.showCustomSnackBar(
+            title: 'Success',
+            message: response.body["message"] ?? 'Check-out successful',
+          );
+          fetchBookingDetails(bookingId); // Refresh details
+        } else {
+          throw response.body["message"] ?? "Check-out failed";
+        }
+      } else {
+        throw "Something went wrong";
+      }
+    } catch (e) {
+      bookingActionObserver.value = ApiResult.error(e.toString());
+      Get.showCustomSnackBar(title: 'Error', message: e.toString());
+    }
+  }
 
   Future<void> fetchUserBookingsByTab(int tabIndex, {bool isRefresh = false}) async {
     String status = "confirmed";

@@ -32,12 +32,12 @@ class _CreateTablePageState extends State<CreateTablePage> {
     {
       "title": "Middle Table",
       "value":"Middle",
-      "icon": Icons.table_bar_outlined,
+      "icon": Icons.deck_outlined,
     },
     {
       "title": "Ventilation Table",
       "value":"Ventilation",
-      "icon": Icons.table_bar_outlined,
+      "icon": Icons.window_sharp,
     },
     {
       "title": "Couple",
@@ -52,32 +52,32 @@ class _CreateTablePageState extends State<CreateTablePage> {
     {
       "title": "Photography Table",
       "value":"Photography",
-      "icon": Icons.table_bar_outlined,
+      "icon": Icons.camera,
     },
     {
       "title": "Work Table",
       "value":"Work",
-      "icon": Icons.table_bar_outlined,
+      "icon": Icons.laptop,
     },
     {
       "title": "Business Table",
       "value":"Business",
-      "icon": Icons.table_bar_outlined,
+      "icon": Icons.handshake,
     },
     {
       "title": "Study Table",
       "value":"Study",
-      "icon": Icons.table_bar_outlined,
+      "icon": Icons.book,
     },
     {
       "title": "Sofa Type Table",
       "value":"Sofa Type",
-      "icon": Icons.table_bar_outlined,
+      "icon": Icons.chair,
     },
     {
       "title": "Date & Couple Table",
       "value":"Date & Couple",
-      "icon": Icons.table_bar_outlined,
+      "icon": Icons.deck_outlined,
     },
   ];
 

@@ -26,6 +26,8 @@ class EndPoints {
 
   static const fetchBookings = "fetchBookings";
   static const fetchUserBookingDetails = "fetchUserBookingDetails";
+  static const checkInUser = "checkInUser";
+  static const checkOutUser = "checkOutUser";
   static const fetchStatistics = "fetchStatistics";
   static const checkAvailability = "checkAvailability";
 }
