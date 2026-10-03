@@ -1,0 +1,79 @@
+import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/string_extensions.dart';
+
+import '../utils/custom_color.dart';
+
+class OutletDetailCard extends StatelessWidget {
+
+  final IconData? icon;
+  final String title;
+  final bool isChip;
+  final VoidCallback? onTap;
+
+  const OutletDetailCard({
+    super.key,
+    this.icon,
+    required this.title,
+    this.isChip = false,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: isChip
+          ? Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 10,
+        ),
+        decoration: BoxDecoration(
+          color: CustomColors.primary,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              color: CustomColors.secondary.withOpacity(0.06),
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        child: Text(
+          (title ?? "").capitalizeFirst ?? "",
+          style: TextStyle(
+              fontWeight: FontWeight.w600,
+          ),
+        ),
+      ) : Column(
+        children: [
+          Container(
+            height: 52,
+            width: 52,
+            decoration: BoxDecoration(
+              color: CustomColors.primary,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: CustomColors.secondary.withOpacity(0.06),
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            child: Icon(
+              icon,
+              color: CustomColors.secondary.withOpacity(0.8),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            (title ?? "").capitalizeFirst ?? "",
+            style:TextStyle(
+                fontWeight: FontWeight.w500,
+                color: CustomColors.secondary.withOpacity(0.6),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -11,8 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../components/custom_gradient_button.dart';
+import '../components/outlet_detail_card.dart';
 import '../components/table_detail_item_component.dart';
 import '../components/table_info_card_component.dart';
+import '../utils/custom_color.dart';
 import '../viewModel/table_view_model.dart';
 
 
@@ -116,6 +118,7 @@ class _TableDetailsPageState extends State<TableDetailsPage> {
                     child: Padding(
                       padding: const EdgeInsets.all(12),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TableInfoCardComponent(
                             images: tableDetails?.images ?? [],
@@ -151,6 +154,23 @@ class _TableDetailsPageState extends State<TableDetailsPage> {
                             onChanged: (value) {
                               tableViewModel.updateTableAvailability(widget.tableId, value);
                             },
+                          ),
+                          Text(
+                            "Highlights",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: CustomColors.darkBlack,
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          Wrap(
+                            spacing: 10,
+                            runSpacing: 10,
+                            children: tableDetails?.amenities?.map((ameniny) => OutletDetailCard(
+                              title: ameniny.name ?? "",
+                              isChip: true,
+                            )).toList() ?? [],
                           ),
                           const SizedBox(height: 20),
                           CustomGradientButton(

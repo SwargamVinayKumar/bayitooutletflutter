@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../components/custom_gradient_button.dart';
 import '../components/custom_textfield.dart';
 import '../utils/custom_color.dart';
+import 'amenities_page.dart';
 import 'location_picker_page.dart';
 
 class BusinessPage extends StatelessWidget {
@@ -26,11 +27,11 @@ class BusinessPage extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  IconButton(
-                    onPressed: () => Get.back(),
-                    icon: const Icon(Icons.arrow_back_ios_new, size: 18),
-                  ),
-                  const SizedBox(width: 8),
+                  // IconButton(
+                  //   onPressed: () => Get.back(),
+                  //   icon: const Icon(Icons.arrow_back_ios_new, size: 18),
+                  // ),
+                  // const SizedBox(width: 8),
                   const Text(
                     "Business Details",
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -89,6 +90,33 @@ class BusinessPage extends StatelessWidget {
                     ),
                   );
                 }),
+              ),
+              const SizedBox(height: 18),
+              InkWell(
+                onTap: () => Get.to(() => const AmenitiesPage(type: "outlet")),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.apps, color: CustomColors.primary),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Obx(() => Text(
+                          authViewModel.selectedAmenities.isEmpty
+                              ? "Select Amenities"
+                              : "${authViewModel.selectedAmenities.length} Amenities Selected",
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        )),
+                      ),
+                      const Icon(Icons.arrow_forward_ios, size: 16),
+                    ],
+                  ),
+                ),
               ),
               const SizedBox(height: 12),
               CustomTextFieldComponent(

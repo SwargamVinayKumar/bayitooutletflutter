@@ -1,3 +1,4 @@
+import 'package:bayitooutlet/models/responseModels/amenity_response_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'table_response_model.freezed.dart';
@@ -40,6 +41,8 @@ abstract class TableModel with _$TableModel {
     List<SeatModel>? seats,
     String? createdAt,
     String? updatedAt,
+    List<AmenityModel>? amenities,
+    bool? vip
   }) = _TableModel;
 
   factory TableModel.fromJson(Map<String, dynamic> json) =>

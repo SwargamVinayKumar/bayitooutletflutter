@@ -6,6 +6,17 @@ part of 'auth_response_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+_PrimaryResponseModel _$PrimaryResponseModelFromJson(
+  Map<String, dynamic> json,
+) => _PrimaryResponseModel(
+  status: (json['status'] as num?)?.toInt(),
+  message: json['message'] as String?,
+);
+
+Map<String, dynamic> _$PrimaryResponseModelToJson(
+  _PrimaryResponseModel instance,
+) => <String, dynamic>{'status': instance.status, 'message': instance.message};
+
 _ProfileResponseModel _$ProfileResponseModelFromJson(
   Map<String, dynamic> json,
 ) => _ProfileResponseModel(
@@ -86,6 +97,7 @@ _ProfileData _$ProfileDataFromJson(Map<String, dynamic> json) => _ProfileData(
   tables: json['tables'] as List<dynamic>?,
   createdAt: json['createdAt'] as String?,
   updatedAt: json['updatedAt'] as String?,
+  primaryAccountId: json['primaryAccountId'],
 );
 
 Map<String, dynamic> _$ProfileDataToJson(_ProfileData instance) =>
@@ -108,6 +120,7 @@ Map<String, dynamic> _$ProfileDataToJson(_ProfileData instance) =>
       'tables': instance.tables,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
+      'primaryAccountId': instance.primaryAccountId,
     };
 
 _LocationModel _$LocationModelFromJson(Map<String, dynamic> json) =>

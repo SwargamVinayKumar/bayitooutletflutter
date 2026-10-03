@@ -35,6 +35,12 @@ class AuthUtils {
     return null;
   }
 
+  static String formatDatetime(DateTime? date) {
+    if(date == null) return "";
+    return DateFormat("dd MMMM yyyy, hh:mm a").format(date);
+  }
+
+
   static DateTime _toIndianTime(DateTime date) {
     return date.toUtc().add(const Duration(hours: 5, minutes: 30));
   }

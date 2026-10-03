@@ -8,6 +8,7 @@ class TableItem extends StatelessWidget {
   final String status;
   final Color statusColor;
   final VoidCallback? onTap;
+  final bool vip;
 
   const TableItem({
     super.key,
@@ -17,6 +18,7 @@ class TableItem extends StatelessWidget {
     required this.status,
     required this.statusColor,
     this.onTap,
+    required this.vip
   });
 
   @override
@@ -55,6 +57,8 @@ class TableItem extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const SizedBox(height: 8),
+                  if(vip) Image.asset("assets/images/VIP.png",width: 40,height: 25,),
                   const SizedBox(height: 8),
                   Text(
                     seats,

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CreateTableRequestModel {
 
- String? get tableNumber; String? get seatType; List<String>? get images; int? get seatCapacity; String? get description; List<String>? get amenities; List<SeatRequestModel>? get seats;
+ String? get tableNumber; String? get seatType; List<String>? get images; int? get seatCapacity; String? get description; List<String>? get amenities; List<SeatRequestModel>? get seats; bool? get vip;
 /// Create a copy of CreateTableRequestModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CreateTableRequestModelCopyWith<CreateTableRequestModel> get copyWith => _$Crea
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateTableRequestModel&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.seatType, seatType) || other.seatType == seatType)&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.seatCapacity, seatCapacity) || other.seatCapacity == seatCapacity)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other.amenities, amenities)&&const DeepCollectionEquality().equals(other.seats, seats));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateTableRequestModel&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.seatType, seatType) || other.seatType == seatType)&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.seatCapacity, seatCapacity) || other.seatCapacity == seatCapacity)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other.amenities, amenities)&&const DeepCollectionEquality().equals(other.seats, seats)&&(identical(other.vip, vip) || other.vip == vip));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,tableNumber,seatType,const DeepCollectionEquality().hash(images),seatCapacity,description,const DeepCollectionEquality().hash(amenities),const DeepCollectionEquality().hash(seats));
+int get hashCode => Object.hash(runtimeType,tableNumber,seatType,const DeepCollectionEquality().hash(images),seatCapacity,description,const DeepCollectionEquality().hash(amenities),const DeepCollectionEquality().hash(seats),vip);
 
 @override
 String toString() {
-  return 'CreateTableRequestModel(tableNumber: $tableNumber, seatType: $seatType, images: $images, seatCapacity: $seatCapacity, description: $description, amenities: $amenities, seats: $seats)';
+  return 'CreateTableRequestModel(tableNumber: $tableNumber, seatType: $seatType, images: $images, seatCapacity: $seatCapacity, description: $description, amenities: $amenities, seats: $seats, vip: $vip)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CreateTableRequestModelCopyWith<$Res>  {
   factory $CreateTableRequestModelCopyWith(CreateTableRequestModel value, $Res Function(CreateTableRequestModel) _then) = _$CreateTableRequestModelCopyWithImpl;
 @useResult
 $Res call({
- String? tableNumber, String? seatType, List<String>? images, int? seatCapacity, String? description, List<String>? amenities, List<SeatRequestModel>? seats
+ String? tableNumber, String? seatType, List<String>? images, int? seatCapacity, String? description, List<String>? amenities, List<SeatRequestModel>? seats, bool? vip
 });
 
 
@@ -65,7 +65,7 @@ class _$CreateTableRequestModelCopyWithImpl<$Res>
 
 /// Create a copy of CreateTableRequestModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? tableNumber = freezed,Object? seatType = freezed,Object? images = freezed,Object? seatCapacity = freezed,Object? description = freezed,Object? amenities = freezed,Object? seats = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? tableNumber = freezed,Object? seatType = freezed,Object? images = freezed,Object? seatCapacity = freezed,Object? description = freezed,Object? amenities = freezed,Object? seats = freezed,Object? vip = freezed,}) {
   return _then(_self.copyWith(
 tableNumber: freezed == tableNumber ? _self.tableNumber : tableNumber // ignore: cast_nullable_to_non_nullable
 as String?,seatType: freezed == seatType ? _self.seatType : seatType // ignore: cast_nullable_to_non_nullable
@@ -74,7 +74,8 @@ as List<String>?,seatCapacity: freezed == seatCapacity ? _self.seatCapacity : se
 as int?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,amenities: freezed == amenities ? _self.amenities : amenities // ignore: cast_nullable_to_non_nullable
 as List<String>?,seats: freezed == seats ? _self.seats : seats // ignore: cast_nullable_to_non_nullable
-as List<SeatRequestModel>?,
+as List<SeatRequestModel>?,vip: freezed == vip ? _self.vip : vip // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 
@@ -159,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? tableNumber,  String? seatType,  List<String>? images,  int? seatCapacity,  String? description,  List<String>? amenities,  List<SeatRequestModel>? seats)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? tableNumber,  String? seatType,  List<String>? images,  int? seatCapacity,  String? description,  List<String>? amenities,  List<SeatRequestModel>? seats,  bool? vip)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreateTableRequestModel() when $default != null:
-return $default(_that.tableNumber,_that.seatType,_that.images,_that.seatCapacity,_that.description,_that.amenities,_that.seats);case _:
+return $default(_that.tableNumber,_that.seatType,_that.images,_that.seatCapacity,_that.description,_that.amenities,_that.seats,_that.vip);case _:
   return orElse();
 
 }
@@ -180,10 +181,10 @@ return $default(_that.tableNumber,_that.seatType,_that.images,_that.seatCapacity
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? tableNumber,  String? seatType,  List<String>? images,  int? seatCapacity,  String? description,  List<String>? amenities,  List<SeatRequestModel>? seats)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? tableNumber,  String? seatType,  List<String>? images,  int? seatCapacity,  String? description,  List<String>? amenities,  List<SeatRequestModel>? seats,  bool? vip)  $default,) {final _that = this;
 switch (_that) {
 case _CreateTableRequestModel():
-return $default(_that.tableNumber,_that.seatType,_that.images,_that.seatCapacity,_that.description,_that.amenities,_that.seats);case _:
+return $default(_that.tableNumber,_that.seatType,_that.images,_that.seatCapacity,_that.description,_that.amenities,_that.seats,_that.vip);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +201,10 @@ return $default(_that.tableNumber,_that.seatType,_that.images,_that.seatCapacity
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? tableNumber,  String? seatType,  List<String>? images,  int? seatCapacity,  String? description,  List<String>? amenities,  List<SeatRequestModel>? seats)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? tableNumber,  String? seatType,  List<String>? images,  int? seatCapacity,  String? description,  List<String>? amenities,  List<SeatRequestModel>? seats,  bool? vip)?  $default,) {final _that = this;
 switch (_that) {
 case _CreateTableRequestModel() when $default != null:
-return $default(_that.tableNumber,_that.seatType,_that.images,_that.seatCapacity,_that.description,_that.amenities,_that.seats);case _:
+return $default(_that.tableNumber,_that.seatType,_that.images,_that.seatCapacity,_that.description,_that.amenities,_that.seats,_that.vip);case _:
   return null;
 
 }
@@ -215,7 +216,7 @@ return $default(_that.tableNumber,_that.seatType,_that.images,_that.seatCapacity
 @JsonSerializable()
 
 class _CreateTableRequestModel implements CreateTableRequestModel {
-  const _CreateTableRequestModel({this.tableNumber, this.seatType, final  List<String>? images, this.seatCapacity, this.description, final  List<String>? amenities, final  List<SeatRequestModel>? seats}): _images = images,_amenities = amenities,_seats = seats;
+  const _CreateTableRequestModel({this.tableNumber, this.seatType, final  List<String>? images, this.seatCapacity, this.description, final  List<String>? amenities, final  List<SeatRequestModel>? seats, this.vip}): _images = images,_amenities = amenities,_seats = seats;
   factory _CreateTableRequestModel.fromJson(Map<String, dynamic> json) => _$CreateTableRequestModelFromJson(json);
 
 @override final  String? tableNumber;
@@ -249,6 +250,7 @@ class _CreateTableRequestModel implements CreateTableRequestModel {
   return EqualUnmodifiableListView(value);
 }
 
+@override final  bool? vip;
 
 /// Create a copy of CreateTableRequestModel
 /// with the given fields replaced by the non-null parameter values.
@@ -263,16 +265,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateTableRequestModel&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.seatType, seatType) || other.seatType == seatType)&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.seatCapacity, seatCapacity) || other.seatCapacity == seatCapacity)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other._amenities, _amenities)&&const DeepCollectionEquality().equals(other._seats, _seats));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateTableRequestModel&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.seatType, seatType) || other.seatType == seatType)&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.seatCapacity, seatCapacity) || other.seatCapacity == seatCapacity)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other._amenities, _amenities)&&const DeepCollectionEquality().equals(other._seats, _seats)&&(identical(other.vip, vip) || other.vip == vip));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,tableNumber,seatType,const DeepCollectionEquality().hash(_images),seatCapacity,description,const DeepCollectionEquality().hash(_amenities),const DeepCollectionEquality().hash(_seats));
+int get hashCode => Object.hash(runtimeType,tableNumber,seatType,const DeepCollectionEquality().hash(_images),seatCapacity,description,const DeepCollectionEquality().hash(_amenities),const DeepCollectionEquality().hash(_seats),vip);
 
 @override
 String toString() {
-  return 'CreateTableRequestModel(tableNumber: $tableNumber, seatType: $seatType, images: $images, seatCapacity: $seatCapacity, description: $description, amenities: $amenities, seats: $seats)';
+  return 'CreateTableRequestModel(tableNumber: $tableNumber, seatType: $seatType, images: $images, seatCapacity: $seatCapacity, description: $description, amenities: $amenities, seats: $seats, vip: $vip)';
 }
 
 
@@ -283,7 +285,7 @@ abstract mixin class _$CreateTableRequestModelCopyWith<$Res> implements $CreateT
   factory _$CreateTableRequestModelCopyWith(_CreateTableRequestModel value, $Res Function(_CreateTableRequestModel) _then) = __$CreateTableRequestModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? tableNumber, String? seatType, List<String>? images, int? seatCapacity, String? description, List<String>? amenities, List<SeatRequestModel>? seats
+ String? tableNumber, String? seatType, List<String>? images, int? seatCapacity, String? description, List<String>? amenities, List<SeatRequestModel>? seats, bool? vip
 });
 
 
@@ -300,7 +302,7 @@ class __$CreateTableRequestModelCopyWithImpl<$Res>
 
 /// Create a copy of CreateTableRequestModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? tableNumber = freezed,Object? seatType = freezed,Object? images = freezed,Object? seatCapacity = freezed,Object? description = freezed,Object? amenities = freezed,Object? seats = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? tableNumber = freezed,Object? seatType = freezed,Object? images = freezed,Object? seatCapacity = freezed,Object? description = freezed,Object? amenities = freezed,Object? seats = freezed,Object? vip = freezed,}) {
   return _then(_CreateTableRequestModel(
 tableNumber: freezed == tableNumber ? _self.tableNumber : tableNumber // ignore: cast_nullable_to_non_nullable
 as String?,seatType: freezed == seatType ? _self.seatType : seatType // ignore: cast_nullable_to_non_nullable
@@ -309,7 +311,8 @@ as List<String>?,seatCapacity: freezed == seatCapacity ? _self.seatCapacity : se
 as int?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,amenities: freezed == amenities ? _self._amenities : amenities // ignore: cast_nullable_to_non_nullable
 as List<String>?,seats: freezed == seats ? _self._seats : seats // ignore: cast_nullable_to_non_nullable
-as List<SeatRequestModel>?,
+as List<SeatRequestModel>?,vip: freezed == vip ? _self.vip : vip // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 

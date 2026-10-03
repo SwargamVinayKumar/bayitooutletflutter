@@ -63,38 +63,38 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "Bayito Cafe",
+                        "Bayito",
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: 42,
-                            height: 42,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(Icons.notifications_none),
-                          ),
-
-                          Positioned(
-                            right: 8,
-                            top: 8,
-                            child: Container(
-                              width: 9,
-                              height: 9,
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Stack(
+                      //   children: [
+                      //     Container(
+                      //       width: 42,
+                      //       height: 42,
+                      //       decoration: BoxDecoration(
+                      //         color: Colors.white,
+                      //         borderRadius: BorderRadius.circular(12),
+                      //       ),
+                      //       child: const Icon(Icons.notifications_none),
+                      //     ),
+                      //
+                      //     Positioned(
+                      //       right: 8,
+                      //       top: 8,
+                      //       child: Container(
+                      //         width: 9,
+                      //         height: 9,
+                      //         decoration: const BoxDecoration(
+                      //           color: Colors.red,
+                      //           shape: BoxShape.circle,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                   const SizedBox(height: 24),
@@ -225,7 +225,7 @@ class _HomePageState extends State<HomePage> {
                           itemBuilder: (context, index) {
                             final table = tables[index];
                             return TableItem(
-
+                              vip: table.vip ?? false,
                               tableNumber: table.tableNumber ?? "Table",
                               seats: "${table.seatCapacity ?? 0} Seats",
                               images: table.images ?? [],

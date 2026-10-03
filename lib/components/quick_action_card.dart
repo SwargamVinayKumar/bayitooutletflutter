@@ -2,6 +2,7 @@ import 'package:bayitooutlet/utils/custom_color.dart';
 import 'package:flutter/material.dart';
 
 class QuickActionCard extends StatelessWidget {
+  final String? asset;
   final IconData icon;
   final String title;
   final VoidCallback? onTap;
@@ -9,6 +10,7 @@ class QuickActionCard extends StatelessWidget {
 
   const QuickActionCard({
     super.key,
+    this.asset,
     required this.icon,
     required this.title,
     this.isSelected = false,
@@ -49,12 +51,17 @@ class QuickActionCard extends StatelessWidget {
                 color: const Color(0xffF5F5F5),
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: Icon(
-                icon,
-                color: const Color(0xff3B302A),
-                size: 24,
-              ),
-            ),
+              child: asset != null ? Image.asset(
+                "assets/images/${asset}.jpeg",
+                width: 24,
+                height: 24,
+              )
+             : Icon(
+      icon,
+        color: const Color(0xff3B302A),
+        size: 24
+      ),
+    ),
             const SizedBox(height: 8),
             Text(
               title,

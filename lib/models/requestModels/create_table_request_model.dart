@@ -13,6 +13,7 @@ abstract class CreateTableRequestModel with _$CreateTableRequestModel {
     String? description,
     List<String>? amenities,
     List<SeatRequestModel>? seats,
+    bool? vip
   }) = _CreateTableRequestModel;
 
   factory CreateTableRequestModel.fromJson(Map<String, dynamic> json) =>

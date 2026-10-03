@@ -150,6 +150,7 @@ class _AllTablesPageState extends State<AllTablesPage> {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 10),
                                 child: TableItem(
+                                  vip:table.vip ?? false,
                                   tableNumber: table.tableNumber ?? "",
                                   seats: "${table.seatCapacity ?? 0} Seats",
                                   images: table.images ?? [],

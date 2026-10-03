@@ -28,6 +28,9 @@ class AuthViewModel extends GetxController {
   final apiProvider = Get.put(ApiProvider());
   final preferenceManager = Get.put(PreferenceManager());
 
+  final selectedAmenities = <String>[].obs;
+
+
   final validaVersionObserver =
       const ApiResult<ValidateVersionResponseModel>.init().obs;
 
@@ -275,9 +278,7 @@ class AuthViewModel extends GetxController {
   Future<void> verifyOtp() async {
     try {
       // Final Validation
-      if (fullNameController.text.isEmpty ||
-          signUpEmailController.text.isEmpty ||
-          mobileController.text.isEmpty ||
+      if (mobileController.text.isEmpty ||
           signUpPasswordController.text.isEmpty || otpController.text.isEmpty) {
         Get.showCustomSnackBar(title: 'Error', message: "Please complete all registration steps");
         return;
@@ -286,14 +287,10 @@ class AuthViewModel extends GetxController {
       verifyOtpObserver.value = ApiResult.loading();
 
 
-
       final request = SignUpRequestModel(
-          mobile: int.tryParse(mobileController.text),
-          name: fullNameController.text,
-          email: signUpEmailController.text,
+          key: mobileController.text,
           password: signUpPasswordController.text,
           confirmPassword: confirmPasswordController.text,
-          profilePic: profilePicUrl.value,
           otp: int.tryParse(otpController.text),
       );
 
@@ -368,6 +365,7 @@ class AuthViewModel extends GetxController {
         ),
         gstIn: gstNumberController.text,
         fssaiId: fssaiNumberController.text,
+        amenities: selectedAmenities
       );
 
       final response = await apiProvider.post(EndPoints.registerOutlet, request.toJson());
@@ -384,11 +382,60 @@ class AuthViewModel extends GetxController {
         }
       } else {
         registerOutLetObserver.value = ApiResult.error("Something went wrong");
+        Get.showCustomSnackBar(title: 'Error', message: "Something went wrong");
       }
     } catch (e) {
       registerOutLetObserver.value = ApiResult.error(e.toString());
+      Get.showCustomSnackBar(title: 'Error', message: e.toString());
+
     }
   }
+
+
+  Future<void> updateDetails(String name,String businessName,String aboutBusiness,String password,String oldPassword) async {
+    try {
+      // Final Validation
+      if (aboutBusiness.trim().isEmpty || name.trim().isEmpty || businessName.trim().isEmpty) {
+        Get.showCustomSnackBar(title: 'Error', message: "Please complete all registration steps");
+        return;
+      }
+
+      registerOutLetObserver.value = ApiResult.loading();
+
+      // 2. Upload Business Logo if exists
+      if (businessLogo.value != null && businessLogoUrl.isEmpty) {
+        businessLogoUrl.value = await uploadImage(businessLogo.value!, "logo") ?? "";
+      }
+
+
+      final request = SignUpRequestModel(
+        name: name,businessLogo: businessLogoUrl.value,
+        businessName: businessName,
+        aboutBusiness: aboutBusiness,password:password,oldPassword:oldPassword
+      );
+
+      final response = await apiProvider.post(EndPoints.updateDetails, request.toJson());
+      final body = response.body;
+      if (response.isOk && body != null) {
+        final data = SignInResponseModel.fromJson(body);
+        if (data.status == 1) {
+          registerOutLetObserver.value = ApiResult.success(data);
+          Get.showCustomSnackBar(title: 'Success', message: data.message ?? 'Register successful');
+          Get.offAll(() => const MainPage());
+        } else {
+          registerOutLetObserver.value = ApiResult.error(data.message ?? "");
+          Get.showCustomSnackBar(title: 'Failed', message: data.message ?? '');
+        }
+      } else {
+        registerOutLetObserver.value = ApiResult.error("Something went wrong");
+        Get.showCustomSnackBar(title: 'Error', message: "Something went wrong");
+      }
+    } catch (e) {
+      registerOutLetObserver.value = ApiResult.error(e.toString());
+      Get.showCustomSnackBar(title: 'Error', message: e.toString());
+    }
+  }
+
 
 
   Future<void> fetchProfileDetails() async {

@@ -56,6 +56,7 @@ class ProfileFormComponent extends StatelessWidget {
         const SizedBox(height: 20),
         _title("Email"),
         CustomTextFieldComponent(
+          enabled: false,
           textController: emailController,
           hintText: "Enter Email",
           keyboardType: TextInputType.emailAddress,
@@ -64,6 +65,7 @@ class ProfileFormComponent extends StatelessWidget {
         const SizedBox(height: 20),
         _title("Phone Number"),
         CustomTextFieldComponent(
+          enabled: false,
           textController: phoneController,
           hintText: "Enter Phone Number",
           keyboardType: TextInputType.phone,
@@ -72,6 +74,7 @@ class ProfileFormComponent extends StatelessWidget {
         const SizedBox(height: 20),
         _title("Restaurant Address"),
         CustomTextFieldComponent(
+          enabled: false,
           textController: addressController,
           hintText: "Enter Restaurant Address",
           prefixIcon: const Icon(Icons.location_on_outlined),

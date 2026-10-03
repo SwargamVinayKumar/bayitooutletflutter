@@ -10,6 +10,7 @@ _SignUpRequestModel _$SignUpRequestModelFromJson(
   Map<String, dynamic> json,
 ) => _SignUpRequestModel(
   mobile: (json['mobile'] as num?)?.toInt(),
+  key: json['key'] as String?,
   name: json['name'] as String?,
   email: json['email'] as String?,
   password: json['password'] as String?,
@@ -24,16 +25,21 @@ _SignUpRequestModel _$SignUpRequestModelFromJson(
   businessName: json['businessName'] as String?,
   outletType: json['outletType'] as String?,
   aboutBusiness: json['aboutBusiness'] as String?,
+  amenities: (json['amenities'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
   location: json['location'] == null
       ? null
       : LocationRequestModel.fromJson(json['location'] as Map<String, dynamic>),
   gstIn: json['gstIn'] as String?,
   fssaiId: json['fssaiId'] as String?,
+  oldPassword: json['oldPassword'] as String?,
 );
 
 Map<String, dynamic> _$SignUpRequestModelToJson(_SignUpRequestModel instance) =>
     <String, dynamic>{
       'mobile': instance.mobile,
+      'key': instance.key,
       'name': instance.name,
       'email': instance.email,
       'password': instance.password,
@@ -46,9 +52,11 @@ Map<String, dynamic> _$SignUpRequestModelToJson(_SignUpRequestModel instance) =>
       'businessName': instance.businessName,
       'outletType': instance.outletType,
       'aboutBusiness': instance.aboutBusiness,
+      'amenities': instance.amenities,
       'location': instance.location,
       'gstIn': instance.gstIn,
       'fssaiId': instance.fssaiId,
+      'oldPassword': instance.oldPassword,
     };
 
 _LocationRequestModel _$LocationRequestModelFromJson(

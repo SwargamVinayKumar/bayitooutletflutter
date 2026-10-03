@@ -30,7 +30,6 @@ class _SplashPageState extends State<SplashPage> {
         authViewModel.determinePosition(),
         authViewModel.validateVersion(ValidateVersionRequestModel(version: version)),
         ]);
- ;
         // Future.delayed(const Duration(seconds: 2), () { Get.offAll(() =>  const MainPage()); });
       },
       child: Scaffold(

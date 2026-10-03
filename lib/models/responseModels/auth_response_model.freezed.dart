@@ -13,6 +13,272 @@ part of 'auth_response_model.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
+mixin _$PrimaryResponseModel {
+
+ int? get status; String? get message;
+/// Create a copy of PrimaryResponseModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PrimaryResponseModelCopyWith<PrimaryResponseModel> get copyWith => _$PrimaryResponseModelCopyWithImpl<PrimaryResponseModel>(this as PrimaryResponseModel, _$identity);
+
+  /// Serializes this PrimaryResponseModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PrimaryResponseModel&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,status,message);
+
+@override
+String toString() {
+  return 'PrimaryResponseModel(status: $status, message: $message)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PrimaryResponseModelCopyWith<$Res>  {
+  factory $PrimaryResponseModelCopyWith(PrimaryResponseModel value, $Res Function(PrimaryResponseModel) _then) = _$PrimaryResponseModelCopyWithImpl;
+@useResult
+$Res call({
+ int? status, String? message
+});
+
+
+
+
+}
+/// @nodoc
+class _$PrimaryResponseModelCopyWithImpl<$Res>
+    implements $PrimaryResponseModelCopyWith<$Res> {
+  _$PrimaryResponseModelCopyWithImpl(this._self, this._then);
+
+  final PrimaryResponseModel _self;
+  final $Res Function(PrimaryResponseModel) _then;
+
+/// Create a copy of PrimaryResponseModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? status = freezed,Object? message = freezed,}) {
+  return _then(_self.copyWith(
+status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as int?,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [PrimaryResponseModel].
+extension PrimaryResponseModelPatterns on PrimaryResponseModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _PrimaryResponseModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _PrimaryResponseModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _PrimaryResponseModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _PrimaryResponseModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _PrimaryResponseModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _PrimaryResponseModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? status,  String? message)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _PrimaryResponseModel() when $default != null:
+return $default(_that.status,_that.message);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? status,  String? message)  $default,) {final _that = this;
+switch (_that) {
+case _PrimaryResponseModel():
+return $default(_that.status,_that.message);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? status,  String? message)?  $default,) {final _that = this;
+switch (_that) {
+case _PrimaryResponseModel() when $default != null:
+return $default(_that.status,_that.message);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _PrimaryResponseModel implements PrimaryResponseModel {
+  const _PrimaryResponseModel({this.status, this.message});
+  factory _PrimaryResponseModel.fromJson(Map<String, dynamic> json) => _$PrimaryResponseModelFromJson(json);
+
+@override final  int? status;
+@override final  String? message;
+
+/// Create a copy of PrimaryResponseModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$PrimaryResponseModelCopyWith<_PrimaryResponseModel> get copyWith => __$PrimaryResponseModelCopyWithImpl<_PrimaryResponseModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$PrimaryResponseModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PrimaryResponseModel&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,status,message);
+
+@override
+String toString() {
+  return 'PrimaryResponseModel(status: $status, message: $message)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$PrimaryResponseModelCopyWith<$Res> implements $PrimaryResponseModelCopyWith<$Res> {
+  factory _$PrimaryResponseModelCopyWith(_PrimaryResponseModel value, $Res Function(_PrimaryResponseModel) _then) = __$PrimaryResponseModelCopyWithImpl;
+@override @useResult
+$Res call({
+ int? status, String? message
+});
+
+
+
+
+}
+/// @nodoc
+class __$PrimaryResponseModelCopyWithImpl<$Res>
+    implements _$PrimaryResponseModelCopyWith<$Res> {
+  __$PrimaryResponseModelCopyWithImpl(this._self, this._then);
+
+  final _PrimaryResponseModel _self;
+  final $Res Function(_PrimaryResponseModel) _then;
+
+/// Create a copy of PrimaryResponseModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? status = freezed,Object? message = freezed,}) {
+  return _then(_PrimaryResponseModel(
+status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as int?,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$ProfileResponseModel {
 
  int? get status; String? get message; String? get approvalStatus; ProfileData? get data;
@@ -900,7 +1166,7 @@ $ProfileDataCopyWith<$Res>? get details {
 /// @nodoc
 mixin _$ProfileData {
 
-@JsonKey(name: '_id') String? get id; String? get outletType; String? get approvalStatus; String? get reason; int? get mobile; String? get name; String? get email; String? get password; String? get businessLogo; String? get businessLicence; String? get businessName; String? get aboutBusiness; String? get gstIn; String? get fssaiId; LocationModel? get location; List<dynamic>? get tables; String? get createdAt; String? get updatedAt;
+@JsonKey(name: '_id') String? get id; String? get outletType; String? get approvalStatus; String? get reason; int? get mobile; String? get name; String? get email; String? get password; String? get businessLogo; String? get businessLicence; String? get businessName; String? get aboutBusiness; String? get gstIn; String? get fssaiId; LocationModel? get location; List<dynamic>? get tables; String? get createdAt; String? get updatedAt; dynamic get primaryAccountId;
 /// Create a copy of ProfileData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -913,16 +1179,16 @@ $ProfileDataCopyWith<ProfileData> get copyWith => _$ProfileDataCopyWithImpl<Prof
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileData&&(identical(other.id, id) || other.id == id)&&(identical(other.outletType, outletType) || other.outletType == outletType)&&(identical(other.approvalStatus, approvalStatus) || other.approvalStatus == approvalStatus)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.mobile, mobile) || other.mobile == mobile)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.businessLogo, businessLogo) || other.businessLogo == businessLogo)&&(identical(other.businessLicence, businessLicence) || other.businessLicence == businessLicence)&&(identical(other.businessName, businessName) || other.businessName == businessName)&&(identical(other.aboutBusiness, aboutBusiness) || other.aboutBusiness == aboutBusiness)&&(identical(other.gstIn, gstIn) || other.gstIn == gstIn)&&(identical(other.fssaiId, fssaiId) || other.fssaiId == fssaiId)&&(identical(other.location, location) || other.location == location)&&const DeepCollectionEquality().equals(other.tables, tables)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileData&&(identical(other.id, id) || other.id == id)&&(identical(other.outletType, outletType) || other.outletType == outletType)&&(identical(other.approvalStatus, approvalStatus) || other.approvalStatus == approvalStatus)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.mobile, mobile) || other.mobile == mobile)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.businessLogo, businessLogo) || other.businessLogo == businessLogo)&&(identical(other.businessLicence, businessLicence) || other.businessLicence == businessLicence)&&(identical(other.businessName, businessName) || other.businessName == businessName)&&(identical(other.aboutBusiness, aboutBusiness) || other.aboutBusiness == aboutBusiness)&&(identical(other.gstIn, gstIn) || other.gstIn == gstIn)&&(identical(other.fssaiId, fssaiId) || other.fssaiId == fssaiId)&&(identical(other.location, location) || other.location == location)&&const DeepCollectionEquality().equals(other.tables, tables)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&const DeepCollectionEquality().equals(other.primaryAccountId, primaryAccountId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,outletType,approvalStatus,reason,mobile,name,email,password,businessLogo,businessLicence,businessName,aboutBusiness,gstIn,fssaiId,location,const DeepCollectionEquality().hash(tables),createdAt,updatedAt);
+int get hashCode => Object.hashAll([runtimeType,id,outletType,approvalStatus,reason,mobile,name,email,password,businessLogo,businessLicence,businessName,aboutBusiness,gstIn,fssaiId,location,const DeepCollectionEquality().hash(tables),createdAt,updatedAt,const DeepCollectionEquality().hash(primaryAccountId)]);
 
 @override
 String toString() {
-  return 'ProfileData(id: $id, outletType: $outletType, approvalStatus: $approvalStatus, reason: $reason, mobile: $mobile, name: $name, email: $email, password: $password, businessLogo: $businessLogo, businessLicence: $businessLicence, businessName: $businessName, aboutBusiness: $aboutBusiness, gstIn: $gstIn, fssaiId: $fssaiId, location: $location, tables: $tables, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'ProfileData(id: $id, outletType: $outletType, approvalStatus: $approvalStatus, reason: $reason, mobile: $mobile, name: $name, email: $email, password: $password, businessLogo: $businessLogo, businessLicence: $businessLicence, businessName: $businessName, aboutBusiness: $aboutBusiness, gstIn: $gstIn, fssaiId: $fssaiId, location: $location, tables: $tables, createdAt: $createdAt, updatedAt: $updatedAt, primaryAccountId: $primaryAccountId)';
 }
 
 
@@ -933,7 +1199,7 @@ abstract mixin class $ProfileDataCopyWith<$Res>  {
   factory $ProfileDataCopyWith(ProfileData value, $Res Function(ProfileData) _then) = _$ProfileDataCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: '_id') String? id, String? outletType, String? approvalStatus, String? reason, int? mobile, String? name, String? email, String? password, String? businessLogo, String? businessLicence, String? businessName, String? aboutBusiness, String? gstIn, String? fssaiId, LocationModel? location, List<dynamic>? tables, String? createdAt, String? updatedAt
+@JsonKey(name: '_id') String? id, String? outletType, String? approvalStatus, String? reason, int? mobile, String? name, String? email, String? password, String? businessLogo, String? businessLicence, String? businessName, String? aboutBusiness, String? gstIn, String? fssaiId, LocationModel? location, List<dynamic>? tables, String? createdAt, String? updatedAt, dynamic primaryAccountId
 });
 
 
@@ -950,7 +1216,7 @@ class _$ProfileDataCopyWithImpl<$Res>
 
 /// Create a copy of ProfileData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? outletType = freezed,Object? approvalStatus = freezed,Object? reason = freezed,Object? mobile = freezed,Object? name = freezed,Object? email = freezed,Object? password = freezed,Object? businessLogo = freezed,Object? businessLicence = freezed,Object? businessName = freezed,Object? aboutBusiness = freezed,Object? gstIn = freezed,Object? fssaiId = freezed,Object? location = freezed,Object? tables = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? outletType = freezed,Object? approvalStatus = freezed,Object? reason = freezed,Object? mobile = freezed,Object? name = freezed,Object? email = freezed,Object? password = freezed,Object? businessLogo = freezed,Object? businessLicence = freezed,Object? businessName = freezed,Object? aboutBusiness = freezed,Object? gstIn = freezed,Object? fssaiId = freezed,Object? location = freezed,Object? tables = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? primaryAccountId = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,outletType: freezed == outletType ? _self.outletType : outletType // ignore: cast_nullable_to_non_nullable
@@ -970,7 +1236,8 @@ as String?,location: freezed == location ? _self.location : location // ignore: 
 as LocationModel?,tables: freezed == tables ? _self.tables : tables // ignore: cast_nullable_to_non_nullable
 as List<dynamic>?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,primaryAccountId: freezed == primaryAccountId ? _self.primaryAccountId : primaryAccountId // ignore: cast_nullable_to_non_nullable
+as dynamic,
   ));
 }
 /// Create a copy of ProfileData
@@ -1067,10 +1334,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String? id,  String? outletType,  String? approvalStatus,  String? reason,  int? mobile,  String? name,  String? email,  String? password,  String? businessLogo,  String? businessLicence,  String? businessName,  String? aboutBusiness,  String? gstIn,  String? fssaiId,  LocationModel? location,  List<dynamic>? tables,  String? createdAt,  String? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String? id,  String? outletType,  String? approvalStatus,  String? reason,  int? mobile,  String? name,  String? email,  String? password,  String? businessLogo,  String? businessLicence,  String? businessName,  String? aboutBusiness,  String? gstIn,  String? fssaiId,  LocationModel? location,  List<dynamic>? tables,  String? createdAt,  String? updatedAt,  dynamic primaryAccountId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileData() when $default != null:
-return $default(_that.id,_that.outletType,_that.approvalStatus,_that.reason,_that.mobile,_that.name,_that.email,_that.password,_that.businessLogo,_that.businessLicence,_that.businessName,_that.aboutBusiness,_that.gstIn,_that.fssaiId,_that.location,_that.tables,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.outletType,_that.approvalStatus,_that.reason,_that.mobile,_that.name,_that.email,_that.password,_that.businessLogo,_that.businessLicence,_that.businessName,_that.aboutBusiness,_that.gstIn,_that.fssaiId,_that.location,_that.tables,_that.createdAt,_that.updatedAt,_that.primaryAccountId);case _:
   return orElse();
 
 }
@@ -1088,10 +1355,10 @@ return $default(_that.id,_that.outletType,_that.approvalStatus,_that.reason,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String? id,  String? outletType,  String? approvalStatus,  String? reason,  int? mobile,  String? name,  String? email,  String? password,  String? businessLogo,  String? businessLicence,  String? businessName,  String? aboutBusiness,  String? gstIn,  String? fssaiId,  LocationModel? location,  List<dynamic>? tables,  String? createdAt,  String? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: '_id')  String? id,  String? outletType,  String? approvalStatus,  String? reason,  int? mobile,  String? name,  String? email,  String? password,  String? businessLogo,  String? businessLicence,  String? businessName,  String? aboutBusiness,  String? gstIn,  String? fssaiId,  LocationModel? location,  List<dynamic>? tables,  String? createdAt,  String? updatedAt,  dynamic primaryAccountId)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileData():
-return $default(_that.id,_that.outletType,_that.approvalStatus,_that.reason,_that.mobile,_that.name,_that.email,_that.password,_that.businessLogo,_that.businessLicence,_that.businessName,_that.aboutBusiness,_that.gstIn,_that.fssaiId,_that.location,_that.tables,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.outletType,_that.approvalStatus,_that.reason,_that.mobile,_that.name,_that.email,_that.password,_that.businessLogo,_that.businessLicence,_that.businessName,_that.aboutBusiness,_that.gstIn,_that.fssaiId,_that.location,_that.tables,_that.createdAt,_that.updatedAt,_that.primaryAccountId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1108,10 +1375,10 @@ return $default(_that.id,_that.outletType,_that.approvalStatus,_that.reason,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String? id,  String? outletType,  String? approvalStatus,  String? reason,  int? mobile,  String? name,  String? email,  String? password,  String? businessLogo,  String? businessLicence,  String? businessName,  String? aboutBusiness,  String? gstIn,  String? fssaiId,  LocationModel? location,  List<dynamic>? tables,  String? createdAt,  String? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: '_id')  String? id,  String? outletType,  String? approvalStatus,  String? reason,  int? mobile,  String? name,  String? email,  String? password,  String? businessLogo,  String? businessLicence,  String? businessName,  String? aboutBusiness,  String? gstIn,  String? fssaiId,  LocationModel? location,  List<dynamic>? tables,  String? createdAt,  String? updatedAt,  dynamic primaryAccountId)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileData() when $default != null:
-return $default(_that.id,_that.outletType,_that.approvalStatus,_that.reason,_that.mobile,_that.name,_that.email,_that.password,_that.businessLogo,_that.businessLicence,_that.businessName,_that.aboutBusiness,_that.gstIn,_that.fssaiId,_that.location,_that.tables,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.outletType,_that.approvalStatus,_that.reason,_that.mobile,_that.name,_that.email,_that.password,_that.businessLogo,_that.businessLicence,_that.businessName,_that.aboutBusiness,_that.gstIn,_that.fssaiId,_that.location,_that.tables,_that.createdAt,_that.updatedAt,_that.primaryAccountId);case _:
   return null;
 
 }
@@ -1123,7 +1390,7 @@ return $default(_that.id,_that.outletType,_that.approvalStatus,_that.reason,_tha
 @JsonSerializable()
 
 class _ProfileData implements ProfileData {
-  const _ProfileData({@JsonKey(name: '_id') this.id, this.outletType, this.approvalStatus, this.reason, this.mobile, this.name, this.email, this.password, this.businessLogo, this.businessLicence, this.businessName, this.aboutBusiness, this.gstIn, this.fssaiId, this.location, final  List<dynamic>? tables, this.createdAt, this.updatedAt}): _tables = tables;
+  const _ProfileData({@JsonKey(name: '_id') this.id, this.outletType, this.approvalStatus, this.reason, this.mobile, this.name, this.email, this.password, this.businessLogo, this.businessLicence, this.businessName, this.aboutBusiness, this.gstIn, this.fssaiId, this.location, final  List<dynamic>? tables, this.createdAt, this.updatedAt, this.primaryAccountId}): _tables = tables;
   factory _ProfileData.fromJson(Map<String, dynamic> json) => _$ProfileDataFromJson(json);
 
 @override@JsonKey(name: '_id') final  String? id;
@@ -1152,6 +1419,7 @@ class _ProfileData implements ProfileData {
 
 @override final  String? createdAt;
 @override final  String? updatedAt;
+@override final  dynamic primaryAccountId;
 
 /// Create a copy of ProfileData
 /// with the given fields replaced by the non-null parameter values.
@@ -1166,16 +1434,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileData&&(identical(other.id, id) || other.id == id)&&(identical(other.outletType, outletType) || other.outletType == outletType)&&(identical(other.approvalStatus, approvalStatus) || other.approvalStatus == approvalStatus)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.mobile, mobile) || other.mobile == mobile)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.businessLogo, businessLogo) || other.businessLogo == businessLogo)&&(identical(other.businessLicence, businessLicence) || other.businessLicence == businessLicence)&&(identical(other.businessName, businessName) || other.businessName == businessName)&&(identical(other.aboutBusiness, aboutBusiness) || other.aboutBusiness == aboutBusiness)&&(identical(other.gstIn, gstIn) || other.gstIn == gstIn)&&(identical(other.fssaiId, fssaiId) || other.fssaiId == fssaiId)&&(identical(other.location, location) || other.location == location)&&const DeepCollectionEquality().equals(other._tables, _tables)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileData&&(identical(other.id, id) || other.id == id)&&(identical(other.outletType, outletType) || other.outletType == outletType)&&(identical(other.approvalStatus, approvalStatus) || other.approvalStatus == approvalStatus)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.mobile, mobile) || other.mobile == mobile)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.businessLogo, businessLogo) || other.businessLogo == businessLogo)&&(identical(other.businessLicence, businessLicence) || other.businessLicence == businessLicence)&&(identical(other.businessName, businessName) || other.businessName == businessName)&&(identical(other.aboutBusiness, aboutBusiness) || other.aboutBusiness == aboutBusiness)&&(identical(other.gstIn, gstIn) || other.gstIn == gstIn)&&(identical(other.fssaiId, fssaiId) || other.fssaiId == fssaiId)&&(identical(other.location, location) || other.location == location)&&const DeepCollectionEquality().equals(other._tables, _tables)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&const DeepCollectionEquality().equals(other.primaryAccountId, primaryAccountId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,outletType,approvalStatus,reason,mobile,name,email,password,businessLogo,businessLicence,businessName,aboutBusiness,gstIn,fssaiId,location,const DeepCollectionEquality().hash(_tables),createdAt,updatedAt);
+int get hashCode => Object.hashAll([runtimeType,id,outletType,approvalStatus,reason,mobile,name,email,password,businessLogo,businessLicence,businessName,aboutBusiness,gstIn,fssaiId,location,const DeepCollectionEquality().hash(_tables),createdAt,updatedAt,const DeepCollectionEquality().hash(primaryAccountId)]);
 
 @override
 String toString() {
-  return 'ProfileData(id: $id, outletType: $outletType, approvalStatus: $approvalStatus, reason: $reason, mobile: $mobile, name: $name, email: $email, password: $password, businessLogo: $businessLogo, businessLicence: $businessLicence, businessName: $businessName, aboutBusiness: $aboutBusiness, gstIn: $gstIn, fssaiId: $fssaiId, location: $location, tables: $tables, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'ProfileData(id: $id, outletType: $outletType, approvalStatus: $approvalStatus, reason: $reason, mobile: $mobile, name: $name, email: $email, password: $password, businessLogo: $businessLogo, businessLicence: $businessLicence, businessName: $businessName, aboutBusiness: $aboutBusiness, gstIn: $gstIn, fssaiId: $fssaiId, location: $location, tables: $tables, createdAt: $createdAt, updatedAt: $updatedAt, primaryAccountId: $primaryAccountId)';
 }
 
 
@@ -1186,7 +1454,7 @@ abstract mixin class _$ProfileDataCopyWith<$Res> implements $ProfileDataCopyWith
   factory _$ProfileDataCopyWith(_ProfileData value, $Res Function(_ProfileData) _then) = __$ProfileDataCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: '_id') String? id, String? outletType, String? approvalStatus, String? reason, int? mobile, String? name, String? email, String? password, String? businessLogo, String? businessLicence, String? businessName, String? aboutBusiness, String? gstIn, String? fssaiId, LocationModel? location, List<dynamic>? tables, String? createdAt, String? updatedAt
+@JsonKey(name: '_id') String? id, String? outletType, String? approvalStatus, String? reason, int? mobile, String? name, String? email, String? password, String? businessLogo, String? businessLicence, String? businessName, String? aboutBusiness, String? gstIn, String? fssaiId, LocationModel? location, List<dynamic>? tables, String? createdAt, String? updatedAt, dynamic primaryAccountId
 });
 
 
@@ -1203,7 +1471,7 @@ class __$ProfileDataCopyWithImpl<$Res>
 
 /// Create a copy of ProfileData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? outletType = freezed,Object? approvalStatus = freezed,Object? reason = freezed,Object? mobile = freezed,Object? name = freezed,Object? email = freezed,Object? password = freezed,Object? businessLogo = freezed,Object? businessLicence = freezed,Object? businessName = freezed,Object? aboutBusiness = freezed,Object? gstIn = freezed,Object? fssaiId = freezed,Object? location = freezed,Object? tables = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? outletType = freezed,Object? approvalStatus = freezed,Object? reason = freezed,Object? mobile = freezed,Object? name = freezed,Object? email = freezed,Object? password = freezed,Object? businessLogo = freezed,Object? businessLicence = freezed,Object? businessName = freezed,Object? aboutBusiness = freezed,Object? gstIn = freezed,Object? fssaiId = freezed,Object? location = freezed,Object? tables = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? primaryAccountId = freezed,}) {
   return _then(_ProfileData(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,outletType: freezed == outletType ? _self.outletType : outletType // ignore: cast_nullable_to_non_nullable
@@ -1223,7 +1491,8 @@ as String?,location: freezed == location ? _self.location : location // ignore: 
 as LocationModel?,tables: freezed == tables ? _self._tables : tables // ignore: cast_nullable_to_non_nullable
 as List<dynamic>?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,primaryAccountId: freezed == primaryAccountId ? _self.primaryAccountId : primaryAccountId // ignore: cast_nullable_to_non_nullable
+as dynamic,
   ));
 }
 

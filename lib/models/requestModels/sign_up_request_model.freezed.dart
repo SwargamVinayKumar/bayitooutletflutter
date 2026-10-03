@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SignUpRequestModel {
 
- int? get mobile; String? get name; String? get email; String? get password; String? get confirmPassword; String? get profilePic; int? get otp; String? get businessLogo; List<String>? get images; String? get businessLicence; String? get businessName; String? get outletType; String? get aboutBusiness; LocationRequestModel? get location; String? get gstIn; String? get fssaiId;
+ int? get mobile; String? get key; String? get name; String? get email; String? get password; String? get confirmPassword; String? get profilePic; int? get otp; String? get businessLogo; List<String>? get images; String? get businessLicence; String? get businessName; String? get outletType; String? get aboutBusiness; List<String>? get amenities; LocationRequestModel? get location; String? get gstIn; String? get fssaiId; String? get oldPassword;
 /// Create a copy of SignUpRequestModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $SignUpRequestModelCopyWith<SignUpRequestModel> get copyWith => _$SignUpRequestM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignUpRequestModel&&(identical(other.mobile, mobile) || other.mobile == mobile)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.confirmPassword, confirmPassword) || other.confirmPassword == confirmPassword)&&(identical(other.profilePic, profilePic) || other.profilePic == profilePic)&&(identical(other.otp, otp) || other.otp == otp)&&(identical(other.businessLogo, businessLogo) || other.businessLogo == businessLogo)&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.businessLicence, businessLicence) || other.businessLicence == businessLicence)&&(identical(other.businessName, businessName) || other.businessName == businessName)&&(identical(other.outletType, outletType) || other.outletType == outletType)&&(identical(other.aboutBusiness, aboutBusiness) || other.aboutBusiness == aboutBusiness)&&(identical(other.location, location) || other.location == location)&&(identical(other.gstIn, gstIn) || other.gstIn == gstIn)&&(identical(other.fssaiId, fssaiId) || other.fssaiId == fssaiId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignUpRequestModel&&(identical(other.mobile, mobile) || other.mobile == mobile)&&(identical(other.key, key) || other.key == key)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.confirmPassword, confirmPassword) || other.confirmPassword == confirmPassword)&&(identical(other.profilePic, profilePic) || other.profilePic == profilePic)&&(identical(other.otp, otp) || other.otp == otp)&&(identical(other.businessLogo, businessLogo) || other.businessLogo == businessLogo)&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.businessLicence, businessLicence) || other.businessLicence == businessLicence)&&(identical(other.businessName, businessName) || other.businessName == businessName)&&(identical(other.outletType, outletType) || other.outletType == outletType)&&(identical(other.aboutBusiness, aboutBusiness) || other.aboutBusiness == aboutBusiness)&&const DeepCollectionEquality().equals(other.amenities, amenities)&&(identical(other.location, location) || other.location == location)&&(identical(other.gstIn, gstIn) || other.gstIn == gstIn)&&(identical(other.fssaiId, fssaiId) || other.fssaiId == fssaiId)&&(identical(other.oldPassword, oldPassword) || other.oldPassword == oldPassword));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,mobile,name,email,password,confirmPassword,profilePic,otp,businessLogo,const DeepCollectionEquality().hash(images),businessLicence,businessName,outletType,aboutBusiness,location,gstIn,fssaiId);
+int get hashCode => Object.hashAll([runtimeType,mobile,key,name,email,password,confirmPassword,profilePic,otp,businessLogo,const DeepCollectionEquality().hash(images),businessLicence,businessName,outletType,aboutBusiness,const DeepCollectionEquality().hash(amenities),location,gstIn,fssaiId,oldPassword]);
 
 @override
 String toString() {
-  return 'SignUpRequestModel(mobile: $mobile, name: $name, email: $email, password: $password, confirmPassword: $confirmPassword, profilePic: $profilePic, otp: $otp, businessLogo: $businessLogo, images: $images, businessLicence: $businessLicence, businessName: $businessName, outletType: $outletType, aboutBusiness: $aboutBusiness, location: $location, gstIn: $gstIn, fssaiId: $fssaiId)';
+  return 'SignUpRequestModel(mobile: $mobile, key: $key, name: $name, email: $email, password: $password, confirmPassword: $confirmPassword, profilePic: $profilePic, otp: $otp, businessLogo: $businessLogo, images: $images, businessLicence: $businessLicence, businessName: $businessName, outletType: $outletType, aboutBusiness: $aboutBusiness, amenities: $amenities, location: $location, gstIn: $gstIn, fssaiId: $fssaiId, oldPassword: $oldPassword)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $SignUpRequestModelCopyWith<$Res>  {
   factory $SignUpRequestModelCopyWith(SignUpRequestModel value, $Res Function(SignUpRequestModel) _then) = _$SignUpRequestModelCopyWithImpl;
 @useResult
 $Res call({
- int? mobile, String? name, String? email, String? password, String? confirmPassword, String? profilePic, int? otp, String? businessLogo, List<String>? images, String? businessLicence, String? businessName, String? outletType, String? aboutBusiness, LocationRequestModel? location, String? gstIn, String? fssaiId
+ int? mobile, String? key, String? name, String? email, String? password, String? confirmPassword, String? profilePic, int? otp, String? businessLogo, List<String>? images, String? businessLicence, String? businessName, String? outletType, String? aboutBusiness, List<String>? amenities, LocationRequestModel? location, String? gstIn, String? fssaiId, String? oldPassword
 });
 
 
@@ -65,10 +65,11 @@ class _$SignUpRequestModelCopyWithImpl<$Res>
 
 /// Create a copy of SignUpRequestModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? mobile = freezed,Object? name = freezed,Object? email = freezed,Object? password = freezed,Object? confirmPassword = freezed,Object? profilePic = freezed,Object? otp = freezed,Object? businessLogo = freezed,Object? images = freezed,Object? businessLicence = freezed,Object? businessName = freezed,Object? outletType = freezed,Object? aboutBusiness = freezed,Object? location = freezed,Object? gstIn = freezed,Object? fssaiId = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? mobile = freezed,Object? key = freezed,Object? name = freezed,Object? email = freezed,Object? password = freezed,Object? confirmPassword = freezed,Object? profilePic = freezed,Object? otp = freezed,Object? businessLogo = freezed,Object? images = freezed,Object? businessLicence = freezed,Object? businessName = freezed,Object? outletType = freezed,Object? aboutBusiness = freezed,Object? amenities = freezed,Object? location = freezed,Object? gstIn = freezed,Object? fssaiId = freezed,Object? oldPassword = freezed,}) {
   return _then(_self.copyWith(
 mobile: freezed == mobile ? _self.mobile : mobile // ignore: cast_nullable_to_non_nullable
-as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as int?,key: freezed == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
+as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,password: freezed == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String?,confirmPassword: freezed == confirmPassword ? _self.confirmPassword : confirmPassword // ignore: cast_nullable_to_non_nullable
@@ -80,9 +81,11 @@ as List<String>?,businessLicence: freezed == businessLicence ? _self.businessLic
 as String?,businessName: freezed == businessName ? _self.businessName : businessName // ignore: cast_nullable_to_non_nullable
 as String?,outletType: freezed == outletType ? _self.outletType : outletType // ignore: cast_nullable_to_non_nullable
 as String?,aboutBusiness: freezed == aboutBusiness ? _self.aboutBusiness : aboutBusiness // ignore: cast_nullable_to_non_nullable
-as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as String?,amenities: freezed == amenities ? _self.amenities : amenities // ignore: cast_nullable_to_non_nullable
+as List<String>?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as LocationRequestModel?,gstIn: freezed == gstIn ? _self.gstIn : gstIn // ignore: cast_nullable_to_non_nullable
 as String?,fssaiId: freezed == fssaiId ? _self.fssaiId : fssaiId // ignore: cast_nullable_to_non_nullable
+as String?,oldPassword: freezed == oldPassword ? _self.oldPassword : oldPassword // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -180,10 +183,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? mobile,  String? name,  String? email,  String? password,  String? confirmPassword,  String? profilePic,  int? otp,  String? businessLogo,  List<String>? images,  String? businessLicence,  String? businessName,  String? outletType,  String? aboutBusiness,  LocationRequestModel? location,  String? gstIn,  String? fssaiId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? mobile,  String? key,  String? name,  String? email,  String? password,  String? confirmPassword,  String? profilePic,  int? otp,  String? businessLogo,  List<String>? images,  String? businessLicence,  String? businessName,  String? outletType,  String? aboutBusiness,  List<String>? amenities,  LocationRequestModel? location,  String? gstIn,  String? fssaiId,  String? oldPassword)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SignUpRequestModel() when $default != null:
-return $default(_that.mobile,_that.name,_that.email,_that.password,_that.confirmPassword,_that.profilePic,_that.otp,_that.businessLogo,_that.images,_that.businessLicence,_that.businessName,_that.outletType,_that.aboutBusiness,_that.location,_that.gstIn,_that.fssaiId);case _:
+return $default(_that.mobile,_that.key,_that.name,_that.email,_that.password,_that.confirmPassword,_that.profilePic,_that.otp,_that.businessLogo,_that.images,_that.businessLicence,_that.businessName,_that.outletType,_that.aboutBusiness,_that.amenities,_that.location,_that.gstIn,_that.fssaiId,_that.oldPassword);case _:
   return orElse();
 
 }
@@ -201,10 +204,10 @@ return $default(_that.mobile,_that.name,_that.email,_that.password,_that.confirm
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? mobile,  String? name,  String? email,  String? password,  String? confirmPassword,  String? profilePic,  int? otp,  String? businessLogo,  List<String>? images,  String? businessLicence,  String? businessName,  String? outletType,  String? aboutBusiness,  LocationRequestModel? location,  String? gstIn,  String? fssaiId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? mobile,  String? key,  String? name,  String? email,  String? password,  String? confirmPassword,  String? profilePic,  int? otp,  String? businessLogo,  List<String>? images,  String? businessLicence,  String? businessName,  String? outletType,  String? aboutBusiness,  List<String>? amenities,  LocationRequestModel? location,  String? gstIn,  String? fssaiId,  String? oldPassword)  $default,) {final _that = this;
 switch (_that) {
 case _SignUpRequestModel():
-return $default(_that.mobile,_that.name,_that.email,_that.password,_that.confirmPassword,_that.profilePic,_that.otp,_that.businessLogo,_that.images,_that.businessLicence,_that.businessName,_that.outletType,_that.aboutBusiness,_that.location,_that.gstIn,_that.fssaiId);case _:
+return $default(_that.mobile,_that.key,_that.name,_that.email,_that.password,_that.confirmPassword,_that.profilePic,_that.otp,_that.businessLogo,_that.images,_that.businessLicence,_that.businessName,_that.outletType,_that.aboutBusiness,_that.amenities,_that.location,_that.gstIn,_that.fssaiId,_that.oldPassword);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -221,10 +224,10 @@ return $default(_that.mobile,_that.name,_that.email,_that.password,_that.confirm
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? mobile,  String? name,  String? email,  String? password,  String? confirmPassword,  String? profilePic,  int? otp,  String? businessLogo,  List<String>? images,  String? businessLicence,  String? businessName,  String? outletType,  String? aboutBusiness,  LocationRequestModel? location,  String? gstIn,  String? fssaiId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? mobile,  String? key,  String? name,  String? email,  String? password,  String? confirmPassword,  String? profilePic,  int? otp,  String? businessLogo,  List<String>? images,  String? businessLicence,  String? businessName,  String? outletType,  String? aboutBusiness,  List<String>? amenities,  LocationRequestModel? location,  String? gstIn,  String? fssaiId,  String? oldPassword)?  $default,) {final _that = this;
 switch (_that) {
 case _SignUpRequestModel() when $default != null:
-return $default(_that.mobile,_that.name,_that.email,_that.password,_that.confirmPassword,_that.profilePic,_that.otp,_that.businessLogo,_that.images,_that.businessLicence,_that.businessName,_that.outletType,_that.aboutBusiness,_that.location,_that.gstIn,_that.fssaiId);case _:
+return $default(_that.mobile,_that.key,_that.name,_that.email,_that.password,_that.confirmPassword,_that.profilePic,_that.otp,_that.businessLogo,_that.images,_that.businessLicence,_that.businessName,_that.outletType,_that.aboutBusiness,_that.amenities,_that.location,_that.gstIn,_that.fssaiId,_that.oldPassword);case _:
   return null;
 
 }
@@ -236,10 +239,11 @@ return $default(_that.mobile,_that.name,_that.email,_that.password,_that.confirm
 @JsonSerializable()
 
 class _SignUpRequestModel implements SignUpRequestModel {
-  const _SignUpRequestModel({this.mobile, this.name, this.email, this.password, this.confirmPassword, this.profilePic, this.otp, this.businessLogo, final  List<String>? images = const [], this.businessLicence, this.businessName, this.outletType, this.aboutBusiness, this.location, this.gstIn, this.fssaiId}): _images = images;
+  const _SignUpRequestModel({this.mobile, this.key, this.name, this.email, this.password, this.confirmPassword, this.profilePic, this.otp, this.businessLogo, final  List<String>? images = const [], this.businessLicence, this.businessName, this.outletType, this.aboutBusiness, final  List<String>? amenities, this.location, this.gstIn, this.fssaiId, this.oldPassword}): _images = images,_amenities = amenities;
   factory _SignUpRequestModel.fromJson(Map<String, dynamic> json) => _$SignUpRequestModelFromJson(json);
 
 @override final  int? mobile;
+@override final  String? key;
 @override final  String? name;
 @override final  String? email;
 @override final  String? password;
@@ -260,9 +264,19 @@ class _SignUpRequestModel implements SignUpRequestModel {
 @override final  String? businessName;
 @override final  String? outletType;
 @override final  String? aboutBusiness;
+ final  List<String>? _amenities;
+@override List<String>? get amenities {
+  final value = _amenities;
+  if (value == null) return null;
+  if (_amenities is EqualUnmodifiableListView) return _amenities;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 @override final  LocationRequestModel? location;
 @override final  String? gstIn;
 @override final  String? fssaiId;
+@override final  String? oldPassword;
 
 /// Create a copy of SignUpRequestModel
 /// with the given fields replaced by the non-null parameter values.
@@ -277,16 +291,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SignUpRequestModel&&(identical(other.mobile, mobile) || other.mobile == mobile)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.confirmPassword, confirmPassword) || other.confirmPassword == confirmPassword)&&(identical(other.profilePic, profilePic) || other.profilePic == profilePic)&&(identical(other.otp, otp) || other.otp == otp)&&(identical(other.businessLogo, businessLogo) || other.businessLogo == businessLogo)&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.businessLicence, businessLicence) || other.businessLicence == businessLicence)&&(identical(other.businessName, businessName) || other.businessName == businessName)&&(identical(other.outletType, outletType) || other.outletType == outletType)&&(identical(other.aboutBusiness, aboutBusiness) || other.aboutBusiness == aboutBusiness)&&(identical(other.location, location) || other.location == location)&&(identical(other.gstIn, gstIn) || other.gstIn == gstIn)&&(identical(other.fssaiId, fssaiId) || other.fssaiId == fssaiId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SignUpRequestModel&&(identical(other.mobile, mobile) || other.mobile == mobile)&&(identical(other.key, key) || other.key == key)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.confirmPassword, confirmPassword) || other.confirmPassword == confirmPassword)&&(identical(other.profilePic, profilePic) || other.profilePic == profilePic)&&(identical(other.otp, otp) || other.otp == otp)&&(identical(other.businessLogo, businessLogo) || other.businessLogo == businessLogo)&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.businessLicence, businessLicence) || other.businessLicence == businessLicence)&&(identical(other.businessName, businessName) || other.businessName == businessName)&&(identical(other.outletType, outletType) || other.outletType == outletType)&&(identical(other.aboutBusiness, aboutBusiness) || other.aboutBusiness == aboutBusiness)&&const DeepCollectionEquality().equals(other._amenities, _amenities)&&(identical(other.location, location) || other.location == location)&&(identical(other.gstIn, gstIn) || other.gstIn == gstIn)&&(identical(other.fssaiId, fssaiId) || other.fssaiId == fssaiId)&&(identical(other.oldPassword, oldPassword) || other.oldPassword == oldPassword));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,mobile,name,email,password,confirmPassword,profilePic,otp,businessLogo,const DeepCollectionEquality().hash(_images),businessLicence,businessName,outletType,aboutBusiness,location,gstIn,fssaiId);
+int get hashCode => Object.hashAll([runtimeType,mobile,key,name,email,password,confirmPassword,profilePic,otp,businessLogo,const DeepCollectionEquality().hash(_images),businessLicence,businessName,outletType,aboutBusiness,const DeepCollectionEquality().hash(_amenities),location,gstIn,fssaiId,oldPassword]);
 
 @override
 String toString() {
-  return 'SignUpRequestModel(mobile: $mobile, name: $name, email: $email, password: $password, confirmPassword: $confirmPassword, profilePic: $profilePic, otp: $otp, businessLogo: $businessLogo, images: $images, businessLicence: $businessLicence, businessName: $businessName, outletType: $outletType, aboutBusiness: $aboutBusiness, location: $location, gstIn: $gstIn, fssaiId: $fssaiId)';
+  return 'SignUpRequestModel(mobile: $mobile, key: $key, name: $name, email: $email, password: $password, confirmPassword: $confirmPassword, profilePic: $profilePic, otp: $otp, businessLogo: $businessLogo, images: $images, businessLicence: $businessLicence, businessName: $businessName, outletType: $outletType, aboutBusiness: $aboutBusiness, amenities: $amenities, location: $location, gstIn: $gstIn, fssaiId: $fssaiId, oldPassword: $oldPassword)';
 }
 
 
@@ -297,7 +311,7 @@ abstract mixin class _$SignUpRequestModelCopyWith<$Res> implements $SignUpReques
   factory _$SignUpRequestModelCopyWith(_SignUpRequestModel value, $Res Function(_SignUpRequestModel) _then) = __$SignUpRequestModelCopyWithImpl;
 @override @useResult
 $Res call({
- int? mobile, String? name, String? email, String? password, String? confirmPassword, String? profilePic, int? otp, String? businessLogo, List<String>? images, String? businessLicence, String? businessName, String? outletType, String? aboutBusiness, LocationRequestModel? location, String? gstIn, String? fssaiId
+ int? mobile, String? key, String? name, String? email, String? password, String? confirmPassword, String? profilePic, int? otp, String? businessLogo, List<String>? images, String? businessLicence, String? businessName, String? outletType, String? aboutBusiness, List<String>? amenities, LocationRequestModel? location, String? gstIn, String? fssaiId, String? oldPassword
 });
 
 
@@ -314,10 +328,11 @@ class __$SignUpRequestModelCopyWithImpl<$Res>
 
 /// Create a copy of SignUpRequestModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? mobile = freezed,Object? name = freezed,Object? email = freezed,Object? password = freezed,Object? confirmPassword = freezed,Object? profilePic = freezed,Object? otp = freezed,Object? businessLogo = freezed,Object? images = freezed,Object? businessLicence = freezed,Object? businessName = freezed,Object? outletType = freezed,Object? aboutBusiness = freezed,Object? location = freezed,Object? gstIn = freezed,Object? fssaiId = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? mobile = freezed,Object? key = freezed,Object? name = freezed,Object? email = freezed,Object? password = freezed,Object? confirmPassword = freezed,Object? profilePic = freezed,Object? otp = freezed,Object? businessLogo = freezed,Object? images = freezed,Object? businessLicence = freezed,Object? businessName = freezed,Object? outletType = freezed,Object? aboutBusiness = freezed,Object? amenities = freezed,Object? location = freezed,Object? gstIn = freezed,Object? fssaiId = freezed,Object? oldPassword = freezed,}) {
   return _then(_SignUpRequestModel(
 mobile: freezed == mobile ? _self.mobile : mobile // ignore: cast_nullable_to_non_nullable
-as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as int?,key: freezed == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
+as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,password: freezed == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String?,confirmPassword: freezed == confirmPassword ? _self.confirmPassword : confirmPassword // ignore: cast_nullable_to_non_nullable
@@ -329,9 +344,11 @@ as List<String>?,businessLicence: freezed == businessLicence ? _self.businessLic
 as String?,businessName: freezed == businessName ? _self.businessName : businessName // ignore: cast_nullable_to_non_nullable
 as String?,outletType: freezed == outletType ? _self.outletType : outletType // ignore: cast_nullable_to_non_nullable
 as String?,aboutBusiness: freezed == aboutBusiness ? _self.aboutBusiness : aboutBusiness // ignore: cast_nullable_to_non_nullable
-as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as String?,amenities: freezed == amenities ? _self._amenities : amenities // ignore: cast_nullable_to_non_nullable
+as List<String>?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as LocationRequestModel?,gstIn: freezed == gstIn ? _self.gstIn : gstIn // ignore: cast_nullable_to_non_nullable
 as String?,fssaiId: freezed == fssaiId ? _self.fssaiId : fssaiId // ignore: cast_nullable_to_non_nullable
+as String?,oldPassword: freezed == oldPassword ? _self.oldPassword : oldPassword // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

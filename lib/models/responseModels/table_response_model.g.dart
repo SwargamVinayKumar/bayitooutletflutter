@@ -52,6 +52,10 @@ _TableModel _$TableModelFromJson(Map<String, dynamic> json) => _TableModel(
       .toList(),
   createdAt: json['createdAt'] as String?,
   updatedAt: json['updatedAt'] as String?,
+  amenities: (json['amenities'] as List<dynamic>?)
+      ?.map((e) => AmenityModel.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  vip: json['vip'] as bool?,
 );
 
 Map<String, dynamic> _$TableModelToJson(_TableModel instance) =>
@@ -67,6 +71,8 @@ Map<String, dynamic> _$TableModelToJson(_TableModel instance) =>
       'seats': instance.seats,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
+      'amenities': instance.amenities,
+      'vip': instance.vip,
     };
 
 _SeatModel _$SeatModelFromJson(Map<String, dynamic> json) => _SeatModel(

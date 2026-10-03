@@ -28,6 +28,7 @@ class TableViewModel extends GetxController {
   final tableNumberController = TextEditingController();
   final descriptionController = TextEditingController();
   final selectedCategory = "Corner".obs;
+  final vip = false.obs;
   final seatCount = 1.obs;
   final seats = <SeatRequestModel>[].obs;
   
@@ -143,6 +144,7 @@ class TableViewModel extends GetxController {
         description:descriptionController.text,
         amenities: selectedAmenities.toList(),
         seats: finalSeats,
+        vip: vip.value
       );
 
 
@@ -442,7 +444,7 @@ class TableViewModel extends GetxController {
     }
   }
 
-  Future<void> fetchAmenities(bool refresh) async {
+  Future<void> fetchAmenities(bool refresh,String type) async {
     final observer = fetchAmenitiesObserver;
 
     try {
@@ -469,7 +471,7 @@ class TableViewModel extends GetxController {
 
       final response = await apiProvider.post(
         EndPoints.fetchAmenities,
-        {"page": observer.value.page},
+        {"page": observer.value.page,"type":type},
       );
 
       final body = response.body;

@@ -1,14 +1,23 @@
+import 'dart:io';
+
+import 'package:bayitooutlet/api/api_result.dart';
 import 'package:bayitooutlet/components/custom_gradient_button.dart';
+import 'package:bayitooutlet/components/custom_network_image.dart';
 import 'package:bayitooutlet/components/profile_image_picker_component.dart';
+import 'package:bayitooutlet/models/responseModels/auth_response_model.dart';
 import 'package:bayitooutlet/utils/snack_bar_extension.dart';
+import 'package:bayitooutlet/utils/state_ful_wrapper.dart';
+import 'package:bayitooutlet/viewModel/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../components/profile_form_component.dart';
 
 
 class ProfileEditPage extends StatefulWidget {
-  const ProfileEditPage({super.key});
+  final ProfileData? profileData;
+  const ProfileEditPage({super.key, this.profileData});
 
   @override
   State<ProfileEditPage> createState() => _ProfileEditPageState();
@@ -16,24 +25,28 @@ class ProfileEditPage extends StatefulWidget {
 
 class _ProfileEditPageState extends State<ProfileEditPage> {
 
+  final AuthViewModel authViewModel = Get.put(AuthViewModel());
+
+  final ImagePicker picker = ImagePicker();
+
   String image =
       "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600";
 
-  final restaurantNameController = TextEditingController(text: "Bayito Cafe");
+  late final restaurantNameController = TextEditingController(text: widget.profileData?.businessName ?? "");
 
-  final ownerNameController = TextEditingController(text: "John Smith");
+  late final ownerNameController = TextEditingController(text: widget.profileData?.name ?? "");
 
-  final emailController = TextEditingController(text: "owner@bayito.com");
+  late final emailController = TextEditingController(text: widget.profileData?.email ?? "owner@bayito.com");
 
-  final phoneController = TextEditingController(text: "+91 9876543210");
+  late final phoneController = TextEditingController(text: widget.profileData?.mobile.toString() ?? "+91 9876543210");
 
-  final addressController = TextEditingController(
-    text: "MG Road, Bangalore, Karnataka",
+  late final addressController = TextEditingController(
+    text: widget.profileData?.location?.address1 ?? "",
   );
 
-  final descriptionController = TextEditingController(
+  late final descriptionController = TextEditingController(
     text:
-    "A premium cafe offering delicious coffee, desserts and comfortable workspace.",
+    widget.profileData?.aboutBusiness ?? "",
   );
 
   @override
@@ -76,10 +89,28 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    ProfileImagePickerComponent(
-                      imageUrl: image,
-                      onTap: _changePhoto,
-                    ),
+                    Obx(() => GestureDetector(
+                      onTap: () async {
+                        final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                        if (image != null) {
+                          authViewModel.businessLogo.value = File(image.path);
+                        }
+                      },
+                      child: CircleAvatar(
+                        radius: 65,
+                        backgroundColor: Colors.grey.shade200,
+                        backgroundImage: authViewModel.businessLogo.value != null
+                            ? FileImage(authViewModel.businessLogo.value!)
+                            : null,
+                        child: authViewModel.businessLogo.value == null
+                            ? CustomNetworkImage(imageUrl: widget.profileData?.businessLogo ?? "")
+                            : null,
+                      ),
+                    )),
+                    // ProfileImagePickerComponent(
+                    //   imageUrl: image,
+                    //   onTap: _changePhoto,
+                    // ),
                     const SizedBox(height: 30),
                     ProfileFormComponent(
                       restaurantNameController:
@@ -108,14 +139,20 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               ),
               child: SafeArea(
                 top: false,
-                child: CustomGradientButton(
-                  title: "Save Changes",
-                  onTap: () {
-                    Get.showCustomSnackBar(
-                      message: "Profile Updated Successfully",
-                    );
-                  },
-                ),
+                child: Obx(() {
+                  return authViewModel.registerOutLetObserver.value.maybeWhen(
+                    loading: () => const CircularProgressIndicator(),
+                    orElse: () => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: CustomGradientButton(
+                        title: "Save Changes",
+                        onTap: () {
+                          authViewModel.updateDetails(ownerNameController.text, restaurantNameController.text, descriptionController.text, widget.profileData?.password ?? "", widget.profileData?.password ?? "");
+                        },
+                      ),
+                    ),
+                  );
+                }),
               ),
             ),
           ],

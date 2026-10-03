@@ -1,8 +1,11 @@
 import 'package:bayitooutlet/components/custom_gradient_button.dart';
 import 'package:bayitooutlet/pages/change_password_page.dart';
+import 'package:bayitooutlet/pages/money_withdraw_page.dart';
 import 'package:bayitooutlet/pages/opening_hours_page.dart';
 import 'package:bayitooutlet/pages/profile_edit_page.dart';
 import 'package:bayitooutlet/pages/sign_in_page.dart';
+import 'package:bayitooutlet/pages/transactions_page.dart';
+import 'package:bayitooutlet/utils/custom_color.dart';
 import 'package:bayitooutlet/utils/progress_dialog.dart';
 import 'package:bayitooutlet/utils/state_ful_wrapper.dart';
 import 'package:bayitooutlet/viewModel/auth_view_model.dart';
@@ -14,6 +17,7 @@ import '../components/profile_item_component.dart';
 import 'package:get/get.dart';
 
 import '../utils/preference_manager.dart';
+import 'bankaccount_page.dart';
 
 
 class ProfilePage extends StatelessWidget {
@@ -29,6 +33,9 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return StatefulWrapper(
       onInit: (){
+
+      },
+      onStart: (){
         authViewModel.fetchProfileDetails();
       },
       child: Scaffold(
@@ -50,11 +57,29 @@ class ProfilePage extends StatelessWidget {
                           vertical: 12,
                         ),
                         children: [
+                          (response?.data?.primaryAccountId == null)  ? InkWell(onTap: (){
+                            Get.to(() => const BankAccountPage());
+                          },child: Container(padding: EdgeInsets.all(10),decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: CustomColors.red.withOpacity(0.5)),child: Row(children: [Icon(Icons.error,size: 20,color: CustomColors.primary),Text("  Account Details Required",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),)],),)) : ProfileItemComponent(
+                            icon: Icons.account_balance,
+                            title: "Account Settings",
+                            onTap: () {
+                              Get.to(() => MoneyWithdrawPage());
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          ProfileItemComponent(
+                            icon: Icons.access_time_sharp,
+                            title: "Transactions",
+                            onTap: () {
+                              Get.to(() => TransactionsPage());
+                            },
+                          ),
+                          const SizedBox(height: 10),
                           ProfileItemComponent(
                             icon: Icons.restaurant_menu_outlined,
                             title: "Restaurant Details",
                             onTap: () {
-                              Get.to(() => ProfileEditPage());
+                              Get.to(() => ProfileEditPage(profileData: profile));
                             },
                           ),
                           const SizedBox(height: 10),
@@ -70,7 +95,7 @@ class ProfilePage extends StatelessWidget {
                             icon: Icons.lock_outline,
                             title: "Change Password",
                             onTap: () {
-                              Get.to(() => ChangePasswordPage());
+                              Get.to(() => ChangePasswordPage(profileData: profile));
                             },
                           ),
                           const SizedBox(height: 40),

@@ -17,6 +17,7 @@ class CustomTextFieldComponent extends StatefulWidget {
   final Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLines;
+  final bool? enabled;
 
   const CustomTextFieldComponent({
     super.key,
@@ -32,7 +33,8 @@ class CustomTextFieldComponent extends StatefulWidget {
     this.textLength,
     this.readText = false,
     this.keyboardType = TextInputType.text,
-    this.maxLines = 1
+    this.maxLines = 1,
+    this.enabled = true
   });
 
   @override
@@ -55,6 +57,7 @@ class _CustomTextFieldComponentState extends State<CustomTextFieldComponent> {
       width: widget.width,
       height: widget.height,
       child: TextField(
+        enabled: widget.enabled ?? true,
         cursorColor: CustomColors.midBlack,
         obscureText: widget.isPassword && !_isPasswordVisible,
         controller: widget.textController,

@@ -6,6 +6,7 @@ class EndPoints {
   static const signUp = "signUp";
   static const verifyOtp = "verifyOtp";
   static const registerOutlet = "registerOutlet";
+  static const updateDetails = "updateDetails";
   static const getProfile = "getProfile";
 
   static const getTables = "getTables";
@@ -30,4 +31,14 @@ class EndPoints {
   static const checkOutUser = "checkOutUser";
   static const fetchStatistics = "fetchStatistics";
   static const checkAvailability = "checkAvailability";
+
+  static const setAsPrimaryAccount = "setAsPrimaryAccount";
+  static const addBankAccount = "addBankAccount";
+  static const createAccount = "createAccount";
+  static const deleteAccount = "deleteAccount";
+  static const fetchAccounts = "fetchAccounts";
+  static const fetchWithdrawalDetails = "fetchWithdrawalDetails";
+  static const withdrawAmount = "withdrawAmount";
+  static const fetchTransactions = "fetchTransactions";
+
 }

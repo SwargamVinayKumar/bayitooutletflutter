@@ -61,6 +61,7 @@ class BookingDetailsPage extends StatelessWidget {
                     return SingleChildScrollView(
                       padding: const EdgeInsets.all(12),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           BookingCustomerCard(
                             image: booking.userId?.profilePic ?? "",

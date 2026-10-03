@@ -55,13 +55,14 @@ extension ApiResultPatterns<T> on ApiResult<T> {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Success<T> value)?  success,TResult Function( _Error<T> value)?  error,TResult Function( _Loading<T> value)?  loading,TResult Function( _Init<T> value)?  init,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Success<T> value)?  success,TResult Function( _Error<T> value)?  error,TResult Function( _Loading<T> value)?  loading,TResult Function( _LoadingData<T> value)?  loadingData,TResult Function( _Init<T> value)?  init,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Success() when success != null:
 return success(_that);case _Error() when error != null:
 return error(_that);case _Loading() when loading != null:
-return loading(_that);case _Init() when init != null:
+return loading(_that);case _LoadingData() when loadingData != null:
+return loadingData(_that);case _Init() when init != null:
 return init(_that);case _:
   return orElse();
 
@@ -80,13 +81,14 @@ return init(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Success<T> value)  success,required TResult Function( _Error<T> value)  error,required TResult Function( _Loading<T> value)  loading,required TResult Function( _Init<T> value)  init,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Success<T> value)  success,required TResult Function( _Error<T> value)  error,required TResult Function( _Loading<T> value)  loading,required TResult Function( _LoadingData<T> value)  loadingData,required TResult Function( _Init<T> value)  init,}){
 final _that = this;
 switch (_that) {
 case _Success():
 return success(_that);case _Error():
 return error(_that);case _Loading():
-return loading(_that);case _Init():
+return loading(_that);case _LoadingData():
+return loadingData(_that);case _Init():
 return init(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -104,13 +106,14 @@ return init(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Success<T> value)?  success,TResult? Function( _Error<T> value)?  error,TResult? Function( _Loading<T> value)?  loading,TResult? Function( _Init<T> value)?  init,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Success<T> value)?  success,TResult? Function( _Error<T> value)?  error,TResult? Function( _Loading<T> value)?  loading,TResult? Function( _LoadingData<T> value)?  loadingData,TResult? Function( _Init<T> value)?  init,}){
 final _that = this;
 switch (_that) {
 case _Success() when success != null:
 return success(_that);case _Error() when error != null:
 return error(_that);case _Loading() when loading != null:
-return loading(_that);case _Init() when init != null:
+return loading(_that);case _LoadingData() when loadingData != null:
+return loadingData(_that);case _Init() when init != null:
 return init(_that);case _:
   return null;
 
@@ -128,12 +131,13 @@ return init(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( T? data)?  success,TResult Function( String error)?  error,TResult Function()?  loading,TResult Function()?  init,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( T? data)?  success,TResult Function( String error)?  error,TResult Function()?  loading,TResult Function( String? data)?  loadingData,TResult Function()?  init,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Success() when success != null:
 return success(_that.data);case _Error() when error != null:
 return error(_that.error);case _Loading() when loading != null:
-return loading();case _Init() when init != null:
+return loading();case _LoadingData() when loadingData != null:
+return loadingData(_that.data);case _Init() when init != null:
 return init();case _:
   return orElse();
 
@@ -152,12 +156,13 @@ return init();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( T? data)  success,required TResult Function( String error)  error,required TResult Function()  loading,required TResult Function()  init,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( T? data)  success,required TResult Function( String error)  error,required TResult Function()  loading,required TResult Function( String? data)  loadingData,required TResult Function()  init,}) {final _that = this;
 switch (_that) {
 case _Success():
 return success(_that.data);case _Error():
 return error(_that.error);case _Loading():
-return loading();case _Init():
+return loading();case _LoadingData():
+return loadingData(_that.data);case _Init():
 return init();case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +180,13 @@ return init();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( T? data)?  success,TResult? Function( String error)?  error,TResult? Function()?  loading,TResult? Function()?  init,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( T? data)?  success,TResult? Function( String error)?  error,TResult? Function()?  loading,TResult? Function( String? data)?  loadingData,TResult? Function()?  init,}) {final _that = this;
 switch (_that) {
 case _Success() when success != null:
 return success(_that.data);case _Error() when error != null:
 return error(_that.error);case _Loading() when loading != null:
-return loading();case _Init() when init != null:
+return loading();case _LoadingData() when loadingData != null:
+return loadingData(_that.data);case _Init() when init != null:
 return init();case _:
   return null;
 
@@ -352,6 +358,72 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _LoadingData<T> implements ApiResult<T> {
+  const _LoadingData(this.data);
+  
+
+ final  String? data;
+
+/// Create a copy of ApiResult
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$LoadingDataCopyWith<T, _LoadingData<T>> get copyWith => __$LoadingDataCopyWithImpl<T, _LoadingData<T>>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoadingData<T>&&(identical(other.data, data) || other.data == data));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,data);
+
+@override
+String toString() {
+  return 'ApiResult<$T>.loadingData(data: $data)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$LoadingDataCopyWith<T,$Res> implements $ApiResultCopyWith<T, $Res> {
+  factory _$LoadingDataCopyWith(_LoadingData<T> value, $Res Function(_LoadingData<T>) _then) = __$LoadingDataCopyWithImpl;
+@useResult
+$Res call({
+ String? data
+});
+
+
+
+
+}
+/// @nodoc
+class __$LoadingDataCopyWithImpl<T,$Res>
+    implements _$LoadingDataCopyWith<T, $Res> {
+  __$LoadingDataCopyWithImpl(this._self, this._then);
+
+  final _LoadingData<T> _self;
+  final $Res Function(_LoadingData<T>) _then;
+
+/// Create a copy of ApiResult
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? data = freezed,}) {
+  return _then(_LoadingData<T>(
+freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
 
 /// @nodoc
 

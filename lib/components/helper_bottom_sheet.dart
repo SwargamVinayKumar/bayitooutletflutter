@@ -32,7 +32,7 @@ class HelperBottomSheet extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 20),
-              SizedBox(height: 150,width: 150,child: Image.asset(assetImage ?? "assets/images/no_data_founded.png")),
+              SizedBox(height: 150,width: 150,child: ClipRRect(borderRadius: BorderRadius.circular(10),child: Image.asset(assetImage ?? "assets/images/no_data_founded.png"))),
               const SizedBox(height: 10),
               Text(title ?? "",textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.w800,fontSize: 18,color: CustomColors.textColor),),
               const SizedBox(height: 10),

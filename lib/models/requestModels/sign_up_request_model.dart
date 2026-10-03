@@ -7,6 +7,7 @@ part 'sign_up_request_model.g.dart';
 abstract class SignUpRequestModel with _$SignUpRequestModel {
   const factory SignUpRequestModel({
     int? mobile,
+    String? key,
     String? name,
     String? email,
     String? password,
@@ -19,9 +20,11 @@ abstract class SignUpRequestModel with _$SignUpRequestModel {
     String? businessName,
     String? outletType,
     String? aboutBusiness,
+    List<String>? amenities,
     LocationRequestModel? location,
     String? gstIn,
     String? fssaiId,
+    String? oldPassword
   }) = _SignUpRequestModel;
 
   factory SignUpRequestModel.fromJson(Map<String, dynamic> json) =>

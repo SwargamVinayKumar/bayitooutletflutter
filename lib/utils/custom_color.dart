@@ -10,5 +10,6 @@ class CustomColors {
   static const Color darkBlack = Color(0xFF212121);
   static const Color midBlack =  Color(0xFF636363);
   static const Color midGray =  Color(0xFF666666);
+  static const Color red = Color(0xFFFF0000);
 
 }

@@ -44,19 +44,6 @@ class ProfileHeaderComponent extends StatelessWidget {
                   ),
                 ),
               ),
-              InkWell(
-                onTap: (){
-                  Get.to(() => ProfileEditPage());
-                },
-                child: CircleAvatar(
-                  radius: 18,
-                  backgroundColor: Colors.white24,
-                  child: Icon(
-                    Icons.edit_outlined,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
             ],
           ),
           const SizedBox(height: 30),

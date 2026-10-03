@@ -1,12 +1,16 @@
+import 'package:bayitooutlet/api/api_result.dart';
 import 'package:bayitooutlet/components/custom_textfield.dart';
+import 'package:bayitooutlet/models/responseModels/auth_response_model.dart';
 import 'package:bayitooutlet/utils/snack_bar_extension.dart';
+import 'package:bayitooutlet/viewModel/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../components/custom_gradient_button.dart';
 
 class ChangePasswordPage extends StatefulWidget {
-  const ChangePasswordPage({super.key});
+  final ProfileData? profileData;
+  const ChangePasswordPage({super.key, this.profileData});
 
   @override
   State<ChangePasswordPage> createState() =>
@@ -18,6 +22,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final currentPasswordController = TextEditingController();
   final newPasswordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  final AuthViewModel authViewModel = Get.put(AuthViewModel());
 
   final List<Map<String, dynamic>> passwordRules = [
     {
@@ -116,9 +121,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 ),
               ),
               const SizedBox(height: 35),
-              CustomTextFieldComponent(hintText: 'Current Password',isPassword: true,),
+              CustomTextFieldComponent(hintText: 'Current Password',isPassword: true,textController:currentPasswordController),
               const SizedBox(height: 20),
-              CustomTextFieldComponent(hintText: 'New Password',isPassword: true,),
+              CustomTextFieldComponent(hintText: 'New Password',isPassword: true,textController:newPasswordController),
               const SizedBox(height: 12),
               Row(
                 children: [
@@ -144,7 +149,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 ],
               ),
               const SizedBox(height: 20),
-              CustomTextFieldComponent(hintText: 'Confirm Password',isPassword: true,),
+              CustomTextFieldComponent(hintText: 'Confirm Password',isPassword: true,textController:confirmPasswordController),
               const SizedBox(height: 12),
               Row(
                 children: [
@@ -206,20 +211,30 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 ),
               ),
               const SizedBox(height: 35),
-              CustomGradientButton(
-                title: "Update Password",
-                onTap: hasMinLength &&
-                    hasUpperCase &&
-                    hasNumber &&
-                    hasSpecial &&
-                    passwordsMatch
-                    ? () {
-                  Get.showCustomSnackBar(
-                    message: "Password Updated Successfully",
-                  );
-                }
-                    : null,
-              ),
+              Obx(() {
+                return authViewModel.registerOutLetObserver.value.maybeWhen(
+                  loading: () => const CircularProgressIndicator(),
+                  orElse: () => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: CustomGradientButton(
+                      title: "Update password",
+                      onTap: () {
+                        if(hasMinLength &&
+                            hasUpperCase &&
+                            hasNumber &&
+                            hasSpecial &&
+                            passwordsMatch){
+                          authViewModel.updateDetails(widget.profileData?.name ?? "", widget.profileData?.businessName ?? "", widget.profileData?.aboutBusiness ?? "", newPasswordController.text ?? "", currentPasswordController.text ?? "");
+                        }
+                        else if(!passwordsMatch){
+                          Get.showCustomSnackBar(title: 'Error', message: "Password Mismatch");
+                        }
+                      },
+                    ),
+                  ),
+                );
+              })
+              ,
             ],
           ),
         ),

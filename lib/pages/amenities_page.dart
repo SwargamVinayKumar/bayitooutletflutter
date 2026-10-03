@@ -6,27 +6,28 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AmenitiesPage extends StatefulWidget {
-  const AmenitiesPage({super.key});
+  final String type;
+  const AmenitiesPage({super.key,required this.type});
 
   @override
   State<AmenitiesPage> createState() => _AmenitiesPageState();
 }
 
 class _AmenitiesPageState extends State<AmenitiesPage> {
-  final tableViewModel = Get.find<TableViewModel>();
+  final tableViewModel = Get.put(TableViewModel());
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    tableViewModel.fetchAmenities(true);
+    tableViewModel.fetchAmenities(true,widget.type);
     _scrollController.addListener(_onScroll);
   }
 
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      tableViewModel.fetchAmenities(false);
+      tableViewModel.fetchAmenities(false,widget.type);
     }
   }
 

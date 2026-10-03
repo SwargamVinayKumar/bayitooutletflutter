@@ -3,6 +3,16 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'auth_response_model.freezed.dart';
 part 'auth_response_model.g.dart';
 
+@Freezed()
+abstract class PrimaryResponseModel with _$PrimaryResponseModel{
+  const factory PrimaryResponseModel({
+    int? status,
+    String? message
+  }) = _PrimaryResponseModel;
+
+  factory PrimaryResponseModel.fromJson(Map<String, dynamic> json) => _$PrimaryResponseModelFromJson(json);
+}
+
 @freezed
 abstract class ProfileResponseModel with _$ProfileResponseModel {
   const factory ProfileResponseModel({
@@ -62,6 +72,7 @@ abstract class ProfileData with _$ProfileData {
     List<dynamic>? tables,
     String? createdAt,
     String? updatedAt,
+    dynamic primaryAccountId
   }) = _ProfileData;
 
   factory ProfileData.fromJson(Map<String, dynamic> json) =>

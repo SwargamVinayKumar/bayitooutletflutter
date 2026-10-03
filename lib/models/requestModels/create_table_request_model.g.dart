@@ -20,6 +20,7 @@ _CreateTableRequestModel _$CreateTableRequestModelFromJson(
   seats: (json['seats'] as List<dynamic>?)
       ?.map((e) => SeatRequestModel.fromJson(e as Map<String, dynamic>))
       .toList(),
+  vip: json['vip'] as bool?,
 );
 
 Map<String, dynamic> _$CreateTableRequestModelToJson(
@@ -32,6 +33,7 @@ Map<String, dynamic> _$CreateTableRequestModelToJson(
   'description': instance.description,
   'amenities': instance.amenities,
   'seats': instance.seats,
+  'vip': instance.vip,
 };
 
 _SeatRequestModel _$SeatRequestModelFromJson(
