@@ -1,4 +1,5 @@
 import 'package:bayitooutlet/components/over_view_item.dart';
+import 'package:bayitooutlet/utils/custom_color.dart';
 import 'package:flutter/material.dart';
 import '../pages/all_tables_page.dart';
 import 'package:get/get.dart';
@@ -26,12 +27,12 @@ class OverViewCard extends StatelessWidget {
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(22),
-        gradient: const LinearGradient(
+        gradient:  LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Color(0xff3D3835),
-            Color(0xff272321),
+            CustomColors.secondary.withOpacity(0.7),
+            CustomColors.secondary,
           ],
         ),
         boxShadow: [

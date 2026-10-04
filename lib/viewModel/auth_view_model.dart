@@ -278,7 +278,7 @@ class AuthViewModel extends GetxController {
   Future<void> verifyOtp() async {
     try {
       // Final Validation
-      if (mobileController.text.isEmpty ||
+      if (emailMobileController.text.isEmpty ||
           signUpPasswordController.text.isEmpty || otpController.text.isEmpty) {
         Get.showCustomSnackBar(title: 'Error', message: "Please complete all registration steps");
         return;
@@ -288,7 +288,7 @@ class AuthViewModel extends GetxController {
 
 
       final request = SignUpRequestModel(
-          key: mobileController.text,
+          key: emailMobileController.text,
           password: signUpPasswordController.text,
           confirmPassword: confirmPasswordController.text,
           otp: int.tryParse(otpController.text),

@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../components/custom_gradient_button.dart';
 import '../components/custom_textfield.dart';
+import '../models/responseModels/auth_response_model.dart';
 import '../utils/custom_color.dart';
+import '../utils/snack_bar_extension.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -55,6 +57,36 @@ class SignInPage extends StatelessWidget {
                     hintText: "Password",
                     isPassword: true,
                     textController: authViewModel.signInPasswordController,
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          if(authViewModel.emailMobileController.text.trim().isEmpty){
+                            Get.showCustomSnackBar(title: 'Failed', message: "Email Or Mobile should be entered");
+                          }
+                          else{
+                            authViewModel.signUpObserver.value = ApiResult.success(SignInResponseModel(status: 1,message: "success"));
+                            Get.to(() =>  const SignUpPage(forgotPassword: true));
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            "Forgot Password",
+                            style: TextStyle(
+                              color: CustomColors.secondary,
+                              fontSize: 16,
+                              decoration: TextDecoration.underline,
+                              decorationColor: CustomColors.secondary,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                   const SizedBox(height: 24),
                   Obx(() {
