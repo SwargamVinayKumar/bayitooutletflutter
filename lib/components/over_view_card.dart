@@ -60,10 +60,14 @@ class OverViewCard extends StatelessWidget {
                 onPressed: () {
                   Get.to(() => AllTablesPage());
                 },
-                child: GradientText(
-                  text: "View all",
+                child:
+                Text(
+                "View all",
+                style: TextStyle(
+                  color: CustomColors.primary,
                   fontSize: 14,
                 ),
+              ),
               ),
             ],
           ),
